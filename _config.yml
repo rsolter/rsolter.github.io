@@ -99,9 +99,9 @@ author:
   location         : "Washington DC"
   email            :
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-       url: "mailto:ravisolter@gmail.com"
+  #  - label: "Email"
+  #    icon: "fas fa-fw fa-envelope-square"
+  #    url: "mailto:ravisolter@gmail.com"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/rsolter"
