@@ -94,10 +94,10 @@ analytics:
 # Site Author
 author:
   name             : "Ravi Solter"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/bio-photo.png"
   bio              : "Data Science Portfolio"
   location         : "Washington DC"
-  email            :
+  email            : ravisolter@gmail.com
   links:
   #  - label: "Email"
   #    icon: "fas fa-fw fa-envelope-square"
@@ -105,6 +105,9 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/rsolter"
+    - label: "LinkedIn"
+      icon: "/assets/images/linkedin_icon.png"
+      url: "https://www.linkedin.com/in/rsolter/"
 
 # Site Footer
 footer:
