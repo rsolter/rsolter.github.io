@@ -1,10 +1,11 @@
 ---
 title: Data Science on Chrome OS
 date: 2020-04-04
-header:
-  image: "/assets/images/pixelbook_ds.jpg"
 excerpt: "Guide for doing Data Science on ChromeOS"
 ---
+
+
+![DS_Pixelbook](/assets/images/pixelbook_ds.jpg)
 
 ChromeOS is a linux-based operating system developed by Google and is the default OS on all Chromebooks. It's a very lightweight OS and was initially limited Chrome and the suite of Google office applications. However, overtime it has grown to support Android Apps as well as Linux applications. This post documents the steps I took to set up a linux-based Data Science tool kit on my Pixelbook, including git, Python (Anaconda distribution), and R (and R Studio).
 
@@ -294,7 +295,7 @@ Alternatively, I could have installed Firefox and the [required Libraries/Packag
 - Add the CRAN repository to the list in sources.list Cran [link](https://cran.r-project.org/bin/linux/debian/) here.
     - `sudo nano /etc/apt/sources.list`
     - `deb http://cloud.r-project.org/bin/linux/debian buster-cran35/`
-- Following guide from Digital Ocean
+- Following guide from [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-r-on-debian-9)
     - `sudo apt install dirmngr --install-recommends`
     - `sudo apt install software-properties-common`
     - `sudo apt install apt-transport-https`
