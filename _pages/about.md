@@ -5,7 +5,7 @@ author_profile: true
 read_time: false
 share: false
 header:
-  image: /assets/images/hirshhorn_header.jpg
+  image: /assets/images/chris-grafton-mRxHNzxeYt8-unsplash.jpg
 ---
 
 
