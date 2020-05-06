@@ -5,6 +5,8 @@ date: 2019-11-01
 ---
 
 ![DC BikeShare](/assets/images/obi-onyeador-a3PAvq9FpIY-unsplash.jpg)
+_Photo by Obi Onyeador on Unsplash_
+
 
 ### Monthly DC BikeShare Ridership
 
