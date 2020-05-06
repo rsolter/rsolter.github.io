@@ -1,7 +1,9 @@
 ---
 title: Forecasting Monthly Usage of Capitol Bike Share
-categories: rblogging
+categories: [R, forecasting]
 date: 2019-11-01
+excerpt: "ARIMA modeling of monthly bike share usage"
+
 ---
 
 ![DC BikeShare](/assets/images/obi-onyeador-a3PAvq9FpIY-unsplash.jpg)
