@@ -1,6 +1,6 @@
 ---
 title: Forecasting Monthly Usage of Capitol Bike Share
-categories: rblogging
+categories: /rblogging
 date: 2019-11-01
 ---
 
@@ -14,7 +14,7 @@ The original data was gathered from the official DC Bike Share
 bike trips logged from October, 2010 to August, 2018. For this markdown,
 the daily ridership data has been aggregated up to a monthly level.
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Plots-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Plots-1.png)
 
 #### Decomposition
 
@@ -28,7 +28,7 @@ decompose(ts_month, type="multiplicative") %>% autoplot() +
     of monthly bike rentals")
 ```
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 #### Stationarity
 
@@ -40,7 +40,7 @@ Dickey-Fuller test.
 To accomplish this, the first step is to remove the seasonal trend from
 the original series.
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Removing%20Seasonality-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Removing%20Seasonality-1.png)
 
 However, the “de-seasoned” data fails the Adjusted Dickey-Fuller test,
 indicating the series is not yet stationary:
@@ -61,7 +61,7 @@ adf.test(deseasonal_cnt, alternative = "stationary")
 Examining the ACF and PACF plots indicate that differencing the series
 by 1 (\_d\_\_=1), could help:
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/ACF%20and%20PACF%20plots-1.png)![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/ACF%20and%20PACF%20plots-2.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/ACF%20and%20PACF%20plots-1.png)![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/ACF%20and%20PACF%20plots-2.png)
 
 Differencing the data by one period appears to bring stationarity to the
 series as tested by the ADF test.
@@ -82,19 +82,19 @@ adf.test(deseasoned_count_d1, alternative = "stationary")
 From the plot, it appears that the differenced, deseasoned data has a
 stationary mean, though the variance does not appear constant:
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Searching%20for%20Stationarity:%20Differencing%20Plot-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Searching%20for%20Stationarity:%20Differencing%20Plot-1.png)
 
 ------------------------------------------------------------------------
 
 Running ACF, PACF plots of the differeced data to see what values for
 *q*, *p* would be for an ARIMA model:
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Differenced%20ACF-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Differenced%20ACF-1.png)
 
 The ACF plot shows significant auto-correlations at lags 1,2,8,9,11
 (*q*)
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Differenced%20PACF-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Differenced%20PACF-1.png)
 
 The PACF plot shows significant partial-correlations at 1,2, and beyond
 (*p*)
@@ -122,7 +122,7 @@ Evaluating the diagnostic plots for the (2,1,9) residuals return a
 seemingly random residual plot and no significant autocorrelations.
 There does appear to be some
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Fit%20Evaluation-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Fit%20Evaluation-1.png)
 
 *auto.arima()*
 
@@ -151,7 +151,7 @@ fit <- auto.arima(deseasoned_count_d1,seasonal=FALSE)
 tsdisplay(residuals(fit), lag.max=45, main='(2,0,2) Model Residuals')
 ```
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Auto-Arima-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Auto-Arima-1.png)
 
 #### Forecasting and Back-Testing
 
@@ -159,4 +159,4 @@ To fully evaluate the model’s predictive power, we set aside the last 12
 months of the *deseasonal\_cnt* object and compare our predictions to
 what was actually observed.
 
-![](rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Partition%20and%20Forecast-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/figure-markdown_github/Partition%20and%20Forecast-1.png)
