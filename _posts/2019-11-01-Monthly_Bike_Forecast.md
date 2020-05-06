@@ -4,7 +4,7 @@ categories: rblogging
 date: 2019-11-01
 ---
 
-![DC BikeShare](/obi-onyeador-a3PAvq9FpIY-unsplash.jpg)
+![DC BikeShare](/assets/images/obi-onyeador-a3PAvq9FpIY-unsplash.jpg)
 
 ### Monthly DC BikeShare Ridership
 
