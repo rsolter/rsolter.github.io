@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Forecasting Monthly Usage of Capitol Bike Share
 categories: rblogging
 date: 2019-11-01
