@@ -46,7 +46,7 @@ A few takeaways:
     [expansion](https://en.wikipedia.org/wiki/Capital_Bikeshare#Expansion)
     in the number of bike stations and bikes over the last \~10 years.
 
-![](/rblogging/2019/12/20/figure-markdown_github/viz-1.png)![](/rblogging/2019/12/20/figure-markdown_github/viz-2.png)
+![](/rblogging/2019/12/20/viz-1.png)![](/rblogging/2019/12/20/viz-2.png)
 
 ------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ from the original series. Next, observations which fall outside of 4
 standard deviations of that running median trend are isolated and
 removed from the series for future modeling.
 
-![](/rblogging/2019/12/20/figure-markdown_github/Handing%20Outliers%20in%20Test%20Set-1.png)![](/rblogging/2019/12/20/figure-markdown_github/Handing%20Outliers%20in%20Test%20Set-2.png)
+![](/rblogging/2019/12/20/Handing%20Outliers%20in%20Test%20Set-1.png)![](/rblogging/2019/12/20/Handing%20Outliers%20in%20Test%20Set-2.png)
 
 ------------------------------------------------------------------------
 
@@ -101,21 +101,21 @@ package which can account for multiple seasonalities.
   prophet_plot_components(prophetFit1, prophetForecast1)
 ```
 
-![](/rblogging/2019/12/20/figure-markdown_github/Prophet%20Forecast%201-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201-1.png)
 
 ``` r
   # Visualize forecast
   plot(prophetFit1, prophetForecast1)
 ```
 
-![](/rblogging/2019/12/20/figure-markdown_github/Prophet%20Forecast%201-2.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201-2.png)
 
 Evaluation of the first prediction:
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
     ## -621.76  -16.56    4.77  -15.00   15.35   47.22
 
-![](/rblogging/2019/12/20/figure-markdown_github/unnamed-chunk-1-1.png)
+![](/rblogging/2019/12/20/unnamed-chunk-1-1.png)
 
 ------------------------------------------------------------------------
 
@@ -157,14 +157,14 @@ In this case, we’ll set it at 17500
   prophet_plot_components(prophetFit1, prophetForecast1)
 ```
 
-![](/rblogging/2019/12/20/figure-markdown_github/Prophet%20Forecast%201a-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201a-1.png)
 
 ``` r
   # Visualize forecast
   plot(prophetFit1, prophetForecast1)
 ```
 
-![](/rblogging/2019/12/20/figure-markdown_github/Prophet%20Forecast%201a-2.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201a-2.png)
 
 ``` r
   # Dynamic Plot of forecast
@@ -176,7 +176,7 @@ Evaluation of the second prediction:
     ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.
     ## -645.538  -19.964    2.513  -17.790   13.610   45.788
 
-![](/rblogging/2019/12/20/figure-markdown_github/unnamed-chunk-2-1.png)
+![](/rblogging/2019/12/20/unnamed-chunk-2-1.png)
 
 ------------------------------------------------------------------------
 
