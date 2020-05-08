@@ -1,8 +1,8 @@
 ---
-title: Data Science on Chrome OS
+title: Data Science on Chrome OS + Linux
 categories: [Linux]
 date: 2020-04-04
-excerpt: "Guide for doing Data Science on ChromeOS"
+excerpt: "Setting up Chrome OS for Data Science"
 ---
 
 

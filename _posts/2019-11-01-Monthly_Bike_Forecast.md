@@ -1,5 +1,5 @@
 ---
-title: Forecasting Monthly Usage of Capitol Bike Share
+title: Forecasting Monthly Usage of Capital Bikeshare
 categories: [R, forecasting]
 date: 2019-11-01
 excerpt: "ARIMA modeling of monthly bike share usage"
@@ -171,4 +171,4 @@ what was actually observed.
 
 #### References
 
-Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 2nd edition, OTexts: Melbourne, Australia. [https://otexts.com/fpp2/](https://otexts.com/fpp2/). Accessed on October, 2019 
+Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 2nd edition, OTexts: Melbourne, Australia. [https://otexts.com/fpp2/](https://otexts.com/fpp2/). Accessed on October, 2019
