@@ -14,17 +14,19 @@ _Photo by Obi Onyeador on Unsplash_
 
 ------------------------------------------------------------------------
 
+In this post, I'll be modeling monthly ridership in the DC BikeShare program using ARIMA modeling.
 The original data was gathered from the official DC Bike Share
 [site](https://s3.amazonaws.com/capitalbikeshare-data/index.html), spans
-bike trips logged from October, 2010 to August, 2018. For this markdown,
-the daily ridership data has been aggregated up to a monthly level.
+bike trips logged from October, 2010 to August, 2018, and has been aggregated up from a daily level.
+
+
+From the initial plot, we can tell the data has clear seasonality with many fewer riders in the winter months. At the same time, we see an overall growing trend that appears logarithmic.
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Plots-1.png)
 
 #### Decomposition
 
-A decomposition of the monthly data using a multiplicative seasonal
-component since the seasonal fluctuations tend to grow over time:
+The first step in building an ARIMA model is decomposing the series into its three components: seasonal, trend, and remainder. It appears that the magnitude of the seasonal fluctuations are not stable and appear to grow over time:
 
 ``` r
 decompose(ts_month, type="multiplicative") %>% autoplot() +
@@ -64,7 +66,7 @@ adf.test(deseasonal_cnt, alternative = "stationary")
 ------------------------------------------------------------------------
 
 Examining the ACF and PACF plots indicate that differencing the series
-by 1 (\_d\_\_=1), could help:
+by 1 (_d_=1), could help:
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/ACF%20and%20PACF%20plots-1.png)![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/ACF%20and%20PACF%20plots-2.png)
 
@@ -91,7 +93,7 @@ stationary mean, though the variance does not appear constant:
 
 ------------------------------------------------------------------------
 
-Running ACF, PACF plots of the differeced data to see what values for
+Running ACF, PACF plots of the differenced data to see what values for
 *q*, *p* would be for an ARIMA model:
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Differenced%20ACF-1.png)
@@ -125,15 +127,15 @@ is chosen.
 
 Evaluating the diagnostic plots for the (2,1,9) residuals return a
 seemingly random residual plot and no significant autocorrelations.
-There does appear to be some
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Fit%20Evaluation-1.png)
 
-*auto.arima()*
+
+#### Comparing ARIMA to auto.arima
 
 Comparing the ARIMA(2,1,9) to the results from auto.arima we can see the
 automated function does not account for the autocorrelation at q(9).
-Furthermore, the AIC is slightyl smaller in the ARIMA(2,1,9) model.
+Furthermore, the AIC is slightly smaller in the ARIMA(2,1,9) model.
 
 ``` r
 auto.arima(deseasoned_count_d1)
@@ -165,3 +167,8 @@ months of the *deseasonal\_cnt* object and compare our predictions to
 what was actually observed.
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Partition%20and%20Forecast-1.png)
+
+
+#### References
+
+Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 2nd edition, OTexts: Melbourne, Australia. [https://otexts.com/fpp2/](https://otexts.com/fpp2/). Accessed on October, 2019 
