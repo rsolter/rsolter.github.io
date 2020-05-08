@@ -2,7 +2,7 @@
 title: Forecasting Monthly Usage of Capital Bikeshare
 categories: [R, forecasting]
 date: 2019-11-01
-excerpt: "ARIMA modeling of monthly bike share usage"
+excerpt: "ARIMA modeling of monthly Bikeshare usage"
 
 ---
 
