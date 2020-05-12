@@ -1,4 +1,5 @@
 ---
+title: "Certificates"
 layout: single
 permalink: /certs/
 author_profile: true

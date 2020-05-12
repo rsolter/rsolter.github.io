@@ -1,5 +1,5 @@
 ---
-title: "Ravi's Notebook"
+title: "Ravi Solter"
 layout: home
 author_profile: true
 header:
