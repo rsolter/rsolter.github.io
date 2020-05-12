@@ -15,11 +15,11 @@ Note that I am working with the Debian (10) distribution of Linux.
 
 ### Contents
 
-1. Enabling and Setting up Linux
-2. Required and Suggested Linux Software, Libraries
-3. Setting up git
-4. Installing Python via Anaconda
-5. Installing R and R Studio
+1. [Enabling and Setting up Linux](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#1-enabling-and-setting-up-linux)
+2. [Required and Suggested Linux Software, Libraries](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#2-required-and-suggested-linux-software-libraries)
+3. [Setting up git](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#3-setting-up-git)
+4. [Installing Python via Anaconda](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#4-installing-python-via-anaconda)
+5. [Installing R and R Studio](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#5-r-and-r-studio)
 
 
 
