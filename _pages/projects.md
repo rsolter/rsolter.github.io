@@ -16,3 +16,7 @@ header:
     {% include archive-single.html %}
   {% endfor %}
 {% endfor %}
+
+
+
+This is a placeholder page for analyses/projects are beyond the scope of a blog post
