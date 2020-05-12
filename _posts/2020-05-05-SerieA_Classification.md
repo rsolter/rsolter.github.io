@@ -20,6 +20,7 @@ _Liam McKay on Unsplash_
 4. [Overall Results](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#4-installing-python-via-anaconda)
 
 
+_Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
 
 ****
 
