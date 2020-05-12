@@ -5,7 +5,7 @@ author_profile: true
 read_time: false
 share: false
 header:
-  image: /assets/images/hirschhorn_header_about.jpg
+  image: /assets/images/hirschhorn_header_about.jpeg
 ---
 
 
