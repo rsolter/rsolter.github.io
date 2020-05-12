@@ -1,10 +1,10 @@
 # main links
 main:
-   - title: "About"
-     url: /about/
   # - title: "Projects"
   #   url: /projects/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
+   - title: "Certifications"
+     url: /certs/
   # - title: "Sitemap"
   #   url: /sitemap/
+   - title: "About"
+     url: /about/
