@@ -1,6 +1,6 @@
 ---
 layout: single
-permalink: /about/
+permalink: /certs/
 author_profile: true
 read_time: false
 share: false
