@@ -6,7 +6,7 @@ excerpt: "Serie A Classification"
 ---
 
 
-![Stadio Olimpico](/assets/images/pixelbook_ds.jpg)
+![Stadio Olimpico](/assets/images/stadio_olimpico.jpg)
 _Liam McKay on Unsplash_
 
 
