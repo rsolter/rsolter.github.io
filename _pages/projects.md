@@ -10,4 +10,5 @@ header:
 ---
 
 
-This is a placeholder page for analyses/projects are beyond the scope of a blog post
+**Beermongers Inventory App** - R Shiny application that displays live inventory for [BeerMongers](https://www.thebeermongers.com/) bottle shop in Portland, OR. Application still under development, will eventually include a basic recommendation engine as well.
+[link](https://beermongersbottlelist.shinyapps.io/BM_Inventory/)
