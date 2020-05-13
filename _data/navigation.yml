@@ -4,9 +4,9 @@ main:
      url: /index.html
    - title: "About"
      url: /about/
+   - title: "Resume"
+#     url: /sitemap/
    - title: "Projects"
      url: /projects/
    - title: "Certificates"
      url: /certs/
-  # - title: "Sitemap"
-  #   url: /sitemap/

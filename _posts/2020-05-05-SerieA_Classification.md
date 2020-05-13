@@ -1,5 +1,5 @@
 ---
-title: "Prediction of Soccer Matches using caretEnsemble"
+title: "Predicting of Soccer Matches Outcomes using caret"
 categories: [R, caret]
 date: 2020-05-05
 excerpt: "Serie A Classification"
