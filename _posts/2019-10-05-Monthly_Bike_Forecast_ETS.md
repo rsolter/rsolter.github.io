@@ -6,21 +6,22 @@ excerpt: "Predicting monthly Bikeshare usage with R, forecast"
 
 ---
 
-One of the most basic methods for forecasting univariate series is
-exponential smoothing. The basic idea behind exponential smoothing is
-that forecasts are produced by using weighted averages of past
-observations. The weights applied to the past observations decay
-exponentially as the observations get older with more recent
-observations receiving more weight. This post will examine applying this
-method to predict monthly ridership on the Capital BikeShare program.
-
-![](/rblogging/2019/10/05/viz-1.png)
+One of the fundamental methods for forecasting univariate series is
+[exponential
+smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing). The
+basic idea behind the method is that forecasts are produced using a
+weighted average of past observations. Furthermore, the weights applied
+to the past observations decay exponentially as the observations get
+older, with more recent observations receiving greater weight. This post
+will examine applying this method to predict monthly ridership on the
+Capital BikeShare program.
 
 **Partition**
 
-To test the accuracy of the predictions, we will split the ts() object
-using the `TSstudio` package. The test period is set to be the final 12
-observations, or one year.
+To test the accuracy of the predictions, we will split the data stored
+in `ts_month` using the `TSstudio` package into `test` and `train`
+objects. The test period is set to be the final 12 observations, or one
+year.
 
 ``` r
 ts_month
@@ -55,18 +56,42 @@ test <- ts_month_partition$test
 
 **Holt-Winters Modeling**
 
+![](/rblogging/2019/10/05/viz-1.png)
+
 Given both the clear seasonality and growing trend in the series, we’ll
-have to use the Holt-Winters seasonal method to capture both factors.
-Furthermore, given that the size of the seasonal swings in ridership
-have seen to grown from \~100k in 2012 to over +200k in 2017 and 2018,
-it makes sense to use a multiplicative method. Read more about the
-methodology [here](https://otexts.com/fpp2/holt-winters.html).
+use the Holt-Winters method (sometimes known as the Triple Exponential
+Smoothing) which will capture both factors. Specifically, the
+Holt-Winters uses three separate smoothing factors to compose the
+forecast; one for the level (alpha), another for trend (beta), and a
+final for the seasonal component (gamma).
+
+Furthermore, given that the size of the seasonal swings in ridership are
+not constant and have grown from \~100k in 2012 to over +200k in 2017
+and 2018, it makes sense to try a multiplicative method as well as
+additive. Read more about the methodology
+[here](https://otexts.com/fpp2/holt-winters.html).
+
+``` r
+add_fit <- hw(train,seasonal="additive",h = 12)
+mult_fit <- hw(train,seasonal="multiplicative",h = 12)
+autoplot(ts_month) +
+  autolayer(add_fit, series="HW additive forecasts", PI=FALSE) +
+  autolayer(mult_fit, series="HW multiplicative forecasts",
+    PI=FALSE) +
+  scale_y_continuous(label=comma) + theme_minimal() +
+  xlab(" ") +
+  ylab("") +
+  ggtitle("Holt-Winters Forecasts for Monthly Bike Rentals") +
+  guides(colour=guide_legend(title="Forecast")) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
 
 ![](/rblogging/2019/10/05/holt-winters-1.png)
 
 It certainly appears that the multiplicative model does a better job
 than the additive one in estimating the ridership, at least until the
-final few months of the predictive window.
+final few months of the predictive window at which point the two
+estimates are quite similar.
 
 We can confirm this by looking at the errors on a monthly basis. Over
 the 12 months, the mean absolute percent error for the additive model is
@@ -87,14 +112,55 @@ the 12 months, the mean absolute percent error for the additive model is
 |  404761|      451522.4|      46761.354|           11.55|       435415.4|       30654.421|             7.57|
 |  403866|      455687.8|      51821.826|           12.83|       439027.5|       35161.529|             8.71|
 
-**Improving with ets()**
+**Utilizing ets()**
 
-Within the `forecast` package in R there exists the `ets()` function
-which actually estimates the best model
+A more customizable forecasting method than using the `hw()` model is
+the `ets()` function in the `forecast` package which allows greate
+specification of the mode.
 
-![](/rblogging/2019/10/05/ets-1.png)
+The function’s **model** parameter can be specified with a three
+character string. The first letter denotes the error type, the second
+letter denotes the trend type, and the third letter denotes the season
+type. The options you can specify for each component are below:
 
-Note that the ets() forecast performs much better than the Holt-Winters
-approach, with an average absolute erro of just 4.6%
+-   error: additive (“A”), multiplicative (“M”), unknown (“Z”)
+-   trend: none (“N”), additive (“A”), multiplicative (“M”), unknown
+    (“Z”)
+-   seasonality: none (“N”), additive (“A”), multiplicative (“M”),
+    unknown (“Z”)
+
+For example, setting `model='AAA'` would produce a model with additive
+error, additive trend, and additive seasonality. By default, the
+parameter is set to “ZZZ” which passes unknown values to each component
+and allows the algorithm to select the ‘optimal’ model by minimizing
+RMSE, AIC, and BIC on the training data set. See reference
+[here](https://www.rdocumentation.org/packages/forecast/versions/8.12/topics/ets).
+
+Running the model with the default setting returns ETS(M,Ad,M):
+
+    ## ETS(M,Ad,M)
+    ##
+    ## Call:
+    ##  ets(y = train)
+    ##
+    ##   Smoothing parameters:
+    ##     alpha = 1e-04
+    ##     beta  = 1e-04
+    ##     gamma = 1e-04
+    ##     phi   = 0.977
+    ##
+    ##   Initial states:
+    ##     l = 47634.0206
+    ##     b = 6990.7145
+    ##     s = 1.227 1.2774 1.2962 1.2853 1.239 1.1361
+    ##            0.8626 0.6097 0.5644 0.6105 0.8225 1.0693
+    ##
+    ##   sigma:  0.1273
+    ##
+    ##      AIC     AICc      BIC
+    ## 2059.187 2069.874 2102.726
+
+Forecasting a year forward with this model provide a much better
+prediction, returning an average absolute error of just 4.6%
 
 ![](/rblogging/2019/10/05/ets%20evaluation-1.png)
