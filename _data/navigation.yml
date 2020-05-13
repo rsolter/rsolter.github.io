@@ -5,7 +5,7 @@ main:
    - title: "About"
      url: /about/
    - title: "Resume"
-#     url: /sitemap/
+     url: /404.MD
    - title: "Projects"
      url: /projects/
    - title: "Certificates"
