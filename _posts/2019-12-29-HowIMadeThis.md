@@ -57,4 +57,4 @@ This portfolio was built using Jekyll, a static website generator that is a popu
 
   **Converting ipynb into Jekyll Posts**
 
-	.ipynb files can be converted to .MD files using **nbconvert** which is package inside anaconda. To execute, from the command line simply type `jupyter nbconvert --to markdown FILENAME.ipynb`
+.ipynb files can be converted to .MD files using **nbconvert** which is package inside anaconda. To execute, from the command line simply type `jupyter nbconvert --to markdown FILENAME.ipynb`
