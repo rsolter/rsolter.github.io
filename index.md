@@ -1,6 +1,7 @@
 ---
 layout: home
 author_profile: true
+paginate: 5
 header:
   image: /assets/images/hirschhorn.jpeg
 ---
