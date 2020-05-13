@@ -6,6 +6,8 @@ main:
      url: /about/
    - title: "Resume"
      url: /404.MD
+   - title: "Posts by Category"
+     url: /categories/
    - title: "Projects"
      url: /projects/
    - title: "Certificates"
