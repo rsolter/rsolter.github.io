@@ -16,7 +16,7 @@ weighted average of past observations. Furthermore, the weights applied
 to the past observations decay exponentially as the observations get
 older, with more recent observations receiving greater weight. This post
 will examine applying this method to predict monthly ridership on the
-Capital BikeShare program.
+Capital BikeShare program. The data was gathered from the official DC Bike Share [site](https://s3.amazonaws.com/capitalbikeshare-data/index.html), spans bike trips logged from October, 2010 to August, 2018, and has been aggregated up from a daily level.
 
 
 **Partitioning the data for back-testing**
