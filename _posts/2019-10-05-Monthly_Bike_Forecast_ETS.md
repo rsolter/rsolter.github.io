@@ -6,6 +6,8 @@ excerpt: "Predicting monthly Bikeshare usage with R, forecast"
 
 ---
 
+One of my team's responsibilities at Marriott is to set annual goals for hotel performance on our guest satisfaction survey. Goals are set at the beginning of the year by forecasting performance for each of the +6000 hotels and then go through a lengthy review process with business stakeholders as year-end bonuses are based in part on hotels matching these goals. While a hotel's performance can be affected by a number of factors, we generally base our forecasts on past performance data.
+
 One of the fundamental methods for forecasting univariate series is
 [exponential
 smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing). The
@@ -16,7 +18,8 @@ older, with more recent observations receiving greater weight. This post
 will examine applying this method to predict monthly ridership on the
 Capital BikeShare program.
 
-**Partition**
+
+**Partitioning the data for back-testing**
 
 To test the accuracy of the predictions, we will split the data stored
 in `ts_month` using the `TSstudio` package into `test` and `train`
@@ -94,10 +97,10 @@ final few months of the predictive window at which point the two
 estimates are quite similar.
 
 We can confirm this by looking at the errors on a monthly basis. Over
-the 12 months, the mean absolute percent error for the additive model is
-23.9% while the multiplicative method is closer at 10.6%.
+the 12 months, the mean absolute percent error (MAPE) for the additive model is
+23.9% while the multiplicative method has a MAPE of 10.6%.
 
-|  Actual|  Add.Forecast|  Add.Error.Abs|  Add.Error.Perc|  Mult.Forecast|  Mult.Error.Abs|  Mult.Error.Perc|
+|  Actual|  Add.Forecast|      Add.Error|  Add.Error.Perc|  Mult.Forecast|      Mult.Error|  Mult.Error.Perc|
 |-------:|-------------:|--------------:|---------------:|--------------:|---------------:|----------------:|
 |  391371|      394964.9|       3593.933|            0.92|       383812.5|       -7558.548|            -1.93|
 |  384833|      376862.2|      -7970.817|           -2.07|       355866.2|      -28966.766|            -7.53|
@@ -115,8 +118,8 @@ the 12 months, the mean absolute percent error for the additive model is
 **Utilizing ets()**
 
 A more customizable forecasting method than using the `hw()` model is
-the `ets()` function in the `forecast` package which allows greate
-specification of the mode.
+the `ets()` function in the `forecast` package which allows greater
+specification of the model. It's also the method my team uses in predicting hotel performance.
 
 The function’s **model** parameter can be specified with a three
 character string. The first letter denotes the error type, the second
@@ -161,11 +164,11 @@ Running the model with the default setting returns ETS(M,Ad,M):
     ## 2059.187 2069.874 2102.726
 
 Forecasting a year forward with this model provide a much better
-prediction, returning an average absolute error of just 4.6%
+prediction, returning a MAPE of just 4.6%
 
 ![](/rblogging/2019/10/05/ets%20evaluation-1.png)
 
-|  Actual|  ETS.Forecast|  ETS.Error.Abs.|  ETS.Error.Perc|
+|  Actual|  ETS.Forecast|       ETS.Error|  ETS.Error.Perc|
 |-------:|-------------:|---------------:|---------------:|
 |  391371|      370883.7|      -20487.327|           -5.23|
 |  384833|      324247.9|      -60585.135|          -15.74|
