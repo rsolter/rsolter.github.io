@@ -5,6 +5,9 @@ date: 2020-05-12
 excerpt: "An overview of pandas key functions"
 ---
 
+![pandas](/assets/images/pandas.jpg)
+
+
 ## pandas Overview
 
 
