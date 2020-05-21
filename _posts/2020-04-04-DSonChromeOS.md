@@ -326,7 +326,7 @@ Adding R to Jupyter notebooks installed via Anaconda is tricky. After a few fail
 
 **Installing Packages in R:**
 
-  **Important note**: Install packages from the command line in base r
+  **Important note**: Install packages from the command line in base R. Also, use `verbose=FALSE` when using install.packages()  
 
   Among the packages [recommended by RStudio](https://support.rstudio.com/hc/en-us/articles/201057987-Quick-list-of-useful-R-packages), I installed the following:
 

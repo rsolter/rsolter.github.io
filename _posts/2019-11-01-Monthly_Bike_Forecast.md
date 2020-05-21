@@ -20,6 +20,10 @@ The original data was gathered from the official DC Bike Share
 bike trips logged from October, 2010 to August, 2018, and has been aggregated up from a daily level.
 
 
+Having used this data [previously](https://rsolter.github.io/r/forecasting/Monthly_Bike_Forecast_ETS/) to forecast with exponential smoothing models, I wanted to try ARIMA out in part because it allows for explanatory variables in the regression. ARIMA is an acronym for Auto Regressive (AR) Integrated (I) Moving Average (MA) and can be implemented in R using the automated function `auto.arima` from the forecast package. For illustration, I've added monthly average temperatures [downloaded](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month) from NOAA and collected from the Regan National Airport weather station.
+
+
+
 From the initial plot, we can tell the data has clear seasonality with many fewer riders in the winter months. At the same time, we see an overall growing trend that appears logarithmic.
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Plots-1.png)
