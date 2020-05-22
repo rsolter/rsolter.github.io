@@ -15,53 +15,55 @@ ridership on the Capital BikeShare program.
 Some background first. For a raw data sequence represented by
 {*x*<sub>*t*</sub>}, beginning at *t* = 0, and the forecast of the next
 value in our sequence represented as *x̂*<sub>*t* + 1</sub>, the simplest
-form of exponential smoothing is given by the formula:
+form of exponential smoothing takes the form:
 
 *x̂*<sub>*t* + 1</sub> = *α**x*<sub>*t*</sub> + *α*(1 − *α*)*x*<sub>*t* − 1</sub> + *α*(1 − *α*)<sup>2</sup>*x*<sub>*t* − 2</sub>..
 
-In the formula above, the rate at which the weights decrease is
+In the equation above, the rate at which the weights decrease is
 determined by the *α*, or the **smoothing factor** which is bound by
 0 &lt; *α* &lt; 1. If *α* is closer to 0, more weight is given to
 observations from the more distant past, while a value of *α* that is
-closer to 1 will give more more weight to recent observations.
+closer to 1 will give more more weight to recent observations. The time
+series is represented solely by the observations’ values themselves
+(current and past).
 
-In the equation above, the time series is represented solely by the
-observations’ values themselves (current and past). A more nuanced, but
-standard formulation, breaks the model into three components: the level
-*l*<sub>*t*</sub>, trend *b*<sub>*t*</sub>, and seasonal
-*s*<sub>*t*</sub> components. In comparison to regular linear
-regression, the level can be thought of as the intercept and the trend
-the slope.As can be seen below, the bike data demonstrates clear
-seasonality and a growing trend in overall ridership, so our exponential
-smoothing model will need to account for both.
+A more nuanced, but standard formulation, breaks the model into three
+components: the level *l*<sub>*t*</sub>, trend *b*<sub>*t*</sub>, and
+seasonal *s*<sub>*t*</sub> components. As can be seen below, the bike
+data demonstrates clear seasonality and a growing trend in overall
+ridership, so our exponential smoothing model will need to account for
+both. Also, the size of the seasonal swings in ridership have grown over
+time, meaning our method will need to account for that as well.
 
 ![](/rblogging/2019/10/05/viz-1.png)
 
-In the chart above, it’s also noticeablable that the size of the
-seasonal swings in ridership have grown over time, meaning our method
-will need to account for that as well. In total, our forecast model will
-take on the following form, with all three components given their own
-smoothing factors. This model is known as the **Holt-Winter’s
-multiplicative method** and each smoothing factor is estimated on the
-basis of minimizing the sum of the square residuals (SSE):
+In total, our forecast model will be made of three component equations,
+each with their own smoothing factor. Outlined below, this model is
+known as the **Holt-Winter’s multiplicative method** and each smoothing
+factor is estimated on the basis of minimizing the sum of the square
+residuals (SSE):
 
 **Overall model** with *h* denoting the number of periods forecast into
 the future (horizon), *m* denoting the frequency of the seasonality
 (m=12 for monthly data), and k representing the integer part of
 *(h-1)/m* which ensures that the estimate of the seasona indices used
 for forecasting come from the final year of the sample.
+
 *ŷ*<sub>*t* + *h*\|*t*</sub> = (*l*<sub>*t*</sub> + *h**b*<sub>*t*</sub>)*s*<sub>*t* + *h* − *m*(*k* + 1)</sub>
 
 **Level** component, with *a**l**p**h**a* as the smoothing parameter
 bound between 0 and 1.
+
 $$l\_{t} = \\alpha\\frac{y\_{t}}{s\_{t-m}}+(1-\\alpha)(l\_{t-1}+b\_{t-1})$$
 
 **Trend** component, with *β* as the smoothing parameter bound between 0
 and 1
+
 *b*<sub>*t*</sub> = *β*(*l*<sub>*t*</sub> − *l*<sub>*t* − 1</sub>) + (1 − *β*)*b*<sub>*t* − 1</sub>
 
 **Season** component, with *γ* as the smoothing parameter bound between
 0 and 1
+
 $$s\_{t} = \\gamma\\frac{y\_{t}}{l\_{t-1}+b\_{t-1}}+(1-\\gamma)s\_{t-m}$$
 
 Read more about the Holt-Winters methodology
