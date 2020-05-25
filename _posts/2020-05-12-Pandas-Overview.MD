@@ -4,7 +4,7 @@ categories: [python, pandas, reference]
 date: 2020-05-12
 excerpt: "An overview of pandas key functions"
 toc: true
-toc_sticky: FALSE
+toc_sticky: false
 ---
 
 ![pandas](/assets/images/pandas.jpg)
