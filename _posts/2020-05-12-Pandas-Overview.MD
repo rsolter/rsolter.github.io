@@ -29,9 +29,8 @@ A copy of this .ipynb can be found on [here](https://github.com/rsolter/Udemy-Co
 
 - [On Method Chaining in pandas](https://towardsdatascience.com/the-unreasonable-effectiveness-of-method-chaining-in-pandas-15c2109e3c69)
 
-****
 
-#### Importing data
+**Importing data**
 
 
 ```python
