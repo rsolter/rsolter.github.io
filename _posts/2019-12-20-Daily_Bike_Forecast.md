@@ -5,7 +5,7 @@ date: 2019-12-20
 excerpt: "Forecasting daily Bikeshare usage with Facebook's prophet"
 ---
 
-# Predicting Daily DC Bike Share Ridership with **prophet**
+### Predicting Daily DC Bike Share Ridership with **prophet**
 
 ![prophet](/assets/images/facebook_prophet.jpg)
 

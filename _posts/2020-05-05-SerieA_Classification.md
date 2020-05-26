@@ -8,7 +8,7 @@ toc_label: "Content"
 toc_sticky: true
 ---
 
-# Predicting of Soccer Matches Outcomes using caret
+### Predicting of Soccer Matches Outcomes using caret
 
 ![Stadio Olimpico](/assets/images/stadio_olimpico.jpg)
 _Liam McKay on Unsplash_
