@@ -8,7 +8,7 @@ toc_label: "Content"
 toc_sticky: true
 ---
 
-# Data Science on Chrome OS + Linux
+### Data Science on Chrome OS + Linux
 
 ![DS_Pixelbook](/assets/images/pixelbook_ds.jpg)
 
