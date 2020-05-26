@@ -16,7 +16,6 @@ ChromeOS is a linux-based operating system developed by Google and is the defaul
 
 Note that I am working with the Debian (10) distribution of Linux.
 
-****
 
 ### 1. Enabling and Setting Up Linux
 
@@ -29,7 +28,7 @@ Note that I am working with the Debian (10) distribution of Linux.
   `sudo apt-get update && sudo apt-get dist-upgrade`
 
 
-****
+
 
 ### 2. Required and Suggested Linux Software, Libraries
 
@@ -124,7 +123,7 @@ I also needed to [install Java](https://www.r-bloggers.com/installing-rjava-on-u
       -  `sudo R CMD javareconf`
 
 
-****
+
 
 ### 3. Setting up git
 
@@ -184,7 +183,7 @@ Add the new SSH key to your GitHub Account [link](https://help.github.com/en/git
 
 
 
-****
+
 
 ### 4. Installing Python via Anaconda
 
@@ -278,7 +277,7 @@ Alternatively, I could have installed Firefox and the [required Libraries/Packag
 
 
 
-****
+
 
 ### 5. R and R Studio
 
@@ -341,7 +340,7 @@ Links used in Troubleshooting IRKernel:
 
 
 
-****
+
 
 ### Appendix
 
