@@ -6,11 +6,12 @@ excerpt: "ARIMA modeling of monthly Bikeshare usage"
 
 ---
 
+
+# Forecasting Capital Bikeshare usage with ARIMA
+
 ![DC BikeShare](/assets/images/obi-onyeador-a3PAvq9FpIY-unsplash.jpg)
 _Photo by Obi Onyeador on Unsplash_
 
-
-### Monthly DC BikeShare Ridership
 
 ------------------------------------------------------------------------
 

@@ -8,11 +8,9 @@ toc_label: "Content"
 toc_sticky: true
 ---
 
+# pandas Overview
+
 ![pandas](/assets/images/pandas.jpg)
-
-
-## pandas Overview
-
 
 Making the move from R to python, I feel out of place without my familiar tidyverse of packages for data maniuplation and visualization. As such, I've been spending a lot of time learning [pandas](https://pandas.pydata.org/), the most popular data analysis and manipulation tool in python.
 

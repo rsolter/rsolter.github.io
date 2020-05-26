@@ -3,8 +3,12 @@ title: "Predicting of Soccer Matches Outcomes using caret"
 categories: [R, caret]
 date: 2020-05-05
 excerpt: "Serie A Classification"
+toc: true
+toc_label: "Content"
+toc_sticky: true
 ---
 
+# Predicting of Soccer Matches Outcomes using caret
 
 ![Stadio Olimpico](/assets/images/stadio_olimpico.jpg)
 _Liam McKay on Unsplash_

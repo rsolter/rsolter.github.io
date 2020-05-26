@@ -3,14 +3,12 @@ title: Daily Forecasting of Capital Bikeshare usage with Facebook's prophet
 categories: [R, forecasting]
 date: 2019-12-20
 excerpt: "Forecasting daily Bikeshare usage with Facebook's prophet"
-
 ---
+
+# Predicting Daily DC Bike Share Ridership with **prophet**
 
 ![prophet](/assets/images/facebook_prophet.jpg)
 
-
-
-### Predicting Daily DC Bike Share Ridership with **prophet**
 
 This second post is an extension of the [Forecasting Monthly Usage of
 Capital
