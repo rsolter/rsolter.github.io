@@ -21,6 +21,15 @@ This post is meant to serve as an overview of pandas functionality as well as se
 A copy of this .ipynb can be found on [here](https://github.com/rsolter/Udemy-Courses/blob/master/Udemy%20-%20Data%20Analysis%20with%20Pandas%20and%20Python/Summary.ipynb) my git repository for the Udemy pandas course
 
 
+**Some useful links:**
+
+- [Official Pandas Documentation](https://pandas.pydata.org/)
+
+- [Comparison with R/R libraries](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html?highlight=arrange)
+
+- [On Method Chaining in pandas](https://towardsdatascience.com/the-unreasonable-effectiveness-of-method-chaining-in-pandas-15c2109e3c69)
+
+****
 
 #### Importing data
 
@@ -37,35 +46,6 @@ p4k = pd.read_csv("p4kreviews.csv",
                   index_col=0, # no index set, can specify id column if it exists
                   parse_dates=["date"]) # pandas is very good at recognizing dates upon import
 ```
-
-
-
-## Sections
-
-1. [Inspecting a dataframe](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-2. [Selecting Columns or Rows from dataframe](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-3. [Adding or Deleting Columns and Rows](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-4. [Filtering](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-5. [Ranking & Sorting](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-6. [Working with NAs](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-7. [Unique and Duplicate values](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-8. [Working with Indexes](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-9. [Renaming Labels and Columns](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-10. [Sampling](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-11. [Grouping](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-12. [Dates and Times](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-13. [Text Functions](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-14. [Merging, Joining, and Concatenating](https://rsolter.github.io/python/pandas/reference/Pandas-Overview/)
-15. [Reshaping dataframes](https://rsolter.github.io/python/pandas/reference/Reshaping-dataframes/)
-
-
-**Some useful links:**
-
-- [Official Pandas Documentation](https://pandas.pydata.org/)
-
-- [Comparison with R/R libraries](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html?highlight=arrange)
-
-- [On Method Chaining in pandas](https://towardsdatascience.com/the-unreasonable-effectiveness-of-method-chaining-in-pandas-15c2109e3c69)
 
 ### 1. Inspecting a dataframe
 

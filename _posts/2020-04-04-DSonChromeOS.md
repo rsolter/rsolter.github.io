@@ -3,6 +3,9 @@ title: Data Science on Chrome OS + Linux
 categories: [Linux, GitHub, R, python, reference]
 date: 2020-04-04
 excerpt: "Setting up Chrome OS for Data Science"
+toc: true
+toc_label: "Content"
+toc_sticky: true
 ---
 
 
@@ -11,17 +14,6 @@ excerpt: "Setting up Chrome OS for Data Science"
 ChromeOS is a linux-based operating system developed by Google and is the default OS on all Chromebooks. It's a very lightweight OS and was initially limited Chrome and the suite of Google office applications. However, overtime it has grown to support Android Apps as well as Linux applications. This post documents the steps I took to set up a linux-based Data Science tool kit on my Pixelbook, including git, Python (Anaconda distribution), and R (and R Studio).
 
 Note that I am working with the Debian (10) distribution of Linux.
-
-
-### Contents
-
-1. [Enabling and Setting up Linux](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#1-enabling-and-setting-up-linux)
-2. [Required and Suggested Linux Software, Libraries](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#2-required-and-suggested-linux-software-libraries)
-3. [Setting up git](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#3-setting-up-git)
-4. [Installing Python via Anaconda](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#4-installing-python-via-anaconda)
-5. [Installing R and R Studio](https://rsolter.github.io/linux/github/r/python/DSonChromeOS/#5-r-and-r-studio)
-
-
 
 ****
 
