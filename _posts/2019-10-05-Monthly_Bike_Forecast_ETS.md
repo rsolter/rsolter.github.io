@@ -5,6 +5,7 @@ date: 2019-10-05
 excerpt: "Predicting monthly Bikeshare usage with R, forecast"
 
 ---
+# Forecasting Capital Bikeshare usage with Exponential Smoothing
 
 Exponential smoothing is one of the fundamental methods for forecasting
 univariate series. The basic idea behind the method is that forecasts
