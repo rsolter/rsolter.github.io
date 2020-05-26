@@ -9,7 +9,7 @@ toc_sticky: true
 ---
 
 
-# Forecasting Capital Bikeshare usage with ARIMA
+### Forecasting Capital Bikeshare usage with ARIMA
 
 
 In this post, I’ll be modeling monthly ridership in the DC BikeShare
