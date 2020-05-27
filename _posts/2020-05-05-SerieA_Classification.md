@@ -6,6 +6,7 @@ excerpt: "Serie A Classification"
 toc: true
 toc_label: "Content"
 toc_sticky: true
+toc_icon: 'futbol'
 ---
 
 ### Predicting of Soccer Matches Outcomes using caret
