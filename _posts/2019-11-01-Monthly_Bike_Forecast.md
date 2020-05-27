@@ -48,7 +48,7 @@ prices completely disappears:
 
     ## [1] "AAPL"
 
-![](/rblogging/2019/11/01/differencing%20example-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/differencing%20example-1.png)
 
 However, was that enough to achieve stationarity? Formally, stationarity
 can be assessed by using one of many unit tests, including the
@@ -131,7 +131,7 @@ to slow in recent years. In the plot for temperature we see a
 predicatble seasonality whose peaks and valleys remain almost equal in
 size throughout the entire time frame:
 
-![](/rblogging/2019/11/01/Train%20Plots-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Train%20Plots-1.png)
 
 To achieve **stationarity** in our time series, we need to remove all
 trend and seasonality components from the data. A decomposed version of
@@ -147,7 +147,7 @@ decompose(bike_train, type="multiplicative") %>% autoplot() +
   theme(plot.title = element_text(hjust = 0.5)) + xlab("")
 ```
 
-![](/rblogging/2019/11/01/unnamed-chunk-1-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/unnamed-chunk-1-1.png)
 
 Removing the seasonality alone from the time series using seasadj() does
 not yield a stationary timeseries:
@@ -163,7 +163,7 @@ deseasonal_cnt %>%
   theme(plot.title = element_text(hjust = 0.5)) + xlab("")
 ```
 
-![](/rblogging/2019/11/01/Removing%20Seasonality-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Removing%20Seasonality-1.png)
 
 ``` r
 tseries::kpss.test(deseasonal_cnt)
@@ -178,7 +178,7 @@ tseries::kpss.test(deseasonal_cnt)
 Examining the ACF and PACF plots indicate that differencing the series
 by 1 observation could help:
 
-![](/rblogging/2019/11/01/ACF%20and%20PACF%20plots-1.png)![](/rblogging/2019/11/01/ACF%20and%20PACF%20plots-2.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/ACF%20and%20PACF%20plots-1.png)![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/ACF%20and%20PACF%20plots-2.png)
 
 And running the KPSS test confirms that differencing the data does
 return a stationary series:
@@ -202,7 +202,7 @@ tseries::kpss.test(deseasoned_count_d1)
 From the plot, it appears that the differenced, deseasoned data has a
 stationary mean:
 
-![](/rblogging/2019/11/01/Searching%20for%20Stationarity:%20Differencing%20Plot-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Searching%20for%20Stationarity:%20Differencing%20Plot-1.png)
 
 ------------------------------------------------------------------------
 
@@ -210,10 +210,10 @@ Running ACF, PACF plots of the differeced data to see what values for
 *q*, *p* would be for an ARIMA model:
 
 The ACF plot shows significant auto-correlations at lags 1,6,10,12 (*q*)
-![](/rblogging/2019/11/01/Differenced%20ACF-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Differenced%20ACF-1.png)
 
 The PACF plot shows significant partial-correlations at 5,6, and 9 (*p*)
-![](/rblogging/2019/11/01/Differenced%20PACF-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Differenced%20PACF-1.png)
 
 ### Modeling
 
@@ -236,7 +236,7 @@ autocorrelations.
     ##
     ## sigma^2 estimated as 434834666:  log likelihood = -1067.37,  aic = 2158.74
 
-![](/rblogging/2019/11/01/Fit%20Evaluation-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Fit%20Evaluation-1.png)
 
 *auto.arima()*
 
@@ -264,7 +264,7 @@ fit2 <- auto.arima(deseasoned_count_d1,seasonal=FALSE)
 tsdisplay(residuals(fit2), lag.max=45, main='(2,0,2) Model Residuals')
 ```
 
-![](/rblogging/2019/11/01/Auto-Arima-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Auto-Arima-1.png)
 
 ### Forecasting and Back-Testing
 
@@ -296,11 +296,11 @@ Will give auto.arima a shot, using default parameters. Returns a MAPE of
     ##                     ME     RMSE     MAE      MPE     MAPE      MASE        ACF1
     ## Training set -291.7736 22292.25 18183.7 1.379566 11.88621 0.4186552 -0.02153787
 
-![](/rblogging/2019/11/01/auto-arima%20with%20NOAA%20data-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/auto-arima%20with%20NOAA%20data-1.png)
 
 Residual inspection:
 
-![](/rblogging/2019/11/01/inspecting%20residuals-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/inspecting%20residuals-1.png)
 
     ##
     ##  Ljung-Box test
@@ -329,11 +329,11 @@ Auto.arima without a regressor
     ##                    ACF1
     ## Training set 0.01308924
 
-![](/rblogging/2019/11/01/unnamed-chunk-2-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/unnamed-chunk-2-1.png)
 
 Residual inspection:
 
-![](/rblogging/2019/11/01/inspecting%20residuals2-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/inspecting%20residuals2-1.png)
 
     ##
     ##  Ljung-Box test
@@ -358,7 +358,7 @@ Residual inspection:
     ##                     ME     RMSE     MAE      MPE     MAPE      MASE        ACF1
     ## Training set -291.7736 22292.25 18183.7 1.379566 11.88621 0.4186552 -0.02153787
 
-![](/rblogging/2019/11/01/second%20auto-arima%20with%20NOAA%20data-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/second%20auto-arima%20with%20NOAA%20data-1.png)
 
     ##
     ## Forecast method: Regression with ARIMA(0,1,2)(1,0,0)[12] errors
