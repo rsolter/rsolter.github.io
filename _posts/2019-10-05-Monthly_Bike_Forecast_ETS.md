@@ -6,32 +6,35 @@ excerpt: "Predicting monthly Bikeshare usage with R, forecast"
 ---
 
 # Forecasting Capital Bikeshare usage with Exponential Smoothing
+
+
 Exponential smoothing is one of the fundamental methods for forecasting
 univariate series. The basic idea behind the method is that forecasts
 are produced using a weighted average of past observations. This post
 will examine applying exponential smoothing to forecast monthly
 ridership on the Capital BikeShare program.
 
-For a simple time series, represented by {*x*<sub>*t*</sub>}, beginning
-at *t* = 0, and the forecast of the next value in our sequence
-represented as *x̂*<sub>*t* + 1</sub>, the simplest form of exponential
-smoothing takes the form:
+For a simple time series, represented by \({\{{x_t}}\}\), beginning at
+\(t=0\), and the forecast of the next value in our sequence represented
+as \(\hat{x}_{t+1}\), the simplest form of exponential smoothing takes
+the
+form:
 
-*x̂*<sub>*t* + 1</sub> = *α**x*<sub>*t*</sub> + *α*(1 − *α*)*x*<sub>*t* − 1</sub> + *α*(1 − *α*)<sup>2</sup>*x*<sub>*t* − 2</sub>..
+\[\hat{x}_{t+1} = \alpha x_t + \alpha(1-\alpha)x_{t-1} + \alpha(1-\alpha)^2x_{t-2} .. \]
 
 In the equation above, the rate at which the weights decrease is
-determined by the *α*, or the **smoothing factor** which is bound by
-0 &lt; *α* &lt; 1. If *α* is closer to 0, more weight is given to
-observations from the more distant past, while a value of *α* that is
-closer to 1 will give more more weight to recent observations.
+determined by the \(\alpha\), or the **smoothing factor** which is bound
+by \(0<\alpha<1\). If \(\alpha\) is closer to 0, more weight is given to
+observations from the more distant past, while a value of \(\alpha\)
+that is closer to 1 will give more more weight to recent observations.
 
 This idea can be expanded to different components of a time series, with
 each component having its own smoothing factors. The standard way of
-breaking apart the series is into three components: the level
-*l*<sub>*t*</sub>, trend *b*<sub>*t*</sub>, and seasonal
-*s*<sub>*t*</sub> components. This model is known as the **Holt-Winter’s
-multiplicative method** and each smoothing factor is estimated on the
-basis of minimizing the sum of the square residuals (SSE):
+breaking apart the series is into three components: the level \(l_t\),
+trend \(b_t\), and seasonal \(s_t\) components. This model is known as
+the **Holt-Winter’s multiplicative method** and each smoothing factor is
+estimated on the basis of minimizing the sum of the square residuals
+(SSE):
 
 **Overall model** with *h* denoting the number of periods forecast into
 the future (horizon), *m* denoting the frequency of the seasonality
@@ -39,22 +42,22 @@ the future (horizon), *m* denoting the frequency of the seasonality
 *(h-1)/m* which ensures that the estimate of the seasona indices used
 for forecasting come from the final year of the sample.
 
-*ŷ*<sub>*t* + *h*\|*t*</sub> = (*l*<sub>*t*</sub> + *h**b*<sub>*t*</sub>)*s*<sub>*t* + *h* − *m*(*k* + 1)</sub>
+\[\hat{y}_{t+h|t} = (l_{t}+hb_{t})s_{t+h-m(k+1)}\]
 
-**Level** component, with *a**l**p**h**a* as the smoothing parameter
-bound between 0 and 1.
+**Level** component, with \(alpha\) as the smoothing parameter bound
+between 0 and 1.
 
-$$l\_{t} = \\alpha\\frac{y\_{t}}{s\_{t-m}}+(1-\\alpha)(l\_{t-1}+b\_{t-1})$$
+\[ l_{t} = \alpha \frac{y_{t}}{s_{t-m}}+(1-\alpha)(l_{t-1}+b_{t-1}) \]
 
-**Trend** component, with *β* as the smoothing parameter bound between 0
-and 1
+**Trend** component, with \(\beta\) as the smoothing parameter bound
+between 0 and 1.
 
-*b*<sub>*t*</sub> = *β*(*l*<sub>*t*</sub> − *l*<sub>*t* − 1</sub>) + (1 − *β*)*b*<sub>*t* − 1</sub>
+\[ b_{t} = \beta(l_{t}-l_{t-1})+(1-\beta)b_{t-1} \]
 
-**Season** component, with *γ* as the smoothing parameter bound between
-0 and 1
+**Season** component, with \(\gamma\) as the smoothing parameter bound
+between 0 and 1.
 
-$$s\_{t} = \\gamma\\frac{y\_{t}}{l\_{t-1}+b\_{t-1}}+(1-\\gamma)s\_{t-m}$$
+\[ s_{t} = \gamma \frac{y_{t}}{l_{t-1}+b_{t-1}}+(1-\gamma)s_{t-m} \]
 
 Read more about the Holt-Winters methodology
 [here](https://otexts.com/fpp2/holt-winters.html).
@@ -67,7 +70,8 @@ will need to account for both. Furthermore, the size of the seasonal
 swings in ridership have grown over time, meaning our method will need
 to account for that as well. Note that the chart below does not include
 the final 12 observations in the dataset which have been set aside for
-testing model accuracy.
+testing model
+    accuracy.
 
     ##         Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct
     ## 2010                                                                 36613
@@ -90,7 +94,7 @@ testing model accuracy.
     ## 2017 252534 177897
     ## 2018
 
-![](/rblogging/2019/10/05/viz-1.png)
+![](/rblogging/2019/10/05/viz-1.png)<!-- -->
 
 Given that the size of the seasonal fluctuations are not constant over
 time, the data is likely better fit with a multiplicative method,
@@ -112,7 +116,7 @@ autoplot(ts_month) +
   theme(legend.position = "bottom")
 ```
 
-![](/rblogging/2019/10/05/holt-winters-1.png)
+![](/rblogging/2019/10/05/holt-winters-1.png)<!-- -->
 
 The smoothing parameters and overall fit statistics are reported out in
 the model portion of the forecast:
@@ -166,22 +170,23 @@ estimates are quite similar.
 
 We can confirm this by looking at the errors on a monthly basis. Over
 the 12 months, the mean absolute percent error for the additive model is
-18.5% while the multiplicative method is closer at 10.1%.
+18.5% while the multiplicative method is closer at
+10.1%.
 
-|  Actual|  Add.Forecast|  Add.Error.Abs|  Add.Error.Perc|  Mult.Forecast|  Mult.Error.Abs|  Mult.Error.Perc|
-|-------:|-------------:|--------------:|---------------:|--------------:|---------------:|----------------:|
-|  391371|      394964.9|       3593.933|            0.92|       383812.5|       -7558.548|            -1.93|
-|  384833|      376862.2|      -7970.817|           -2.07|       355866.2|      -28966.766|            -7.53|
-|  252534|      314872.2|      62338.235|           24.69|       274616.9|       22082.928|             8.74|
-|  177897|      269802.0|      91905.036|           51.66|       206849.5|       28952.470|            16.27|
-|  168590|      254859.0|      86268.970|           51.17|       185347.2|       16757.204|             9.94|
-|  182378|      265063.3|      82685.256|           45.34|       205223.4|       22845.435|            12.53|
-|  238998|      336311.3|      97313.296|           40.72|       286876.9|       47878.856|            20.03|
-|  328907|      397253.7|      68346.681|           20.78|       383590.8|       54683.760|            16.63|
-|  374115|      425827.6|      51712.589|           13.82|       412234.7|       38119.712|            10.19|
-|  392338|      437097.9|      44759.941|           11.41|       422610.3|       30272.296|             7.72|
-|  404761|      451522.4|      46761.354|           11.55|       435415.4|       30654.421|             7.57|
-|  403866|      455687.8|      51821.826|           12.83|       439027.5|       35161.529|             8.71|
+| Actual | Add.Forecast | Add.Error.Abs | Add.Error.Perc | Mult.Forecast | Mult.Error.Abs | Mult.Error.Perc |
+| -----: | -----------: | ------------: | -------------: | ------------: | -------------: | --------------: |
+| 391371 |     394964.9 |      3593.933 |           0.92 |      383812.5 |     \-7558.548 |          \-1.93 |
+| 384833 |     376862.2 |    \-7970.817 |         \-2.07 |      355866.2 |    \-28966.766 |          \-7.53 |
+| 252534 |     314872.2 |     62338.235 |          24.69 |      274616.9 |      22082.928 |            8.74 |
+| 177897 |     269802.0 |     91905.036 |          51.66 |      206849.5 |      28952.470 |           16.27 |
+| 168590 |     254859.0 |     86268.970 |          51.17 |      185347.2 |      16757.204 |            9.94 |
+| 182378 |     265063.3 |     82685.256 |          45.34 |      205223.4 |      22845.435 |           12.53 |
+| 238998 |     336311.3 |     97313.296 |          40.72 |      286876.9 |      47878.856 |           20.03 |
+| 328907 |     397253.7 |     68346.681 |          20.78 |      383590.8 |      54683.760 |           16.63 |
+| 374115 |     425827.6 |     51712.589 |          13.82 |      412234.7 |      38119.712 |           10.19 |
+| 392338 |     437097.9 |     44759.941 |          11.41 |      422610.3 |      30272.296 |            7.72 |
+| 404761 |     451522.4 |     46761.354 |          11.55 |      435415.4 |      30654.421 |            7.57 |
+| 403866 |     455687.8 |     51821.826 |          12.83 |      439027.5 |      35161.529 |            8.71 |
 
 Since the multiplicative forecast appeared to over-estimate ridership in
 the second half of the prediction period, we can try and improve the
@@ -196,7 +201,7 @@ better in the second half of the year, the damped method over-estimates
 ridership in the first half of the year and returns an overall mape of
 17.1%
 
-![](/rblogging/2019/10/05/unnamed-chunk-1-1.png)
+![](/rblogging/2019/10/05/unnamed-chunk-1-1.png)<!-- -->
 
     ##
     ## Forecast method: Damped Holt-Winters' additive method
@@ -304,10 +309,10 @@ three character string. The first letter denotes the error type, the
 second letter denotes the trend type, and the third letter denotes the
 season type. The options you can specify for each component are below:
 
--   error: additive (“A”), multiplicative (“M”), unknown (“Z”)
--   trend: none (“N”), additive (“A”), multiplicative (“M”), unknown
+  - error: additive (“A”), multiplicative (“M”), unknown (“Z”)
+  - trend: none (“N”), additive (“A”), multiplicative (“M”), unknown
     (“Z”)
--   seasonality: none (“N”), additive (“A”), multiplicative (“M”),
+  - seasonality: none (“N”), additive (“A”), multiplicative (“M”),
     unknown (“Z”)
 
 For example, setting `model='AAM'` would produce a model with additive
@@ -344,26 +349,27 @@ Running the model with the default setting returns ETS(M,Ad,M):
     ## 2059.187 2069.874 2102.726
 
 Forecasting a year forward with this model provide a much better
-prediction, returning an average absolute error of just 4.6%
+prediction, returning an average absolute error of just
+4.6%
 
-![](/rblogging/2019/10/05/ets%20evaluation-1.png)
+![](/rblogging/2019/10/05/ets%20evaluation-1.png)<!-- -->
 
-|  Actual|  ETS.Forecast|  ETS.Error.Abs.|  ETS.Error.Perc|
-|-------:|-------------:|---------------:|---------------:|
-|  391371|      370883.7|      -20487.327|           -5.23|
-|  384833|      324247.9|      -60585.135|          -15.74|
-|  252534|      250232.9|       -2301.063|           -0.91|
-|  177897|      186289.9|        8392.908|            4.72|
-|  168590|      172754.4|        4164.381|            2.47|
-|  182378|      187163.9|        4785.866|            2.62|
-|  238998|      265576.9|       26578.889|           11.12|
-|  328907|      350742.4|       21835.353|            6.64|
-|  374115|      383581.3|        9466.327|            2.53|
-|  392338|      398949.3|        6611.274|            1.69|
-|  404761|      403389.4|       -1371.609|           -0.34|
-|  403866|      398558.4|       -5307.588|           -1.31|
+| Actual | ETS.Forecast | ETS.Error.Abs. | ETS.Error.Perc |
+| -----: | -----------: | -------------: | -------------: |
+| 391371 |     370883.7 |    \-20487.327 |         \-5.23 |
+| 384833 |     324247.9 |    \-60585.135 |        \-15.74 |
+| 252534 |     250232.9 |     \-2301.063 |         \-0.91 |
+| 177897 |     186289.9 |       8392.908 |           4.72 |
+| 168590 |     172754.4 |       4164.381 |           2.47 |
+| 182378 |     187163.9 |       4785.866 |           2.62 |
+| 238998 |     265576.9 |      26578.889 |          11.12 |
+| 328907 |     350742.4 |      21835.353 |           6.64 |
+| 374115 |     383581.3 |       9466.327 |           2.53 |
+| 392338 |     398949.3 |       6611.274 |           1.69 |
+| 404761 |     403389.4 |     \-1371.609 |         \-0.34 |
+| 403866 |     398558.4 |     \-5307.588 |         \-1.31 |
 
-------------------------------------------------------------------------
+-----
 
 References:
 
