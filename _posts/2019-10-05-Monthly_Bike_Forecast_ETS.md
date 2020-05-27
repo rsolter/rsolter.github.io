@@ -1,22 +1,21 @@
 ---
-title: Forecasting Capital Bikeshare usage with Exponential Smoothing
+title: Forecasting Capital Bikeshare usage with exponential smoothing
 categories: [R, forecasting]
 date: 2019-10-05
 excerpt: "Predicting monthly Bikeshare usage with R, forecast"
-
 ---
-# Forecasting Capital Bikeshare usage with Exponential Smoothing
 
+# Forecasting Capital Bikeshare usage with Exponential Smoothing
 Exponential smoothing is one of the fundamental methods for forecasting
 univariate series. The basic idea behind the method is that forecasts
 are produced using a weighted average of past observations. This post
 will examine applying exponential smoothing to forecast monthly
 ridership on the Capital BikeShare program.
 
-Some background first. For a raw data sequence represented by
-{*x*<sub>*t*</sub>}, beginning at *t* = 0, and the forecast of the next
-value in our sequence represented as *x̂*<sub>*t* + 1</sub>, the simplest
-form of exponential smoothing takes the form:
+For a simple time series, represented by {*x*<sub>*t*</sub>}, beginning
+at *t* = 0, and the forecast of the next value in our sequence
+represented as *x̂*<sub>*t* + 1</sub>, the simplest form of exponential
+smoothing takes the form:
 
 *x̂*<sub>*t* + 1</sub> = *α**x*<sub>*t*</sub> + *α*(1 − *α*)*x*<sub>*t* − 1</sub> + *α*(1 − *α*)<sup>2</sup>*x*<sub>*t* − 2</sub>..
 
@@ -24,25 +23,15 @@ In the equation above, the rate at which the weights decrease is
 determined by the *α*, or the **smoothing factor** which is bound by
 0 &lt; *α* &lt; 1. If *α* is closer to 0, more weight is given to
 observations from the more distant past, while a value of *α* that is
-closer to 1 will give more more weight to recent observations. The time
-series is represented solely by the observations’ values themselves
-(current and past).
+closer to 1 will give more more weight to recent observations.
 
-A more nuanced, but standard formulation, breaks the model into three
-components: the level *l*<sub>*t*</sub>, trend *b*<sub>*t*</sub>, and
-seasonal *s*<sub>*t*</sub> components. As can be seen below, the bike
-data demonstrates clear seasonality and a growing trend in overall
-ridership, so our exponential smoothing model will need to account for
-both. Also, the size of the seasonal swings in ridership have grown over
-time, meaning our method will need to account for that as well.
-
-![](/rblogging/2019/10/05/viz-1.png)
-
-In total, our forecast model will be made of three component equations,
-each with their own smoothing factor. Outlined below, this model is
-known as the **Holt-Winter’s multiplicative method** and each smoothing
-factor is estimated on the basis of minimizing the sum of the square
-residuals (SSE):
+This idea can be expanded to different components of a time series, with
+each component having its own smoothing factors. The standard way of
+breaking apart the series is into three components: the level
+*l*<sub>*t*</sub>, trend *b*<sub>*t*</sub>, and seasonal
+*s*<sub>*t*</sub> components. This model is known as the **Holt-Winter’s
+multiplicative method** and each smoothing factor is estimated on the
+basis of minimizing the sum of the square residuals (SSE):
 
 **Overall model** with *h* denoting the number of periods forecast into
 the future (horizon), *m* denoting the frequency of the seasonality
@@ -70,18 +59,15 @@ $$s\_{t} = \\gamma\\frac{y\_{t}}{l\_{t-1}+b\_{t-1}}+(1-\\gamma)s\_{t-m}$$
 Read more about the Holt-Winters methodology
 [here](https://otexts.com/fpp2/holt-winters.html).
 
-------------------------------------------------------------------------
+**Applying Holt-Winters to BikeShare data**
 
-**Holt-Winters Modeling**
-
-To test the accuracy of the predictions, we will first split the data
-stored in `ts_month` using the `TSstudio` package into `test` and
-`train` objects. The test period is set to be the final 12 observations,
-or one year.
-
-``` r
-ts_month
-```
+As can be seen below, the bike data demonstrates clear seasonality and a
+growing trend in overall ridership, so our exponential smoothing model
+will need to account for both. Furthermore, the size of the seasonal
+swings in ridership have grown over time, meaning our method will need
+to account for that as well. Note that the chart below does not include
+the final 12 observations in the dataset which have been set aside for
+testing model accuracy.
 
     ##         Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct
     ## 2010                                                                 36613
@@ -104,14 +90,11 @@ ts_month
     ## 2017 252534 177897
     ## 2018
 
-``` r
-ts_month_partition <- TSstudio::ts_split(ts_month,sample.out = 12)
-train <- ts_month_partition$train
-test <- ts_month_partition$test
-```
+![](/rblogging/2019/10/05/viz-1.png)
 
-Although the data appears to be better fit using a multiplicative
-method, we’ll run an additive model as well for comparison:
+Given that the size of the seasonal fluctuations are not constant over
+time, the data is likely better fit with a multiplicative method,
+however an additive model will be run for comparison:
 
 ``` r
 add_fit <- hw(train,seasonal="additive",h = 12)
@@ -131,10 +114,50 @@ autoplot(ts_month) +
 
 ![](/rblogging/2019/10/05/holt-winters-1.png)
 
-``` r
-#summary(add_fit)
-#summary(mult_fit)
-```
+The smoothing parameters and overall fit statistics are reported out in
+the model portion of the forecast:
+
+    ## Holt-Winters' additive method
+    ##
+    ## Call:
+    ##  hw(y = train, h = 12, seasonal = "additive")
+    ##
+    ##   Smoothing parameters:
+    ##     alpha = 0.656
+    ##     beta  = 1e-04
+    ##     gamma = 1e-04
+    ##
+    ##   Initial states:
+    ##     l = 76944.0423
+    ##     b = 4429.7097
+    ##     s = 54228.15 66405.15 66653.3 56638 49788.1 25620.48
+    ##            -30898.26 -97742.35 -103535.8 -84179.53 -34696.54 31719.3
+    ##
+    ##   sigma:  32605.17
+    ##
+    ##      AIC     AICc      BIC
+    ## 2108.099 2117.514 2149.219
+
+    ## Holt-Winters' multiplicative method
+    ##
+    ## Call:
+    ##  hw(y = train, h = 12, seasonal = "multiplicative")
+    ##
+    ##   Smoothing parameters:
+    ##     alpha = 0.1802
+    ##     beta  = 0.0083
+    ##     gamma = 1e-04
+    ##
+    ##   Initial states:
+    ##     l = 48742.7635
+    ##     b = 6048.0226
+    ##     s = 1.2036 1.2746 1.2727 1.2437 1.2215 1.1445
+    ##            0.862 0.621 0.5648 0.6348 0.8488 1.108
+    ##
+    ##   sigma:  0.1343
+    ##
+    ##      AIC     AICc      BIC
+    ## 2071.091 2080.506 2112.211
 
 It certainly appears that the multiplicative model does a better job
 than the additive one in estimating the ridership, at least until the
@@ -159,8 +182,6 @@ the 12 months, the mean absolute percent error for the additive model is
 |  392338|      437097.9|      44759.941|           11.41|       422610.3|       30272.296|             7.72|
 |  404761|      451522.4|      46761.354|           11.55|       435415.4|       30654.421|             7.57|
 |  403866|      455687.8|      51821.826|           12.83|       439027.5|       35161.529|             8.71|
-
-**Damped trend**
 
 Since the multiplicative forecast appeared to over-estimate ridership in
 the second half of the prediction period, we can try and improve the
@@ -268,11 +289,15 @@ ridership in the first half of the year and returns an overall mape of
 
 **Utilizing ets()**
 
-A second function for creating exponential smoothing forecasts, is the
-`ets()` function in the `forecast` package. This differs from `hw()`
-used above by optimizing different criterion. While the `hw` function
-estimates parameters by optimizing the mean squared errors, `ets` is
-estimating parameters by optimizing the likelihood function.
+A more general approach to exponential smoothing than Holt-Winters is to
+use the `ets()` function which automatically chooses an exponential
+smoothing model based upon 15 potential models (see more
+[here](https://robjhyndman.com/talks/RevolutionR/6-ETS.pdf) on slide
+10). The ets framework (error, trend, seasonality) tries out multiple
+models and estimates the likelihood that the data gathered could be
+generated from those individual models. Final model is chosen based upon
+AIC or other fit statistics and accounts for any combination of
+seasonality and damping.
 
 The **model** parameter in the `ets()` function can be specified with a
 three character string. The first letter denotes the error type, the
