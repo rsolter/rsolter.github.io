@@ -3,6 +3,7 @@ title: Forecasting Capital Bikeshare usage with exponential smoothing
 categories: [R, forecasting]
 date: 2019-10-05
 excerpt: "Predicting monthly Bikeshare usage with R, forecast"
+usemathjax: true
 ---
 
 # Forecasting Capital Bikeshare usage with Exponential Smoothing

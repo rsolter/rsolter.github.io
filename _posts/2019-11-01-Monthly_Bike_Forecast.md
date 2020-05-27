@@ -7,6 +7,7 @@ toc: true
 toc_label: "Content"
 toc_sticky: true
 toc_icon: 'biking'
+usemathjax: true
 ---
 
 
