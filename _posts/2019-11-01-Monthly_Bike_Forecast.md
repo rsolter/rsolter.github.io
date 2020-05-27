@@ -36,45 +36,23 @@ weather station.
 
 A requirement of ARIMA modeling is stationarity of the series which is
 achieved by having *time invariant* mean, variance, and co-variance of
-the series. Any time sereis with a trend or seasonality is not
+the series. Any time series with a trend or seasonality is not
 stationary. Stationarity is tested formally using the augmented
 Dickey-Fuller test.
 
-One way to achieve stationarity is to try and **difference** the data,
-by computing the difference betwee consecutive observations. As an
-example, we can show this using stock data downloaded using the
-**quantmod** R package. By just differencing the data by just one
-observation, the trend in the stock prices completely disappears:
-
-``` r
-options("getSymbols.warning4.0"=FALSE)
-options("getSymbols.yahoo.warning"=FALSE)
-
-quantmod::getSymbols("AAPL",
-                     from = '2017-01-01',
-                     to ='2017-06-01',
-                     warnings=FALSE,auto.assign=TRUE)
-```
+One tool used to achieve stationarity is **differencing.** or computing
+the difference between consecutive observations. As an example, we can
+show this using stock data downloaded using the **quantmod** R package.
+By differencing the data by just one observation, the trend in the stock
+prices completely disappears:
 
     ## [1] "AAPL"
 
-``` r
-closingApple <- AAPL$AAPL.Close
-DclosingApple <- diff(closingApple,1)
-DclosingApple <- DclosingApple[2:length(DclosingApple)] # removing NA
+![](/rblogging/2019/11/01/differencing%20example-1.png)
 
-
-#layout(matrix(c(1,2),2,1),byrow=TRUE)
-graphics::par(mfrow=c(2,1))
-plot(closingApple, main ="Closing Prices on Apple Stock")
-plot(DclosingApple, main ="Differenced Closing Prices on Apple Stock")
-```
-
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/differencing%20example-1.png)
-
-However, was that enough achieve stationarity? Formally, stationarity
-can be assessed by using one of many unit tests. One popular test is the
-Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test. In this test, the null
+However, was that enough to achieve stationarity? Formally, stationarity
+can be assessed by using one of many unit tests, including the
+Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test. In KPSS the test’s null
 hypothesis is that the data are stationary, and we look for evidence
 that the null hypothesis is false. Consequently, small p-values (e.g.,
 less than 0.05) suggest that differencing is required. Read more
@@ -141,7 +119,7 @@ additional seasonal terms:
 
 ------------------------------------------------------------------------
 
-#### Application to DC Bike Share
+### Application to DC Bike Share
 
 Now we’ll apply the ARIMA model to the monthly bike share data while
 using the temperature data as a regressor.
@@ -153,56 +131,13 @@ to slow in recent years. In the plot for temperature we see a
 predicatble seasonality whose peaks and valleys remain almost equal in
 size throughout the entire time frame:
 
-    ##         Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct
-    ## 2010                                                                 36613
-    ## 2011  38116  48089  63855  94632 135537 143266 141105 136447 127158 123292
-    ## 2012  96590 102979 164654 173954 195637 202600 203607 214503 218572 198840
-    ## 2013 126142 111190 158838 238604 252922 257118 270919 292083 285187 257652
-    ## 2014 114006 124031 167568 272490 310151 320523 331157 324218 327597 301244
-    ## 2015 128592 109766 193107 318127 366930 314016 364015 364313 328038 290351
-    ## 2016 123252 145654 283493 285516 288720 368096 366435 357306 344246 343243
-    ## 2017 174804 226303 245403 365990 339677 398751 397680 402534 391371 384833
-    ## 2018 168590 182378 238998 328907 374115 392338 404761 403866              
-    ##         Nov    Dec
-    ## 2010  48114  28765
-    ## 2011 101949  87087
-    ## 2012 152664 123713
-    ## 2013 194621 138090
-    ## 2014 199298 153221
-    ## 2015 228296 187357
-    ## 2016 259106 168719
-    ## 2017 252534 177897
-    ## 2018
+![](/rblogging/2019/11/01/Train%20Plots-1.png)
 
-    ##         Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct
-    ## 2010                                                                61.520
-    ## 2011 33.656 41.738 45.626 58.766 68.306 78.746 84.488 79.934 71.276 58.370
-    ## 2012 40.748 44.330 56.750 58.298 71.366 76.262 83.984 80.978 72.212 60.962
-    ## 2013 40.280 38.336 43.826 58.892 66.650 76.478 81.248 77.072 71.312 62.420
-    ## 2014 32.324 37.886 42.908 57.344 68.450 77.234 79.412 77.666 73.832 62.888
-    ## 2015 35.672 30.380 45.302 59.378 73.220 78.098 81.464 79.268 74.876 58.856
-    ## 2016 35.006 39.938 53.528 56.876 63.878 76.226 82.724 82.724 75.992 63.068
-    ## 2017 42.170 47.732 47.246 63.806 65.462 77.306 81.698 77.414 72.518 64.904
-    ## 2018 35.762 45.338 43.628 54.914 72.410 76.172 80.672 81.014              
-    ##         Nov    Dec
-    ## 2010 50.450 34.610
-    ## 2011 52.448 45.050
-    ## 2012 46.598 45.356
-    ## 2013 46.652 42.332
-    ## 2014 47.966 43.736
-    ## 2015 53.672 51.188
-    ## 2016 52.556 41.828
-    ## 2017 49.820 39.200
-    ## 2018
-
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Plots-1.png)
-
-#### Decomposition
-
-The first step in building an ARIMA model is decomposing the series into
-its three components: seasonal, trend, and remainder. It appears that
-the magnitude of the seasonal fluctuations are not stable and appear to
-grow over time:
+To achieve **stationarity** in our time series, we need to remove all
+trend and seasonality components from the data. A decomposed version of
+the series can be visualized using the decompose() function. Since the
+seasonal fluctuations appear to grow over time we feed a multiplicative
+argument to the (seasonal component) type parameter:
 
 ``` r
 decompose(bike_train, type="multiplicative") %>% autoplot() +
@@ -212,61 +147,62 @@ decompose(bike_train, type="multiplicative") %>% autoplot() +
   theme(plot.title = element_text(hjust = 0.5)) + xlab("")
 ```
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/unnamed-chunk-1-1.png)
+![](/rblogging/2019/11/01/unnamed-chunk-1-1.png)
 
-#### Stationarity
-
-A requirement of ARIMA modeling is stationarity of the series which is
-achieved by having *time invariant* mean, variance, and co-variance of
-the series. Stationarity is tested formally using the augmented
-Dickey-Fuller test.
-
-To accomplish this, the first step is to remove the seasonal trend from
-the original series.
-
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Removing%20Seasonality-1.png)
-
-However, the “de-seasoned” data fails the Adjusted Dickey-Fuller test,
-indicating the series is not yet stationary:
+Removing the seasonality alone from the time series using seasadj() does
+not yield a stationary timeseries:
 
 ``` r
-adf.test(deseasonal_cnt, alternative = "stationary")
+decomp_mult <- decompose(bike_train)
+deseasonal_cnt <- seasadj(decomp_mult)
+
+deseasonal_cnt %>%
+  autoplot() +
+  xlab("Year") + scale_y_continuous(label=comma) +
+  ggtitle("Monthly bike rentals with annual seasonality Removed") + theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5)) + xlab("")
+```
+
+![](/rblogging/2019/11/01/Removing%20Seasonality-1.png)
+
+``` r
+tseries::kpss.test(deseasonal_cnt)
 ```
 
     ##
-    ##  Augmented Dickey-Fuller Test
+    ##  KPSS Test for Level Stationarity
     ##
     ## data:  deseasonal_cnt
-    ## Dickey-Fuller = -3.9739, Lag order = 4, p-value = 0.01378
-    ## alternative hypothesis: stationary
-
-------------------------------------------------------------------------
+    ## KPSS Level = 1.9721, Truncation lag parameter = 3, p-value = 0.01
 
 Examining the ACF and PACF plots indicate that differencing the series
-by 1 (\_d\_\_=1), could help:
+by 1 observation could help:
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/ACF%20and%20PACF%20plots-1.png)![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/ACF%20and%20PACF%20plots-2.png)
+![](/rblogging/2019/11/01/ACF%20and%20PACF%20plots-1.png)![](/rblogging/2019/11/01/ACF%20and%20PACF%20plots-2.png)
 
-Differencing the data by one period appears to bring stationarity to the
-series as tested by the ADF test.
+And running the KPSS test confirms that differencing the data does
+return a stationary series:
 
 ``` r
 deseasoned_count_d1 = diff(deseasonal_cnt, differences = 1)
-
-adf.test(deseasoned_count_d1, alternative = "stationary")
+tseries::kpss.test(deseasoned_count_d1)
 ```
 
     ##
-    ##  Augmented Dickey-Fuller Test
+    ##  KPSS Test for Level Stationarity
     ##
     ## data:  deseasoned_count_d1
-    ## Dickey-Fuller = -5.7992, Lag order = 4, p-value = 0.01
-    ## alternative hypothesis: stationary
+    ## KPSS Level = 0.086888, Truncation lag parameter = 3, p-value = 0.1
+
+``` r
+#deseasoned_count_d2 = diff(deseasonal_cnt, differences = 2)
+#tseries::kpss.test(deseasoned_count_d2)
+```
 
 From the plot, it appears that the differenced, deseasoned data has a
-stationary mean, though the variance does not appear constant:
+stationary mean:
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Searching%20for%20Stationarity:%20Differencing%20Plot-1.png)
+![](/rblogging/2019/11/01/Searching%20for%20Stationarity:%20Differencing%20Plot-1.png)
 
 ------------------------------------------------------------------------
 
@@ -274,12 +210,12 @@ Running ACF, PACF plots of the differeced data to see what values for
 *q*, *p* would be for an ARIMA model:
 
 The ACF plot shows significant auto-correlations at lags 1,6,10,12 (*q*)
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Differenced%20ACF-1.png)
+![](/rblogging/2019/11/01/Differenced%20ACF-1.png)
 
 The PACF plot shows significant partial-correlations at 5,6, and 9 (*p*)
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Differenced%20PACF-1.png)
+![](/rblogging/2019/11/01/Differenced%20PACF-1.png)
 
-#### Modeling
+### Modeling
 
 Using the findings from the ACF, PACF plots above, an ARIMA(2,1,9) model
 is chosen. Evaluating the diagnostic plots for the (2,1,9) residuals
@@ -300,7 +236,7 @@ autocorrelations.
     ##
     ## sigma^2 estimated as 434834666:  log likelihood = -1067.37,  aic = 2158.74
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Fit%20Evaluation-1.png)
+![](/rblogging/2019/11/01/Fit%20Evaluation-1.png)
 
 *auto.arima()*
 
@@ -328,9 +264,9 @@ fit2 <- auto.arima(deseasoned_count_d1,seasonal=FALSE)
 tsdisplay(residuals(fit2), lag.max=45, main='(2,0,2) Model Residuals')
 ```
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Auto-Arima-1.png)
+![](/rblogging/2019/11/01/Auto-Arima-1.png)
 
-#### Forecasting and Back-Testing
+### Forecasting and Back-Testing
 
 To fully evaluate the model’s predictive power, we set aside the last 12
 months of the *deseasonal\_cnt* object and compare our predictions to
@@ -360,11 +296,11 @@ Will give auto.arima a shot, using default parameters. Returns a MAPE of
     ##                     ME     RMSE     MAE      MPE     MAPE      MASE        ACF1
     ## Training set -291.7736 22292.25 18183.7 1.379566 11.88621 0.4186552 -0.02153787
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/auto-arima%20with%20NOAA%20data-1.png)
+![](/rblogging/2019/11/01/auto-arima%20with%20NOAA%20data-1.png)
 
 Residual inspection:
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/inspecting%20residuals-1.png)
+![](/rblogging/2019/11/01/inspecting%20residuals-1.png)
 
     ##
     ##  Ljung-Box test
@@ -393,11 +329,11 @@ Auto.arima without a regressor
     ##                    ACF1
     ## Training set 0.01308924
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/unnamed-chunk-2-1.png)
+![](/rblogging/2019/11/01/unnamed-chunk-2-1.png)
 
 Residual inspection:
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/inspecting%20residuals2-1.png)
+![](/rblogging/2019/11/01/inspecting%20residuals2-1.png)
 
     ##
     ##  Ljung-Box test
@@ -422,7 +358,7 @@ Residual inspection:
     ##                     ME     RMSE     MAE      MPE     MAPE      MASE        ACF1
     ## Training set -291.7736 22292.25 18183.7 1.379566 11.88621 0.4186552 -0.02153787
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/second%20auto-arima%20with%20NOAA%20data-1.png)
+![](/rblogging/2019/11/01/second%20auto-arima%20with%20NOAA%20data-1.png)
 
     ##
     ## Forecast method: Regression with ARIMA(0,1,2)(1,0,0)[12] errors
