@@ -6,6 +6,7 @@ excerpt: "Setting up Chrome OS for Data Science"
 toc: true
 toc_label: "Content"
 toc_sticky: true
+toc_icon: 'cogs'
 ---
 
 ### Data Science on Chrome OS + Linux

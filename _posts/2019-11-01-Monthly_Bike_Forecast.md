@@ -13,18 +13,9 @@ usemathjax: true
 
 ### Forecasting Capital Bikeshare usage with ARIMA
 
-
-In this post, I’ll be modeling monthly ridership in the DC BikeShare
-program using ARIMA modeling. The original data was gathered from the
-official DC Bike Share
-[site](https://s3.amazonaws.com/capitalbikeshare-data/index.html), spans
-bike trips logged from October, 2010 to August, 2018, and has been
-aggregated up from a daily level.
-
-Having used this data
+Having used DC Capital BikeShare data
 [previously](https://rsolter.github.io/r/forecasting/Monthly_Bike_Forecast_ETS/)
-to forecast with exponential smoothing models, I wanted to try ARIMA out
-in part because it allows for explanatory variables in the regression.
+to forecast with exponential smoothing models, I wanted to do the same with ARIMA modeling. Not only is ARIMA a complementary method for forecasting univariate timeseries, but it also allows for explanatory variables in the regression.
 In this case, I’ve added monthly average temperatures as a regressor.
 The data was
 [downloaded](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month)

@@ -8,6 +8,9 @@ usemathjax: true
 
 # Forecasting Capital Bikeshare usage with Exponential Smoothing
 
+I've always love biking. At age 18, I rode my bike 140 miles with a few friends one summer to Chicago, sleeping outside along the way. At age 29, I took a much less advised trip from DC to NYC on Dec, 28th trying to make it to Brooklyn in 3 days for a NYE party. It was below freezing when I began, and I only ended up making to to Baltimore before turning tail and taking a train back to DC.
+
+My love of biking is one reason I decided to hunt down some DC bike share data for a post about forecasting. Also, working with bike share data, is a [very](https://towardsdatascience.com/predicting-no-of-bike-share-users-machine-learning-data-visualization-project-using-r-71bc1b9a7495) [popular](https://medium.com/@limavallantin/analysing-bike-sharing-trends-with-python-a9f574c596b9) [choice](https://nycdatascience.com/blog/student-works/r-visualization/graphic-look-bay-area-bike-share/) for data science projects.
 
 Exponential smoothing is one of the fundamental methods for forecasting
 univariate series. The basic idea behind the method is that forecasts
@@ -295,15 +298,7 @@ ridership in the first half of the year and returns an overall mape of
 
 **Utilizing ets()**
 
-A more general approach to exponential smoothing than Holt-Winters is to
-use the `ets()` function which automatically chooses an exponential
-smoothing model based upon 15 potential models (see more
-[here](https://robjhyndman.com/talks/RevolutionR/6-ETS.pdf) on slide
-10). The ets framework (error, trend, seasonality) tries out multiple
-models and estimates the likelihood that the data gathered could be
-generated from those individual models. Final model is chosen based upon
-AIC or other fit statistics and accounts for any combination of
-seasonality and damping.
+A more general approach to exponential smoothing than Holt-Winters is to use the `ets()` function which automatically chooses an exponential smoothing model based upon all all potential combinations of parameters for error, trend, and seasonality (see more [here](https://robjhyndman.com/talks/RevolutionR/6-ETS.pdf) on slide 12). The ets framework (error, trend, seasonality) tries out multiple models and estimates the likelihood that the data gathered could be generated from those individual models. Final model is chosen based upon AIC or other fit statistics and accounts for any combination of seasonality and damping.
 
 The **model** parameter in the `ets()` function can be specified with a
 three character string. The first letter denotes the error type, the
