@@ -44,7 +44,7 @@ prices completely disappears:
 
     ## [1] "AAPL"
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/differencing%20example-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/differencing_example.png)
 
 However, was that enough to achieve stationarity? Formally, stationarity
 can be assessed by using one of many unit tests, one of which is the
@@ -140,7 +140,7 @@ to slow in recent years. In the plot for temperature we see a
 predicatble seasonality whose peaks and valleys remain almost equal in
 size throughout the entire time frame:
 
-![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Train%20Plots-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Train_Plots.png)
 
 The function **auto.arima()** automates the process of choosing the
 parameters. [‘The auto.arima() function in R uses a variation of the
