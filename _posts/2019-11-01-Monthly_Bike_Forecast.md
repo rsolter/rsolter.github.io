@@ -44,7 +44,7 @@ prices completely disappears:
 
     ## [1] "AAPL"
 
-![](Monthly_bike_forecast_files/figure-markdown_github/differencing%20example-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/differencing%20example-1.png)
 
 However, was that enough to achieve stationarity? Formally, stationarity
 can be assessed by using one of many unit tests, one of which is the
@@ -76,12 +76,12 @@ non-standard variance is done by transforming the time series, either
 with logarithmic functions or the Box-Cox transformation. To show it in
 action, I’ll create a fake dataset whose variance grows over time:
 
-![](Monthly_bike_forecast_files/figure-markdown_github/heteroskedasticity-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/heteroskedasticity-1.png)
 
 And use BoxCox.lambda() to determine the correct lambda for transforming
 the data to get a constant variance:
 
-![](Monthly_bike_forecast_files/figure-markdown_github/Box-Cox-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Box-Cox-1.png)
 
 ### ARIMA Theory
 
@@ -140,7 +140,7 @@ to slow in recent years. In the plot for temperature we see a
 predicatble seasonality whose peaks and valleys remain almost equal in
 size throughout the entire time frame:
 
-![](Monthly_bike_forecast_files/figure-markdown_github/Train%20Plots-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Train%20Plots-1.png)
 
 The function **auto.arima()** automates the process of choosing the
 parameters. [‘The auto.arima() function in R uses a variation of the
@@ -168,7 +168,7 @@ a similar MAPE on the test set (9.6%)
     ##                    ACF1
     ## Training set 0.01308924
 
-![](Monthly_bike_forecast_files/figure-markdown_github/arima1-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/arima1-1.png)
 
 Second attempt at auto.arima() with NOAA data used as a regressor,
 results in slightly worse performance. The training MAPE is 11.9% and
@@ -195,4 +195,4 @@ for building our model.
     ##                     ME     RMSE     MAE      MPE     MAPE      MASE        ACF1
     ## Training set -291.7736 22292.25 18183.7 1.379566 11.88621 0.4186552 -0.02153787
 
-![](Monthly_bike_forecast_files/figure-markdown_github/arima2-1.png)
+![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/arima2-1.png)
