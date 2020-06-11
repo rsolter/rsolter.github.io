@@ -38,6 +38,7 @@ The data for this project was gathered from the official [Serie A website](http:
 
 Weekly elo scores for each team were also downloaded from the website Clubelo.com using their [API](http://clubelo.com/API)
 
+
 **Initial variable list:**
 
   - `Goals`
@@ -79,13 +80,27 @@ Before starting any modeling, there are some data process and feature engineerin
 2. Combined left, right, and middle attack variables into `total attacks`
 3. Feature selection with Random Forest
 4. Trailing Variables
+5. Time Slices
 5. Dimensionality Reduction with PCA
 
 ****
 
 ### 3. Illustrative Example with AS Roma
 
+#### Multinomial Regression
 
+#### SVM
+
+#### Random Forest
+
+#### Naive-Bayes
+
+#### Ensemble
+
+#### Results
 ****
 
-### 2. Overall Results
+### 4. Overall Results
+
+
+### 5. Conclusion
