@@ -11,17 +11,8 @@ toc_icon: 'futbol'
 
 ### Predicting of Soccer Matches Outcomes using caret
 
-![Stadio Olimpico](/assets/images/stadio_olimpico.jpg)
+![Stadio Olimpico](/assets/images/remi-jacquaint.jpg)
 _Liam McKay on Unsplash_
-
-
-
-### Contents
-
-1. [Gathering Data](https://rsolter.github.io/r/caret/SerieA_Classification/#1-gathering-data)
-2. [Feature Engineering](https://rsolter.github.io/r/caret/SerieA_Classification/#2-feature-engineering)
-3. [Illustrative Example with AS Roma](https://rsolter.github.io/r/caret/SerieA_Classification/#3-illustrative-example-with-as-roma)
-4. [Overall Results](https://rsolter.github.io/r/caret/SerieA_Classification/#2-overall-results)
 
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
