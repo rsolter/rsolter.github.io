@@ -10,10 +10,7 @@ toc_icon: 'futbol'
 ---
 
 ### Predicting of Soccer Matches Outcomes using caret
-
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg)
-_Liam McKay on Unsplash_
-
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
 
