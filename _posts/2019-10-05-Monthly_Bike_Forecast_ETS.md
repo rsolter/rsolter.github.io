@@ -2,7 +2,7 @@
 title: Forecasting Capital Bikeshare usage with exponential smoothing
 categories: [R, forecasting]
 date: 2019-10-05
-excerpt: "Predicting monthly Bikeshare usage with R, forecast"
+excerpt: "Predicting monthly Bikeshare usage with Holt-Winters and ets() in R"
 usemathjax: true
 ---
 

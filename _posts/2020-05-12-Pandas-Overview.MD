@@ -2,7 +2,7 @@
 title: pandas Overview
 categories: [python, pandas, reference]
 date: 2020-05-12
-excerpt: "An overview of pandas key functions"
+excerpt: "A reference post containing an overview of the key functions of pandas"
 toc: true
 toc_label: "Content"
 toc_sticky: true
