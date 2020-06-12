@@ -32,34 +32,23 @@ each team were also downloaded from the website Clubelo.com using their
 
 **Initial feature list:**
 
--   `Goals`
--   `Saves`
--   `Penalties`
--   `Total Shots`
--   `Shots on Target`
--   `Shots on Target from Free Kicks`
--   `Shots off Target`
--   `Shots off Target from Free Kicks`
--   `Shots from within the Box`
--   `Shots on Target from Set Pieces`
--   `Shots off Target from Set Pieces`
--   `Fouls`
--   `Scoring Chances`
--   `Offsides`
--   `Corners`
--   `Red Cards`
--   `Yellow Cards`
--   `Fast Breaks`
--   `Crosses`
--   `Long Balls`
--   `Attacks (Middle)`
--   `Attacks (Left)`
--   `Attacks (Right)`
--   `Possession`
--   `Completed Passes`
--   `Passing Accuracy`
--   `Key Passes`
--   `Recoveries`
+|                                |                                |
+|--------------------------------|--------------------------------|
+|Goals                           |Total Shots                     |
+|Saves                           |Shots on Target                 |
+|Penalties                       |Shots on Target from Free Kicks |
+|Fouls                           |Shots off Target                |
+|Scoring Chances                 |Shots off Target from Free Kicks|
+|Offsides                        |Shots from within the Box       |
+|Corners                         |Shots on Target from Set Pieces |
+|Red Cards                       |Shots off Target from Set Pieces|
+|Yellow Cards                    |Attacks (Middle)                |
+|Possession                      |Attacks (Left)                  |
+|Completed Passes                |Attacks (Right)                 |
+|Passing Accuracy                |Fast Breaks                     |
+|Key Passes                      |Crosses                         |
+|                                |Long Balls                      |
+
 
 #### A Note on Expected goals
 
