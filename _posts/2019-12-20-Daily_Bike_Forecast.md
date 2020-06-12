@@ -30,9 +30,9 @@ its dataset is from the same source, just not aggregated to the monthly
 level.
 
 To try and improve the accuracy of the ridership forecasts, daily
-percipitation data from NOAA will be included. The percipitation data
+precipitation data from NOAA will be included. The precipitation data
 was collected from the Reagan National Airport weather station and
-measures percipitation in tenths of a millimeter.
+measures precipitation in tenths of a millimeter.
 
 ------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ removed from the series for future modeling.
 ### Prophet Models
 
 To test the model, the daily observations of bike rides and daily
-percipitation are split into training sets (2010-05-15 to 2016-08-31)
+precipitation are split into training sets (2010-05-15 to 2016-08-31)
 and test splits (2016-09-01 to 2018-09-17). Effectively, 25% of the data
 is being set aside for testing.
 
@@ -381,11 +381,11 @@ reg_test <- percip %>% filter(ds>='2016-09-01') # 747 records
 
 ![](/rblogging/2019/12/20/Prophet%20Forecast%203%20-%20Log-3.png)
 
-#### Model with Percipitation Regressor
+#### Model with precipitation Regressor
 
-In this attempt, we will add the daily percipitation data in as a
+In this attempt, we will add the daily precipitation data in as a
 regressor. Technically, we would want to actually use predictions of
-daily percipitation if we wanted to do an actual forecast, but this is
+daily precipitation if we wanted to do an actual forecast, but this is
 just an illustrative example.
 
 Unfortunately, the addition of this data has not materially improved the
@@ -407,124 +407,7 @@ reg_train <- left_join(train,reg_train)
   # Training
   m <- prophet()
   add_regressor(m=m,name="percip")
-```
 
-    ## $growth
-    ## [1] "linear"
-    ##
-    ## $changepoints
-    ## NULL
-    ##
-    ## $n.changepoints
-    ## [1] 25
-    ##
-    ## $changepoint.range
-    ## [1] 0.8
-    ##
-    ## $yearly.seasonality
-    ## [1] "auto"
-    ##
-    ## $weekly.seasonality
-    ## [1] "auto"
-    ##
-    ## $daily.seasonality
-    ## [1] "auto"
-    ##
-    ## $holidays
-    ## NULL
-    ##
-    ## $seasonality.mode
-    ## [1] "additive"
-    ##
-    ## $seasonality.prior.scale
-    ## [1] 10
-    ##
-    ## $changepoint.prior.scale
-    ## [1] 0.05
-    ##
-    ## $holidays.prior.scale
-    ## [1] 10
-    ##
-    ## $mcmc.samples
-    ## [1] 0
-    ##
-    ## $interval.width
-    ## [1] 0.8
-    ##
-    ## $uncertainty.samples
-    ## [1] 1000
-    ##
-    ## $specified.changepoints
-    ## [1] FALSE
-    ##
-    ## $start
-    ## NULL
-    ##
-    ## $y.scale
-    ## NULL
-    ##
-    ## $logistic.floor
-    ## [1] FALSE
-    ##
-    ## $t.scale
-    ## NULL
-    ##
-    ## $changepoints.t
-    ## NULL
-    ##
-    ## $seasonalities
-    ## list()
-    ##
-    ## $extra_regressors
-    ## $extra_regressors$percip
-    ## $extra_regressors$percip$prior.scale
-    ## [1] 10
-    ##
-    ## $extra_regressors$percip$standardize
-    ## [1] "auto"
-    ##
-    ## $extra_regressors$percip$mu
-    ## [1] 0
-    ##
-    ## $extra_regressors$percip$std
-    ## [1] 1
-    ##
-    ## $extra_regressors$percip$mode
-    ## [1] "additive"
-    ##
-    ##
-    ##
-    ## $country_holidays
-    ## NULL
-    ##
-    ## $stan.fit
-    ## NULL
-    ##
-    ## $params
-    ## list()
-    ##
-    ## $history
-    ## NULL
-    ##
-    ## $history.dates
-    ## NULL
-    ##
-    ## $train.holiday.names
-    ## NULL
-    ##
-    ## $train.component.cols
-    ## NULL
-    ##
-    ## $component.modes
-    ## NULL
-    ##
-    ## $fit.kwargs
-    ## list()
-    ##
-    ## attr(,"class")
-    ## [1] "prophet" "list"
-
-``` r
   m <- fit.prophet(m,reg_train)
 
   future_m <- make_future_dataframe(m,periods=nrow(test),freq="day")
@@ -543,7 +426,7 @@ reg_train <- left_join(train,reg_train)
   p4 <- p4 + geom_line(data = reg_forecast, aes(x = as.Date(ds), y = yhat), color = "#0072B2")
   p4 <- p4 + geom_ribbon(data = reg_forecast, aes(x = as.Date(ds), ymin = yhat_lower, ymax = yhat_upper), fill = "#0072B2", alpha = 0.15)
   p4 <- p4 + geom_point(data = test, aes(x = ds, y = y), size = 0.5, color = '#4daf4a') + scale_x_date(date_labels = "%Y")
-  p4 <- p4 + labs(title = "Propet Model: Using Percipitation as a Regressor",caption = "Test data in green") + xlab("Date") + ylab("Daily Rides")
+  p4 <- p4 + labs(title = "Propet Model: Using precipitation as a Regressor",caption = "Test data in green") + xlab("Date") + ylab("Daily Rides")
 
   p4
 ```
@@ -578,112 +461,23 @@ reg_train <- left_join(train,reg_train)
 
 ![](/rblogging/2019/12/20/Prophet%20Forecast%204%20-%20Regression-2.png)
 
-#### Prediction using Prophet Tuning Parameters
 
-``` r
-  # Search grid
-  prophetGrid <- expand.grid(changepoint_prior_scale = c(0.05, 0.5, 0.001),
-                             seasonality_prior_scale = c(100, 10, 1),
-                             #holidays_prior_scale = c(100, 10, 1),
-                             capacity = c(14000, 14500, 15000, 16000), # Setting maximum values # https://facebook.github.io/prophet/docs/saturating_forecasts.html
-                             growth = 'logistic')
-
-  # The Model
-  results <- vector(mode = 'numeric', length = nrow(prophetGrid))
-
-  # Search best parameters
-  for (i in seq_len(nrow(prophetGrid))) {
-    parameters <- prophetGrid[i, ]
-    if (parameters$growth == 'logistic') {train$cap <- parameters$capacity}
-
-    m <- prophet(train, growth = parameters$growth,
-                 #holidays = holidays,
-                 seasonality.prior.scale = parameters$seasonality_prior_scale,
-                 changepoint.prior.scale = parameters$changepoint_prior_scale)
-                #,holidays.prior.scale = parameters$holidays_prior_scale)
-
-    future <- make_future_dataframe(m, periods = nrow(test))
-    if (parameters$growth == 'logistic') {future$cap <- parameters$capacity}
-
-    # NOTE: There's a problem in function names with library(caret)
-    forecast <- predict(m, future)
-
-    forecast_tail <- tail(forecast,nrow(test))
-
-    #results[i] <- forecast::accuracy(forecast[forecast$ds %in% valid$ds, 'yhat'], valid$y)[ , 'MAE']
-
-    results[i] <- forecast::accuracy(forecast_tail$yhat, test$y)[ , 'MAE']
-
-  }
-
-  prophetGrid <- cbind(prophetGrid, results)
-  best_params <- prophetGrid[prophetGrid$results == min(results), ]
-
-
-
-  # Retrain using train and validation set
-  retrain <- bind_rows(train, test)
-  retrain$cap <- best_params$capacity
-  m <- prophet(retrain, growth = best_params$growth,
-               #holidays = holidays,
-               seasonality.prior.scale = best_params$seasonality_prior_scale,
-               changepoint.prior.scale = best_params$changepoint_prior_scale)
-               #,holidays.prior.scale = best_params$holidays_prior_scale)
-
-  future <- make_future_dataframe(m, periods = nrow(test))
-  future$cap <- best_params$capacity
-
-  forecast <- predict(m, future)
-  forecast<- forecast[1:2871,]
-
-
-  # Final plot
-  p <- ggplot()
-  p <- p + geom_point(data = m$history, aes(x = as.Date(ds), y = y), size = 0.5)
-  p <- p + geom_line(data = forecast, aes(x = as.Date(ds), y = yhat), color = "#0072B2")
-  p <- p + geom_ribbon(data = forecast, aes(x = as.Date(ds), ymin = yhat_lower, ymax = yhat_upper), fill = "#0072B2", alpha = 0.3)
-  p <- p + geom_point(data = test, aes(x = ds, y = y), size = 0.5, color = '#4daf4a')
-  p <- p + theme_minimal() + labs(title = "Propet Model: Tuning Parameters",caption = "Test data in green") + xlab("Date") + ylab("Daily Rides")
-
-
-
-  # Calculating Fit
-  Fit <- test
-  Fit$y_hat <- tail(forecast$yhat,nrow(test))
-  Fit$resid <- Fit$y-Fit$y_hat
-  Fit$resid_perc <- (Fit$resid/Fit$y)*100
-  Fit$abs_resid_perc <- abs(Fit$resid_perc)
-
-  error_summary <-summary(Fit$abs_resid_perc)
-
-
-  # Results
-  error_summary # A summary of the errors as percentages
-```
-
-    ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.
-    ##   0.0708   7.1184  14.2142  28.6633  23.5890 486.2551
-
-``` r
-  ggplot(Fit,aes(resid_perc)) + geom_histogram(binwidth = 10) + ggtitle("Prophet Model 4 : Distribution of Residuals (%)") +
-    xlab("Residual Percentage") + ylab("") + theme_minimal()
-```
-
-![](/rblogging/2019/12/20/Prophet%20Forecast%205%20-%20Tuning%20Parameters-1.png)
-
-------------------------------------------------------------------------
 
 ### Conclusion and Next Steps
 
-There are still a number of steps that could be taken to potentially
+Predicting daily ridership is inherently difficult. swings in the weather, holidays, Nationals games, protests, and events like the blooming of the cherry blossoms can all affect ridership on a day to day basis. It shouldn't come as much of a surprise that the best model put forth was the one that transformed the data specifically to handle non-constant variability in the time series.
+
+That said, there are still a number of steps that could be taken to potentially
 improve the prediction:
+
+-   Iterate further, trying different combinations of the above approaches.
 
 -   Make use of prophet’s holiday feature which allows for certain dates
     to be marked as influential in establishing change points in the
     trend
 
--   Engineer the percipitation data to a dummy variable based upon a
-    certain amount of percipitation being measured
+-   Engineer the precipitation data to a dummy variable based upon a
+    certain amount of precipitation being measured
 
 -   Add more regressors such as number of bike stations in use or daily
     temperature
