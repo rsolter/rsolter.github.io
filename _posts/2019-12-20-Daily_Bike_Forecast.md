@@ -68,7 +68,7 @@ A few takeaways:
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
     ##       1    4378    7296    7499   10804   19113
 
-![](Daily_bike_forecast_files/figure-markdown_github/exploratory%20viz-1.png)![](Daily_bike_forecast_files/figure-markdown_github/exploratory%20viz-2.png)
+![](/rblogging/2019/12/20/exploratory%20viz-1.png)![](/rblogging/2019/12/20/exploratory%20viz-2.png)
 
 ------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ from the original series. Next, observations which fall outside of 4
 standard deviations of that running median trend are isolated and
 removed from the series for future modeling.
 
-![](Daily_bike_forecast_files/figure-markdown_github/Handing%20Outliers%20in%20overall%20dataset-1.png)![](Daily_bike_forecast_files/figure-markdown_github/Handing%20Outliers%20in%20overall%20dataset-2.png)
+![](/rblogging/2019/12/20/Handing%20Outliers%20in%20overall%20dataset-1.png)![](/rblogging/2019/12/20/Handing%20Outliers%20in%20overall%20dataset-2.png)
 
 ------------------------------------------------------------------------
 
@@ -141,7 +141,7 @@ generally underestimates daily ridership.
   prophet_plot_components(prophetFit1, prophetForecast1)
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%201-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201-1.png)
 
 ``` r
   # Visualize forecast
@@ -158,7 +158,7 @@ generally underestimates daily ridership.
   p1
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%201-2.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201-2.png)
 
 ``` r
   # Dynamic Plot of forecast
@@ -191,7 +191,7 @@ generally underestimates daily ridership.
     xlab("Residual Percentage") + ylab("") + theme_minimal()
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%201-3.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%201-3.png)
 
 ------------------------------------------------------------------------
 
@@ -231,7 +231,7 @@ material difference on the MAPE (32%) or the overall
   prophet_plot_components(prophetFit2, prophetForecast2)
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-1.png)
 
 ``` r
   # Visualize forecast
@@ -246,7 +246,7 @@ material difference on the MAPE (32%) or the overall
   p2
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-2.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-2.png)
 
 ``` r
   # Dynamic Plot of forecast
@@ -277,7 +277,7 @@ material difference on the MAPE (32%) or the overall
     xlab("Residual Percentage") + ylab("") + theme_minimal()
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-3.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-3.png)
 
 #### Model with Logistic Transformation
 
@@ -335,14 +335,14 @@ reg_test <- percip %>% filter(ds>='2016-09-01') # 747 records
   p3
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%203%20-%20Log-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%203%20-%20Log-1.png)
 
 ``` r
   # Visualizing ts components - trend, weekly and yearly seasonalities
   prophet_plot_components(m_log, forecast_log)
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%203%20-%20Log-2.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%203%20-%20Log-2.png)
 
 ``` r
   # Function for back transform of log
@@ -379,7 +379,7 @@ reg_test <- percip %>% filter(ds>='2016-09-01') # 747 records
     xlab("Residual Percentage") + ylab("") + theme_minimal()
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%203%20-%20Log-3.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%203%20-%20Log-3.png)
 
 #### Model with Percipitation Regressor
 
@@ -548,7 +548,7 @@ reg_train <- left_join(train,reg_train)
   p4
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%204%20-%20Regression-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%204%20-%20Regression-1.png)
 
 ``` r
 ## Prophet Foreceast 4 - Evaluation
@@ -576,7 +576,7 @@ reg_train <- left_join(train,reg_train)
     xlab("Residual Percentage") + ylab("") + theme_minimal()
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%204%20-%20Regression-2.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%204%20-%20Regression-2.png)
 
 #### Prediction using Prophet Tuning Parameters
 
@@ -669,7 +669,7 @@ reg_train <- left_join(train,reg_train)
     xlab("Residual Percentage") + ylab("") + theme_minimal()
 ```
 
-![](Daily_bike_forecast_files/figure-markdown_github/Prophet%20Forecast%205%20-%20Tuning%20Parameters-1.png)
+![](/rblogging/2019/12/20/Prophet%20Forecast%205%20-%20Tuning%20Parameters-1.png)
 
 ------------------------------------------------------------------------
 
