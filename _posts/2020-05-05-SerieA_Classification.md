@@ -2,7 +2,7 @@
 title: "Predicting Soccer Matches Outcomes using caret"
 categories: [R, caret]
 date: 2020-05-05
-excerpt: "Serie A Classification"
+excerpt: "Building models to predict the outcome of Serie A matches"
 toc: true
 toc_label: "Content"
 toc_sticky: true
@@ -15,6 +15,7 @@ toc_icon: 'futbol'
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
 
 ****
+------------------------------------------------------------------------
 
 ### 1. Gathering Data
 
@@ -910,13 +911,18 @@ The full set of records is broken up by teams so that there exist +20
 datasets. One for each individual team with lagged average stats on
 their and their opponents performance.
 
-#### Data Validation
+#### Splitting data
 
-For testing and validation purposes, models are built upon historical
-data and then tested on the next chronological match. This is
-accomplished using the *time\_slice()* function in the **caret**
-package. A visual representation of this partition can be seen below in
-the bottom left quadrant.
+From the five season in the dataset, seasons 2015-16, 2016-17, and
+2017-18 are used for training, the 2018-19 season will searve as the
+validation set, and the 2019-20 season will serve as the holdout data.
+
+As the matches occur in chronological order, each dataset will be broken
+apart in such a way that the model will be built on the first *n*
+observations and tested on the *n+1* match. This is accomplished using
+the *time\_slice()* function in the **caret** package. A visual
+representation of this partition can be seen below in the bottom left
+quadrant.
 
 ![](/assets/images/Split_time-1.svg)
 
@@ -951,7 +957,7 @@ varImpPlot(Filter_Forest,
            main = "Feature Importance in Predicting Match Outcome",n.var = ncol(raw_to_filter))
 ```
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Feature%20Selection%20using%20Random%20Forest-1.png)
+![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png)
 
 ``` r
 Variables_To_Drop <- c("pen_h","pen_a","shot_off_fk_a","shot_off_fk_h",
@@ -967,8 +973,10 @@ df_raw <- df_raw %>% select(-Variables_To_Drop)
 Even after removing 10 features from the dataset, there are still a
 large number of predictors for each match’s outcome. To reduce the
 number of features while maximizing the amount of variation still
-explained, principal components analysis was applied as a pre-processing
-technique in caret.
+explained, principal components analysis was applied as a
+[pre-processing
+technique](https://topepo.github.io/caret/pre-processing.html#transforming-predictors)
+in caret.
 
 ``` r
 train(
@@ -983,7 +991,66 @@ train(
 
 ------------------------------------------------------------------------
 
-### 4. Illustrative Example with AS Roma
+### 3. Distribution of Outcomes by Team
+
+It’s worthwhile to point out that the distribution of outcomes is
+naturally different by team. Dominant teams like Juventus, Napoli, Roma,
+and Inter Milan all have win percentages over 50%. This class imbalance
+has consequences for the models built. However, for the example below,
+we’ll focus on Sampdoria which has a relatively balanced distribution of
+outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
+
+``` r
+load(file="00 Data/Team_split_Data.rdata")
+
+outcomes <- data.frame(team=NA,D=NA,L=NA,W=NA)
+
+for(i in 1:length(final_data)){
+    tmp <- final_data[[i]] %>% filter(!season=="2019-20")
+
+    if (nrow(tmp)==0) {
+      next
+      }
+
+    tmp_name <- tmp$Team %>% unique() %>% as.character()
+
+    outcomes[i,1] <- tmp_name
+
+    out<-as.vector(table(tmp$outcome)/nrow(tmp))
+
+    #outcomes[i,2] <- out[1]
+    #outcomes[i,3] <- out[2]
+    #outcomes[i,4] <- out[3]
+}
+
+outcome_viz <- outcomes %>% gather("Outcome","Prop",2:4)
+
+
+# Order of teams
+ordered_by_W <- outcome_viz %>% filter(Outcome=="W") %>% arrange(-Prop) %>% select(team) %>% as.vector()
+
+outcome_viz$team <- factor(outcome_viz$team,levels = ordered_by_W$team)
+outcome_viz$Outcome <- factor(outcome_viz$Outcome,levels = c("W","D","L"))
+
+p <- ggplot(outcome_viz, aes(x=Outcome, y=Prop, fill=Outcome)) +
+  geom_bar(stat="identity", width=1,colour="grey") +
+  facet_wrap(facets = "team",nrow = 8) +
+  theme_minimal() + # remove background, grid, numeric labels
+  scale_fill_manual(values=c("#008c45","#f4f5f0", "#cd212a"),labels=c("Win","Draw","Loss")) +
+  xlab("") + ylab("") + ggtitle("Match Outcome Distribution by Team") +
+  theme(legend.position="bottom",plot.title = element_text(hjust = 0.5)) +
+  labs(caption = "Outcomes for seasons 2015-16 - 2018-19")
+
+p
+```
+
+![](/rblogging/2020/05/05/outcome_viz-1.png)
+
+### 4. Illustrative Example with U.C Sampdoria
+
+``` r
+Samp <- final_data[[17]]
+```
 
 #### Multinomial Regression
 
