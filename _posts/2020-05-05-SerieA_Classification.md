@@ -1000,51 +1000,8 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-``` r
-load(file="00 Data/Team_split_Data.rdata")
 
-outcomes <- data.frame(team=NA,D=NA,L=NA,W=NA)
-
-for(i in 1:length(final_data)){
-    tmp <- final_data[[i]] %>% filter(!season=="2019-20")
-
-    if (nrow(tmp)==0) {
-      next
-      }
-
-    tmp_name <- tmp$Team %>% unique() %>% as.character()
-
-    outcomes[i,1] <- tmp_name
-
-    out<-as.vector(table(tmp$outcome)/nrow(tmp))
-
-    #outcomes[i,2] <- out[1]
-    #outcomes[i,3] <- out[2]
-    #outcomes[i,4] <- out[3]
-}
-
-outcome_viz <- outcomes %>% gather("Outcome","Prop",2:4)
-
-
-# Order of teams
-ordered_by_W <- outcome_viz %>% filter(Outcome=="W") %>% arrange(-Prop) %>% select(team) %>% as.vector()
-
-outcome_viz$team <- factor(outcome_viz$team,levels = ordered_by_W$team)
-outcome_viz$Outcome <- factor(outcome_viz$Outcome,levels = c("W","D","L"))
-
-p <- ggplot(outcome_viz, aes(x=Outcome, y=Prop, fill=Outcome)) +
-  geom_bar(stat="identity", width=1,colour="grey") +
-  facet_wrap(facets = "team",nrow = 8) +
-  theme_minimal() + # remove background, grid, numeric labels
-  scale_fill_manual(values=c("#008c45","#f4f5f0", "#cd212a"),labels=c("Win","Draw","Loss")) +
-  xlab("") + ylab("") + ggtitle("Match Outcome Distribution by Team") +
-  theme(legend.position="bottom",plot.title = element_text(hjust = 0.5)) +
-  labs(caption = "Outcomes for seasons 2015-16 - 2018-19")
-
-p
-```
-
-![](/rblogging/2020/05/05/outcome_viz-1.png)
+![](/rblogging/2020/05/05/Rplot.png)
 
 ### 4. Illustrative Example with U.C Sampdoria
 
