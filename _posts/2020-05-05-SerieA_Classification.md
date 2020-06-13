@@ -13,8 +13,6 @@ toc_icon: 'futbol'
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg)
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
-
-****
 ------------------------------------------------------------------------
 
 ### 1. Gathering Data
@@ -32,22 +30,17 @@ each team were also downloaded from the website Clubelo.com using their
 
 **Initial feature list:**
 
-|                  |                                  |
-|------------------|----------------------------------|
-| Goals            | Total Shots                      |
-| Saves            | Shots on Target                  |
-| Penalties        | Shots on Target from Free Kicks  |
-| Fouls            | Shots off Target                 |
-| Scoring Chances  | Shots off Target from Free Kicks |
-| Offsides         | Shots from within the Box        |
-| Corners          | Shots on Target from Set Pieces  |
-| Red Cards        | Shots off Target from Set Pieces |
-| Yellow Cards     | Attacks (Middle)                 |
-| Possession       | Attacks (Left)                   |
-| Completed Passes | Attacks (Right)                  |
-| Passing Accuracy | Fast Breaks                      |
-| Key Passes       | Crosses                          |
-|                  | Long Balls                       |
+|                  |                                  |                  |
+|------------------|----------------------------------|------------------|
+| Goals            | Total Shots                      | Attacks (Middle) |
+| Saves            | Shots on Target                  | Attacks (Left)   |
+| Penalties        | Shots on Target from Free Kicks  | Attacks (Right)  |
+| Fouls            | Shots off Target                 | Fast Breaks      |
+| Red Cards        | Shots off Target from Free Kicks | Crosses          |
+| Yellow Cards     | Shots from within the Box        | Long Balls       |
+| Key Passes       | Shots on Target from Set Pieces  | Possession       |
+| Completed Passes | Shots off Target from Set Pieces | Corners          |
+| Passing Accuracy | Scoring Chances                  | Offsides         |
 
 #### A Note on Expected goals
 
@@ -946,27 +939,7 @@ In contrast, it appears that the number of shots within the penalty box,
 total shots on target, and overall numbers of attacks are the most
 predictive of match outcome.
 
-``` r
-# Variable Importance Plot
-raw_to_filter <- df_raw %>%
-  select(-season,-round,-goals_h,-goals_a,-Team_h,-Team_a,-match_id,-match_date)
-
-Filter_Forest <- randomForest(outcome ~ ., data=raw_to_filter)
-# importance(Filter_Forest)
-varImpPlot(Filter_Forest,
-           main = "Feature Importance in Predicting Match Outcome",n.var = ncol(raw_to_filter))
-```
-
 ![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png)
-
-``` r
-Variables_To_Drop <- c("pen_h","pen_a","shot_off_fk_a","shot_off_fk_h",
-                       "shot_on_fk_h","shot_on_fk_a","shots_sp_on_h","shots_sp_on_a",
-                       "shots_sp_off_h","shots_sp_off_a")
-
-# removing 'unimportant' variables, drops from 14 features
-df_raw <- df_raw %>% select(-Variables_To_Drop)
-```
 
 #### Feature Extraction with PCA
 
@@ -977,17 +950,6 @@ explained, principal components analysis was applied as a
 [pre-processing
 technique](https://topepo.github.io/caret/pre-processing.html#transforming-predictors)
 in caret.
-
-``` r
-train(
-  outcome ~ .,
-  data = romaTrain,
-  method = "multinom",
-  preProc = c("pca"),
-  trControl = trainControl(method = "cv", number = 5),
-  trace = FALSE
-)
-```
 
 ------------------------------------------------------------------------
 
@@ -1000,8 +962,7 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-
-![](/rblogging/2020/05/05/Rplot.png)
+![](/rblogging/2020/05/05/outcome_viz-1.png)
 
 ### 4. Illustrative Example with U.C Sampdoria
 
