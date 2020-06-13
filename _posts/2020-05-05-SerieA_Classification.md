@@ -1,5 +1,5 @@
 ---
-title: "Predicting of Soccer Matches Outcomes using caret"
+title: "Predicting Soccer Matches Outcomes using caret"
 categories: [R, caret]
 date: 2020-05-05
 excerpt: "Serie A Classification"
@@ -9,13 +9,12 @@ toc_sticky: true
 toc_icon: 'futbol'
 ---
 
-### Prediction of Soccer Matches Using caret
+### Predicting Soccer Matches Outcomes using caret
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg)
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
 
 ****
-
 
 ### 1. Gathering Data
 
@@ -32,23 +31,22 @@ each team were also downloaded from the website Clubelo.com using their
 
 **Initial feature list:**
 
-|                                |                                |
-|--------------------------------|--------------------------------|
-|Goals                           |Total Shots                     |
-|Saves                           |Shots on Target                 |
-|Penalties                       |Shots on Target from Free Kicks |
-|Fouls                           |Shots off Target                |
-|Scoring Chances                 |Shots off Target from Free Kicks|
-|Offsides                        |Shots from within the Box       |
-|Corners                         |Shots on Target from Set Pieces |
-|Red Cards                       |Shots off Target from Set Pieces|
-|Yellow Cards                    |Attacks (Middle)                |
-|Possession                      |Attacks (Left)                  |
-|Completed Passes                |Attacks (Right)                 |
-|Passing Accuracy                |Fast Breaks                     |
-|Key Passes                      |Crosses                         |
-|                                |Long Balls                      |
-
+|                  |                                  |
+|------------------|----------------------------------|
+| Goals            | Total Shots                      |
+| Saves            | Shots on Target                  |
+| Penalties        | Shots on Target from Free Kicks  |
+| Fouls            | Shots off Target                 |
+| Scoring Chances  | Shots off Target from Free Kicks |
+| Offsides         | Shots from within the Box        |
+| Corners          | Shots on Target from Set Pieces  |
+| Red Cards        | Shots off Target from Set Pieces |
+| Yellow Cards     | Attacks (Middle)                 |
+| Possession       | Attacks (Left)                   |
+| Completed Passes | Attacks (Right)                  |
+| Passing Accuracy | Fast Breaks                      |
+| Key Passes       | Crosses                          |
+|                  | Long Balls                       |
 
 #### A Note on Expected goals
 
@@ -68,8 +66,7 @@ but may do so later from a site like [understat](https://understat.com/)
 
 In its raw form the observations gathered are grouped by match, with
 stats for both the home and away teams. Below is an example of the top
-five records:
-
+five records.
 
 <table>
 <thead>
@@ -899,23 +896,27 @@ H
 </tr>
 </tbody>
 </table>
-
 From this raw form the data has been processed in the following ways:
 
--   **Replacing data with lagged averages** - all the stats collected
-    (with the exception of Elo), have been replaced with lagged
-    averages. The rationale for this is that we need historical
-    performance data to try and predict future match outcomes.
+#### Replacing data with lagged averages
 
--   **Data regrouped by team** - The full set of records is broken up by
-    teams so that there exist +20 datasets. One for each individual team
-    with lagged average stats on their and their opponents performance.
+All the stats collected (with the exception of Elo), have been replaced
+with lagged averages. The rationale for this is that we need historical
+performance data to try and predict future match outcomes.
 
--   **Data Validation** - For testing and validation purposes, models
-    are built upon historical data and then tested on the next
-    chronological match. This is accomplished using the *time\_slice()*
-    function in the **caret** package. A visual representation of this
-    partition can be seen below in the bottom left quadrant.
+#### Data regrouped by team
+
+The full set of records is broken up by teams so that there exist +20
+datasets. One for each individual team with lagged average stats on
+their and their opponents performance.
+
+#### Data Validation
+
+For testing and validation purposes, models are built upon historical
+data and then tested on the next chronological match. This is
+accomplished using the *time\_slice()* function in the **caret**
+package. A visual representation of this partition can be seen below in
+the bottom left quadrant.
 
 ![](/assets/images/Split_time-1.svg)
 
@@ -928,6 +929,17 @@ engineering steps to take on:
 
 #### Feature selection with Random Forest
 
+There are a lot of variables collected in the match report that are
+likely not predictive of a matches outcome. To remove those from the
+dataset, a random forest is used to determine which variables are
+relatively unimportant. Ultimately, I drop information about penalties,
+free kick shots off target, shots on target from free kicks, and
+information about shots taken from set pieces.
+
+In contrast, it appears that the number of shots within the penalty box,
+total shots on target, and overall numbers of attacks are the most
+predictive of match outcome.
+
 ``` r
 # Variable Importance Plot
 raw_to_filter <- df_raw %>%
@@ -936,10 +948,10 @@ raw_to_filter <- df_raw %>%
 Filter_Forest <- randomForest(outcome ~ ., data=raw_to_filter)
 # importance(Filter_Forest)
 varImpPlot(Filter_Forest,
-           main = "Feature Importance in Predicting Match Outcome",n.var = ncol(raw_to_filter)-1)
+           main = "Feature Importance in Predicting Match Outcome",n.var = ncol(raw_to_filter))
 ```
 
-![](/rblogging/2020/05/05//Feature%20Selection%20using%20Random%20Forest-1.png)
+![](SerieA_Blog_Post_files/figure-markdown_github/Feature%20Selection%20using%20Random%20Forest-1.png)
 
 ``` r
 Variables_To_Drop <- c("pen_h","pen_a","shot_off_fk_a","shot_off_fk_h",
@@ -950,12 +962,24 @@ Variables_To_Drop <- c("pen_h","pen_a","shot_off_fk_a","shot_off_fk_h",
 df_raw <- df_raw %>% select(-Variables_To_Drop)
 ```
 
-    ## Note: Using an external vector in selections is ambiguous.
-    ## ℹ Use `all_of(Variables_To_Drop)` instead of `Variables_To_Drop` to silence this message.
-    ## ℹ See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
-    ## This message is displayed once per session.
+#### Feature Extraction with PCA
 
-#### Dimensionality Reduction with PCA\*\*
+Even after removing 10 features from the dataset, there are still a
+large number of predictors for each match’s outcome. To reduce the
+number of features while maximizing the amount of variation still
+explained, principal components analysis was applied as a pre-processing
+technique in caret.
+
+``` r
+train(
+  outcome ~ .,
+  data = romaTrain,
+  method = "multinom",
+  preProc = c("pca"),
+  trControl = trainControl(method = "cv", number = 5),
+  trace = FALSE
+)
+```
 
 ------------------------------------------------------------------------
 
@@ -978,3 +1002,11 @@ df_raw <- df_raw %>% select(-Variables_To_Drop)
 ### 5. Overall Results
 
 ### 6. Conclusion and Next Steps
+
+-   Include xG data
+
+    -   Find a way to account for class imbalance
+
+    -   Add player-level data
+
+    -   Try a generalizable model
