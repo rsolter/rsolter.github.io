@@ -1,5 +1,5 @@
 ---
-title: "Predicting Soccer Matches Outcomes using caret"
+title: "Predicting Soccer Match Outcomes using caret"
 categories: [R, caret]
 date: 2020-05-05
 excerpt: "Building models to predict the outcome of Serie A matches"
@@ -9,7 +9,7 @@ toc_sticky: true
 toc_icon: 'futbol'
 ---
 
-### Predicting Soccer Matches Outcomes using caret
+### Predicting Soccer Match Outcomes using caret
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg)
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
