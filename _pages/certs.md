@@ -5,8 +5,8 @@ permalink: /certs/
 author_profile: true
 read_time: false
 share: false
-#header:
-#  image: /assets/images/hirschhorn.jpeg
+header:
+  image: /assets/images/Virginia_Banner.jpg
 ---
 
 

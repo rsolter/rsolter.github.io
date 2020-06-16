@@ -5,7 +5,8 @@ permalink: /projects/
 author_profile: true
 read_time: false
 share: false
-
+header:
+  image: /assets/images/Virginia_Banner.jpg
 ---
 
 

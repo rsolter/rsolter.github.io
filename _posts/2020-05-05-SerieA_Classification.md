@@ -1313,6 +1313,6 @@ binomial classification problem with a focus on identifying draws
 
 -   Gather more data: xG, player-level data, etc.
 
-    -   Find a way to account for class imbalance
+-   Find a way to account for class imbalance
 
-    -   Investigate other modeling approaches
+-   Investigate other modeling approaches
