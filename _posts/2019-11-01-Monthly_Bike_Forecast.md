@@ -10,9 +10,7 @@ usemathjax: true
 ---
 
 
-# Forecasting Capital Bikeshare usage with ARIMA
-
-------------------------------------------------------------------------
+## Forecasting Capital Bikeshare usage with ARIMA
 
 Having used DC Capital BikeShare data
 [previously](https://rsolter.github.io/r/forecasting/Monthly_Bike_Forecast_ETS/)
@@ -82,7 +80,7 @@ the data to get a constant variance:
 
 ![](/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Box-Cox-1.png){: .align-center}
 
-### ARIMA Theory
+## ARIMA Theory
 
 ARIMA is an acronym for Auto Regressive (AR) Integrated (I) Moving
 Average (MA) and can be implemented in R using the automated function
@@ -127,7 +125,7 @@ additional seasonal terms:
 
 ------------------------------------------------------------------------
 
-### Application to DC Bike Share
+## Application to DC Bike Share
 
 Now we’ll apply the ARIMA model to the monthly bike share data while
 using the temperature data as a regressor.

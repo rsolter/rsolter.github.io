@@ -8,7 +8,7 @@ toc_sticky: true
 toc_icon: 'cogs'
 ---
 
-### Data Science on Chrome OS + Linux
+## Data Science on Chrome OS + Linux
 
 ![DS_Pixelbook](/assets/images/pixelbook_ds.jpg){: .align-center}
 
@@ -17,7 +17,7 @@ ChromeOS is a linux-based operating system developed by Google and is the defaul
 Note that I am working with the Debian (10) distribution of Linux.
 
 
-### 1. Enabling and Setting Up Linux
+## 1. Enabling and Setting Up Linux
 
  1. Set up Linux on your Chromebook following the instructions on [Google Support]([https://support.google.com/chromebook/answer/9145439?hl=en](https://support.google.com/chromebook/answer/9145439?hl=en)). Note that Debian is the default distribution.
  2. Set password for Linux:
@@ -30,7 +30,7 @@ Note that I am working with the Debian (10) distribution of Linux.
 
 
 
-### 2. Required and Suggested Linux Software, Libraries
+## 2. Required and Suggested Linux Software, Libraries
 
 
 **Install CL Utilities**
@@ -125,7 +125,7 @@ I also needed to [install Java](https://www.r-bloggers.com/installing-rjava-on-u
 
 
 
-### 3. Setting up git
+## 3. Setting up git
 
 Instructions below are referred to the in [guide](https://kbroman.org/github_tutorial/pages/first_time.html) guide written by Karl Broman.
 
@@ -185,7 +185,7 @@ Add the new SSH key to your GitHub Account [link](https://help.github.com/en/git
 
 
 
-### 4. Installing Python via Anaconda
+## 4. Installing Python via Anaconda
 
 
 The following are the necessary steps to install Python via Anaconda via with Spyder, Jupyter Notebooks, and Jupyer Labs included. Following guide posted [here](https://randlow.github.io/posts/python/set-up-pixelbook-python/#install-nodejs):
@@ -279,7 +279,7 @@ Alternatively, I could have installed Firefox and the [required Libraries/Packag
 
 
 
-### 5. R and R Studio
+## 5. R and R Studio
 
 
 **Installing current version of R on Debian**
@@ -342,7 +342,7 @@ Links used in Troubleshooting IRKernel:
 
 
 
-### Appendix
+## Appendix
 
 Listed below are some additional utilities and short-cuts for working with Linux
 

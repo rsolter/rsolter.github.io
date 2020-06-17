@@ -8,10 +8,10 @@ toc_sticky: true
 toc_icon: 'futbol'
 ---
 
-### Predicting Soccer Match Outcomes using caret
+
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg){: .align-center}
 
-_Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
+### Predicting Soccer Match Outcomes using caret
 
 ------------------------------------------------------------------------
 ### 1. Objective
@@ -1315,3 +1315,8 @@ binomial classification problem with a focus on identifying draws
 -   Find a way to account for class imbalance
 
 -   Investigate other modeling approaches
+
+
+
+
+_Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_

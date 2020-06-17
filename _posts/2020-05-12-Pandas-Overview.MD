@@ -7,9 +7,10 @@ toc_label: "Content"
 toc_sticky: true
 ---
 
-### pandas Overview
-
 ![pandas](/assets/images/pandas.jpg){: .align-center}
+
+
+## pandas Overview
 
 Making the move from R to python, I feel out of place without my familiar tidyverse of packages for data maniuplation and visualization. As such, I've been spending a lot of time learning [pandas](https://pandas.pydata.org/), the most popular data analysis and manipulation tool in python.
 
@@ -43,7 +44,7 @@ p4k = pd.read_csv("p4kreviews.csv",
                   parse_dates=["date"]) # pandas is very good at recognizing dates upon import
 ```
 
-### 1. Inspecting a dataframe
+## 1. Inspecting a dataframe
 
 _key methods: .head(), .describe(), .info(), .shape, .dtypes, .columns(), .value_counts()_
 
@@ -243,7 +244,7 @@ p4k.shape ## Returns a tuple with dimensions of a dataset
 
 
 
-### 2. Selecting columns or rows from a dataframe
+## 2. Selecting columns or rows from a dataframe
 
 _key methods: .loc(), .iloc(), .value_counts()_
 
@@ -645,7 +646,7 @@ p4k['genre'].value_counts()
 
 
 
-### 3. Adding or Deleting Columns and Rows
+## 3. Adding or Deleting Columns and Rows
 
 _key methods: .insert(), .append(), .drop()_
 
@@ -1389,7 +1390,7 @@ p4k.drop("Parent Company", axis="columns")
 
 
 
-### 4. Filtering
+## 4. Filtering
 
 _key methods: .isn(), .between(), .where(), .query()_
 
@@ -2526,7 +2527,7 @@ p4k.query('best==1.0')
 
 
 
-### 5. Ranking & Sorting
+## 5. Ranking & Sorting
 
 _key methods: .sort_values(), .sort_index(), .rank(), .nsmallest(), .nlargest()_
 
@@ -3253,7 +3254,7 @@ p4k["score"].nlargest(n=4)
 
 
 
-### 6. Working with NAs
+## 6. Working with NAs
 
 _key methods: .isnull(), .notnull(), .dropna(), .fillna()_
 
@@ -4244,7 +4245,7 @@ p4k.fillna(value=0)
 
 
 
-### 7. Unique and Duplicate values
+## 7. Unique and Duplicate values
 
 _key methods: .unique(), .nunique(), .duplicated(), .drop_duplicates()_
 
@@ -4586,7 +4587,7 @@ p4k.drop_duplicates(subset = ["genre", "date"])
 
 
 
-### 8. Working with Indexes
+## 8. Working with Indexes
 
 _key methods: .sort_index(), .set_index(), .reset_index(), .get_level_values(), .swap_levels(), .stack(), .unstack()_
 
@@ -5526,7 +5527,7 @@ s = multindexP4k.stack()
     ValueError: Index contains duplicate entries, cannot reshape
 
 
-### 9. Renaming Labels and Columns
+## 9. Renaming Labels and Columns
 
 _key methods: .rename()_
 
@@ -5929,7 +5930,7 @@ p4k.rename(index = {'1' : 'One',
 
 
 
-### 10. Sampling
+## 10. Sampling
 
 _key methods: .sample()_
 
@@ -6115,7 +6116,7 @@ p4k.sample(n=2,axis="columns")
 
 
 
-### 11. Grouping and Agg
+## 11. Grouping and Agg
 
 _key methods: .groupby(), .agg()_
 
@@ -6758,7 +6759,7 @@ genre_group.agg(['size','sum','mean'])
 
 
 
-### 12. Date and Times
+## 12. Date and Times
 
 _key attributes: .year, .month, .day, .dayofweek, .hour, .minute, .second_
 
@@ -7305,7 +7306,7 @@ p4k.date + YearEnd() # end of that year
 
 
 
-### 13. Text Functions
+## 13. Text Functions
 
 _key attributes: .lower, .upper, .title, .len_
 
@@ -7377,7 +7378,7 @@ testBlankString.split() # breaks string apart into individual words
 
 
 
-### 14. Merging, Joining, and Concatenating
+## 14. Merging, Joining, and Concatenating
 
 _key methods: .concat(), .append(), .merge(), .join()_
 
@@ -8957,7 +8958,7 @@ p4k.join(df)
 
 
 
-### 15. Reshaping dataframes
+## 15. Reshaping dataframes
 _key methods: .pivot(), .pivot_table(), .melt()_
 
 

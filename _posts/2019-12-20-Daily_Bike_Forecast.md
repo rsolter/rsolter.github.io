@@ -8,7 +8,7 @@ toc_sticky: true
 toc_icon: 'calendar-day'
 usemathjax: true
 ---
-### Predicting Daily DC Bike Share Ridership with **prophet**
+## Predicting Daily DC Bike Share Ridership with **prophet**
 
 The
 [prophet](https://facebook.github.io/prophet/docs/quick_start.html#r-api)
@@ -35,7 +35,7 @@ measures precipitation in tenths of a millimeter.
 
 ------------------------------------------------------------------------
 
-### Visual Exploration of Daily Ridership Data
+## Visual Exploration of Daily Ridership Data
 
 A few takeaways:
 
@@ -71,7 +71,7 @@ A few takeaways:
 
 ------------------------------------------------------------------------
 
-#### Removing Outliers
+### Removing Outliers
 
 Since there appear to be multiple outliers in the dataset and the
 prophet package can handle missing data points, we’ll remove some
@@ -90,7 +90,7 @@ removed from the series for future modeling.
 
 ------------------------------------------------------------------------
 
-### Prophet Models
+## Prophet Models
 
 To test the model, the daily observations of bike rides and daily
 precipitation are split into training sets (2010-05-15 to 2016-08-31)
@@ -110,7 +110,7 @@ reg_train <- percip %>% filter(ds<'2016-09-01') # 2178 records
 reg_test <- percip %>% filter(ds>='2016-09-01') # 747 records
 ```
 
-#### Base Model
+### Base Model
 
 The first model is set to account for daily, weekly, and yearly
 seasonality.
@@ -194,7 +194,7 @@ generally underestimates daily ridership.
 
 ------------------------------------------------------------------------
 
-#### Logistic Growth Model + Carrying Capacity
+### Logistic Growth Model + Carrying Capacity
 
 Given that the overall trend appears to be leveling off, we’ll try a
 second modeling approach with a logistic growth specified and a carrying
@@ -278,7 +278,7 @@ material difference on the MAPE (32%) or the overall
 
 ![](/rblogging/2019/12/20/Prophet%20Forecast%202%20Log%20Growth%20+%20CC-3.png)
 
-#### Model with Logistic Transformation
+### Model with Logistic Transformation
 
 Another step we can take is transforming the data with logarithmic
 transformation. This is done when the time series shows
@@ -380,7 +380,7 @@ reg_test <- percip %>% filter(ds>='2016-09-01') # 747 records
 
 ![](/rblogging/2019/12/20/Prophet%20Forecast%203%20-%20Log-3.png)
 
-#### Model with precipitation Regressor
+### Model with precipitation Regressor
 
 In this attempt, we will add the daily precipitation data in as a
 regressor. Technically, we would want to actually use predictions of
@@ -462,7 +462,7 @@ reg_train <- left_join(train,reg_train)
 
 
 
-### Conclusion and Next Steps
+## Conclusion and Next Steps
 
 Predicting daily ridership is inherently difficult. swings in the weather, holidays, Nationals games, protests, and events like the blooming of the cherry blossoms can all affect ridership on a day to day basis. It shouldn't come as much of a surprise that the best model put forth was the one that transformed the data specifically to handle non-constant variability in the time series.
 
