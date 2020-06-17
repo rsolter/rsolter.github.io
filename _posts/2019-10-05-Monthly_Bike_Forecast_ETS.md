@@ -12,7 +12,7 @@ toc_icon: 'biking'
 
 # Forecasting Capital Bikeshare usage with Exponential Smoothing
 
-### Background
+## Background
 
 I’ve always love biking. At age 18, I rode my bike 140 miles with a few
 friends one summer to Chicago, sleeping outside along the way. At age
@@ -27,7 +27,7 @@ forecasting. Also, working with bike share data, is a
 [choice](https://nycdatascience.com/blog/student-works/r-visualization/graphic-look-bay-area-bike-share/)
 for data science projects.
 
-### Exponential Smoothing Theory
+## Exponential Smoothing Theory
 
 Exponential smoothing is one of the fundamental methods for forecasting
 univariate series. The basic idea behind the method is that forecasts
@@ -81,7 +81,7 @@ and 1.
 
 $$ s\_{t} = \\gamma \\frac{y\_{t}}{l\_{t-1}+b\_{t-1}}+(1-\\gamma)s\_{t-m} $$
 
-### Applying Holt-Winters to BikeShare data
+## Applying Holt-Winters to BikeShare data
 
 As can be seen below, the bike data demonstrates clear seasonality and a
 growing trend in overall ridership, so our exponential smoothing model
@@ -286,7 +286,7 @@ more closely, and the damped multiplicative method returns a mape of
     ## Jul 2018       435415.4 344181.1 526649.7 295884.6 574946.2
     ## Aug 2018       439027.5 345048.8 533006.3 295299.4 582755.6
 
-### Utilizing ets()
+## Utilizing ets()
 
 A more general approach to exponential smoothing than Holt-Winters is to
 use the `ets()` function which automatically chooses an exponential
