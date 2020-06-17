@@ -10,6 +10,6 @@ header:
 ---
 
 
-  - Udemy: **Data Analysis with Pandas and Python** - [Certificate](/assets/images/Python_Pandas_Cert.jpg)
+  - [Data Analysis with Pandas and Python](/assets/images/Python_Pandas_Cert.jpg) (Udemy)
 
-  - Udemy: **Python for Data Science and Machine Learning Bootcamp** - [Certificate](/assets/images/Python_DS_Cert.jpg)
+  - [Python for Data Science and Machine Learning Bootcamp](/assets/images/Python_DS_Cert.jpg) (Udemy)
