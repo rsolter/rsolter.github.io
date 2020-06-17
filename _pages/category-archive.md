@@ -4,5 +4,7 @@ layout: categories
 permalink: /categories/
 #author_profile: true
 #header:
-#  image: /assets/images/category.jpeg
+#  overlay_image: /assets/images/hirshhorn.jpg
+#  caption: "Exhibit at Hirshhorn"
+
 ---
