@@ -2,11 +2,11 @@
 main:
    - title: <img src="/assets/images/Navigation Images/002-place.png">
      url: /index.html
-   - title: <img src="/assets/images/Navigation Images/009-pencil.png">Projects
+   - title: <img src="/assets/images/Navigation Images/009-pencil.png">
      url: /projects/
-   - title: <img src="/assets/images/Navigation Images/007-blank.png">Certificates
+   - title: <img src="/assets/images/Navigation Images/007-blank.png">
      url: /certs/
-   - title: <img src="/assets/images/Navigation Images/004-order.png">Posts by Category
+   - title: <img src="/assets/images/Navigation Images/004-order.png">
      url: /categories/
-   - title: <img src="/assets/images/Navigation Images/003-question.png">About
+   - title: <img src="/assets/images/Navigation Images/003-question.png">
      url: /about/
