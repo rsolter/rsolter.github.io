@@ -1,7 +1,7 @@
 ---
 title: pandas Overview
 categories: [python, pandas, reference]
-excerpt: "A reference post containing an overview of the key functions of pandas"
+excerpt: "A reference post containing an overview of the key functions of pandas. Based upon material covered in a Udemy course, this post reviews data manipulation and aggregation functions from pandas on the Pitchfork review dataset from Kaggle."
 toc: true
 toc_label: "Content"
 toc_sticky: true

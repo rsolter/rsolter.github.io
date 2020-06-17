@@ -1,7 +1,7 @@
 ---
 title: How I built this portfolio
 categories: [Jekyll, GitHub, reference]
-excerpt: "Using jekyll and minimal mistakes to create a portfolio from my GitHub repository"
+excerpt: "This portfolio website was surprisingly easy to build, even without much knowledge of CSS or HTML! This post includes the steps I took and tutorials I leveraged to get Jekyll and minimal mistakes running."
 ---
 
 # How I made this

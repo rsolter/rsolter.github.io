@@ -1,7 +1,7 @@
 ---
 title: Daily Forecasting of Capital Bikeshare usage with Facebook's prophet
 categories: [R, forecasting]
-excerpt: "Forecasting daily Bikeshare usage with Facebook's prophet"
+excerpt: "An exploration of Facebook's prophet package for estimating daily ridership of the DC Capital BikeShare program."
 toc: true
 toc_label: "Content"
 toc_sticky: true

@@ -1,7 +1,7 @@
 ---
 title: Data Science on Chrome OS + Linux
 categories: [Linux, GitHub, R, python, reference]
-excerpt: "How to set up you Chromebook for Data Science"
+excerpt: "Instructions for how to enable Linux on a Chromebook and begin running a data science toolkit on Debian, including R, Python, Jupyter, git, etc."
 toc: true
 toc_label: "Content"
 toc_sticky: true

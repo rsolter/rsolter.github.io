@@ -1,7 +1,7 @@
 ---
 title: "Predicting Soccer Match Outcomes using caret"
 categories: [R, caret]
-excerpt: "Building models to predict the outcome of Serie A matches"
+excerpt: "A collection of attempts to predict outcomes of Italian soccer matches from 2015-2020 using the caret package. Predictions are compared against historical betting odds to determine if a profitable betting strategy  can be derived using various classification algorithms"
 toc: true
 toc_label: "Content"
 toc_sticky: true

@@ -1,7 +1,7 @@
 ---
 title: Forecasting Capital Bikeshare usage with ARIMA
 categories: [R, forecasting]
-excerpt: "Predicting monthly Bikeshare usage ARIMA modeling and temperature data"
+excerpt: "Predicting monthly Bikeshare usage ARIMA modeling and average temperature data"
 toc: true
 toc_label: "Content"
 toc_sticky: true
