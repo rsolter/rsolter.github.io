@@ -10,7 +10,7 @@ toc_icon: 'biking'
 
 ---
 
-# Forecasting Capital Bikeshare usage with Exponential Smoothing
+## Forecasting Capital Bikeshare usage with Exponential Smoothing
 
 ## Background
 
