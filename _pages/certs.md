@@ -5,9 +5,9 @@ permalink: /certs/
 author_profile: true
 read_time: false
 share: false
-#header:
-#  overlay_image: /assets/images/hirshhorn.jpg
-#  caption: "Exhibit at Hirshhorn"
+header:
+  overlay_image: /assets/images/hirshhorn.jpg
+  caption: "Exhibit at Hirshhorn"
 ---
 
 
