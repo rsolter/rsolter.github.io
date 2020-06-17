@@ -1,12 +1,12 @@
 # main links
 main:
-   - title: "Home"
+   - title:<img src="/assets/images/Navigation Images/002-place.png">Home
      url: /index.html
-   - title: "About"
+   - title: <img src="/assets/images/Navigation Images/003-question.png">About
      url: /about/
-   - title: <img src="/assets/images/projects.png">Projects
+   - title: <img src="/assets/images/Navigation Images/005-pic.png">Projects
      url: /projects/
-   - title: "Certificates"
+   - title: <img src="/assets/images/Navigation Images/006-document.png">Certificates
      url: /certs/
-   - title: "Posts by Category"
+   - title: <img src="/assets/images/Navigation Images/004-order.png">Posts by Category
      url: /categories/
