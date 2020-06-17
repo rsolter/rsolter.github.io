@@ -1,7 +1,6 @@
 ---
 title: Daily Forecasting of Capital Bikeshare usage with Facebook's prophet
 categories: [R, forecasting]
-date: 2019-12-20
 excerpt: "Forecasting daily Bikeshare usage with Facebook's prophet"
 toc: true
 toc_label: "Content"

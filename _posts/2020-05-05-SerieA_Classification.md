@@ -1,7 +1,6 @@
 ---
 title: "Predicting Soccer Match Outcomes using caret"
 categories: [R, caret]
-date: 2020-05-05
 excerpt: "Building models to predict the outcome of Serie A matches"
 toc: true
 toc_label: "Content"

@@ -1,7 +1,6 @@
 ---
 title: Data Science on Chrome OS + Linux
 categories: [Linux, GitHub, R, python, reference]
-date: 2020-04-04
 excerpt: "How to set up you Chromebook for Data Science"
 toc: true
 toc_label: "Content"

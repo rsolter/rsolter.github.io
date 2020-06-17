@@ -1,7 +1,6 @@
 ---
 title: How I built this portfolio
 categories: [Jekyll, GitHub, reference]
-date: 2019-12-29
 excerpt: "Using jekyll and minimal mistakes to create a portfolio from my GitHub repository"
 ---
 
