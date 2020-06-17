@@ -6,8 +6,8 @@ author_profile: true
 read_time: false
 share: false
 header:
-  image: /assets/images/splash2.jpeg
-
+  overlay_image: /assets/images/splash2.jpeg
+  caption: "From the BlueRidge Parkway"
 ---
 
 
