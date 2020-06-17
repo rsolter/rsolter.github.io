@@ -1,6 +1,6 @@
 # main links
 main:
-   - title:<img src="/assets/images/Navigation Images/002-place.png">Home
+   - title: <img src="/assets/images/Navigation Images/002-place.png">Home
      url: /index.html
    - title: <img src="/assets/images/Navigation Images/003-question.png">About
      url: /about/
