@@ -365,7 +365,8 @@ ensure they don’t show any clear pattern. In both cases, neither model
 report any patterns and so we can comfortably say they account for all
 the available information.
 
-![](/rblogging/2019/10/05/residuals%20plotting-1.png)![](/rblogging/2019/10/05/residuals%20plotting-2.png){: .align-center}
+![](/rblogging/2019/10/05/residuals%20plotting-1.png){: .align-center}
+![](/rblogging/2019/10/05/residuals%20plotting-2.png){: .align-center}
 
 ------------------------------------------------------------------------
 

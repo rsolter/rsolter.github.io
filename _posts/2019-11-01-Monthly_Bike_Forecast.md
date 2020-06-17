@@ -10,7 +10,7 @@ usemathjax: true
 ---
 
 
-### Forecasting Capital Bikeshare usage with ARIMA
+# Forecasting Capital Bikeshare usage with ARIMA
 
 ------------------------------------------------------------------------
 
