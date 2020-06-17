@@ -4,9 +4,9 @@ main:
      url: /index.html
    - title: <img src="/assets/images/Navigation Images/003-question.png">About
      url: /about/
-   - title: <img src="/assets/images/Navigation Images/005-pic.png">Projects
+   - title: <img src="/assets/images/Navigation Images/009-pencil.png">Projects
      url: /projects/
-   - title: <img src="/assets/images/Navigation Images/006-document.png">Certificates
+   - title: <img src="/assets/images/Navigation Images/007-blank.png">Certificates
      url: /certs/
    - title: <img src="/assets/images/Navigation Images/004-order.png">Posts by Category
      url: /categories/
