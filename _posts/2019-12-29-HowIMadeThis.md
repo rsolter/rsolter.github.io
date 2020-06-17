@@ -58,3 +58,11 @@ This portfolio was built using Jekyll, a static website generator that is a popu
   **Converting ipynb into Jekyll Posts**
 
 .ipynb files can be converted to .MD files using **nbconvert** which is package inside anaconda. To execute, from the command line simply type `jupyter nbconvert --to markdown FILENAME.ipynb`
+
+
+
+**Editing Appearance of Minimal Mistakes**
+
+While the official Minimal Mistakes [Quick-Start Guide](https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/) is a great place to start editing the appearance of the blog, I found Katerina Bosko's post at [Cross-Validated.com](https://www.cross-validated.com/Personal-website-with-Minimal-Mistakes-Jekyll-Theme-HOWTO-Part-II/) invaluable.
+
+Finally, the official Jekyll message board, [Jekyll Talk](https://talk.jekyllrb.com/) was also helpful in providing answers to commonly answered questions relating to Jekyll and Minimal Mistakes.
