@@ -1,12 +1,12 @@
 # main links
 main:
-   - title: <img src="/assets/images/Navigation Images/005-real-estate.png">  Home
+   - title: <img src="/assets/images/Navigation Images/house.png">
      url: /index.html
-   - title: <img src="/assets/images/Navigation Images/001-paper-rolls.png">  Projects
+   - title: <img src="/assets/images/Navigation Images/bookmark.png">
      url: /projects/
-   - title: <img src="/assets/images/Navigation Images/002-certificate.png">  Certifications
+   - title: <img src="/assets/images/Navigation Images/certificate.png">
      url: /certs/
-   - title: <img src="/assets/images/Navigation Images/003-archive.png">  Archive
+   - title: <img src="/assets/images/Navigation Images/filepng">
      url: /categories/
-   - title: <img src="/assets/images/Navigation Images/004-about.png">  About
+   - title: <img src="/assets/images/Navigation Images/user.png">  About
      url: /about/
