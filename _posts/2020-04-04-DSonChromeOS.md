@@ -10,7 +10,7 @@ toc_icon: 'cogs'
 
 ### Data Science on Chrome OS + Linux
 
-![DS_Pixelbook](/assets/images/pixelbook_ds.jpg)
+![DS_Pixelbook](/assets/images/pixelbook_ds.jpg){: .align-center}
 
 ChromeOS is a linux-based operating system developed by Google and is the default OS on all Chromebooks. It's a very lightweight OS and was initially limited Chrome and the suite of Google office applications. However, overtime it has grown to support Android Apps as well as Linux applications. This post documents the steps I took to set up a linux-based Data Science tool kit on my Pixelbook, including git, Python (Anaconda distribution), and R (and R Studio).
 

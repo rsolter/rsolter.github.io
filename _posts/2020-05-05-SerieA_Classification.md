@@ -9,7 +9,7 @@ toc_icon: 'futbol'
 ---
 
 ### Predicting Soccer Match Outcomes using caret
-![Stadio Olimpico](/assets/images/remi-jacquaint.jpg)
+![Stadio Olimpico](/assets/images/remi-jacquaint.jpg){: .align-center}
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
 
@@ -1046,7 +1046,7 @@ are in included in the training set and the blue indicates samples in
 the test set. See more
 [here](http://topepo.github.io/caret/data-splitting.html#data-splitting-for-time-series).
 
-![](/assets/images/Split_time-1.svg)
+![](/assets/images/Split_time-1.svg){: .align-center}
 
 ------------------------------------------------------------------------
 
@@ -1068,7 +1068,7 @@ In contrast, it appears that the number of shots within the penalty box,
 total shots on target, and overall numbers of attacks are the most
 predictive of match outcome.
 
-![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png)
+![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png){: .align-center}
 
 #### Feature Extraction with PCA
 
@@ -1091,7 +1091,7 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-![](/rblogging/2020/05/05/outcome_viz-1.png)
+![](/rblogging/2020/05/05/outcome_viz-1.png){: .align-center}
 
 ### 6. Illustrative Example with U.C Sampdoria
 
@@ -1172,7 +1172,7 @@ Samp_holdout <- Samp %>%
     ## Detection Prevalence   0.0000  0.14286   0.8571
     ## Balanced Accuracy      0.5000  0.55952   0.6136
 
-![](/rblogging/2020/05/05/Multinomial%20Regression-1.png)
+![](/rblogging/2020/05/05/Multinomial%20Regression-1.png){: .align-center}
 
 #### SVM
 
@@ -1206,7 +1206,7 @@ Samp_holdout <- Samp %>%
     ## Detection Prevalence  0.31429  0.05714   0.6286
     ## Balanced Accuracy     0.53935  0.51190   0.5507
 
-![](/rblogging/2020/05/05/SVM-1.png)
+![](/rblogging/2020/05/05/SVM-1.png){: .align-center}
 
 #### Random Forest
 
@@ -1240,7 +1240,7 @@ Samp_holdout <- Samp %>%
     ## Detection Prevalence  0.28571   0.7143   0.0000
     ## Balanced Accuracy     0.55787   0.6190   0.5000
 
-![](/rblogging/2020/05/05/RandomForest-1.png)
+![](/rblogging/2020/05/05/RandomForest-1.png){: .align-center}
 
 #### Naive-Bayes
 
@@ -1295,7 +1295,7 @@ are more likely to bet on one of the two teams winning. This is
 reflected in the historical odds data for Serie A. Draws have a minimum
 odds of 2.4, over twice the minimum of either home or away outcomes.
 
-![](/rblogging/2020/05/05/Betting%20on%20Draws-1.png)
+![](/rblogging/2020/05/05/Betting%20on%20Draws-1.png){: .align-center}
 
 Given the higher payout of draws on average, it may make sense to
 re-cast the multi-nomial classification problem (Win, Loss, Draw) to a

@@ -84,7 +84,7 @@ to account for that as well. Note that the chart below does not include
 the final 12 observations in the dataset which have been set aside for
 testing model accuracy.
 
-![](/rblogging/2019/10/05/viz-1.png)
+![](/rblogging/2019/10/05/viz-1.png){: .align-center}
 
 Given that the size of the seasonal fluctuations are not constant over
 time, the data is likely better fit with a multiplicative method,
@@ -106,7 +106,7 @@ autoplot(ts_month) +
   theme(legend.position = "bottom")
 ```
 
-![](/rblogging/2019/10/05/holt-winters-1.png)
+![](/rblogging/2019/10/05/holt-winters-1.png){: .align-center}
 
 The smoothing parameters and overall fit statistics are reported out in
 the model portion of the forecast:
@@ -188,7 +188,7 @@ We can see in the plot below the red line hugs the actual ridership much
 more closely, and the damped multiplicative method returns a mape of
 8.7% as opposed to 10.1% for the undamped, multiplicate method.
 
-![](/rblogging/2019/10/05/unnamed-chunk-1-1.png)
+![](/rblogging/2019/10/05/unnamed-chunk-1-1.png){: .align-center}
 
     ##
     ## Forecast method: Damped Holt-Winters' multiplicative method
@@ -341,7 +341,7 @@ Running the model with the default setting returns ETS(M,Ad,M):
 Forecasting a year forward with this model provide a much better
 prediction, returning an average absolute error of just 4.6%
 
-![](/rblogging/2019/10/05/ets%20evaluation-1.png)
+![](/rblogging/2019/10/05/ets%20evaluation-1.png){: .align-center}
 
 |  Actual|  ETS.Forecast|  ETS.Error.Abs.|  ETS.Error.Perc|
 |-------:|-------------:|---------------:|---------------:|
@@ -365,7 +365,7 @@ ensure they don’t show any clear pattern. In both cases, neither model
 report any patterns and so we can comfortably say they account for all
 the available information.
 
-![](/rblogging/2019/10/05/residuals%20plotting-1.png)![](/rblogging/2019/10/05/residuals%20plotting-2.png)
+![](/rblogging/2019/10/05/residuals%20plotting-1.png)![](/rblogging/2019/10/05/residuals%20plotting-2.png){: .align-center}
 
 ------------------------------------------------------------------------
 

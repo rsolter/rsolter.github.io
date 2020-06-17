@@ -67,7 +67,7 @@ A few takeaways:
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
     ##       1    4378    7296    7499   10804   19113
 
-![](/rblogging/2019/12/20/exploratory%20viz-1.png)![](/rblogging/2019/12/20/exploratory%20viz-2.png)
+![](/rblogging/2019/12/20/exploratory%20viz-1.png)![](/rblogging/2019/12/20/exploratory%20viz-2.png){: .align-center}
 
 ------------------------------------------------------------------------
 
