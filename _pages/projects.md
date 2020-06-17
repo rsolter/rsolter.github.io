@@ -6,7 +6,7 @@ permalink: /projects/
 read_time: false
 share: false
 header:
-  image: /assets/images/projects.jpeg
+  image: /assets/images/splash2.jpeg
 ---
 
 
