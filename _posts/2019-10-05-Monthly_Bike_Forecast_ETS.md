@@ -14,7 +14,7 @@ toc_icon: 'biking'
 
 ## Background
 
-I’ve always love biking. At age 18, I rode my bike 140 miles with a few
+I’ve always loved biking. At age 18, I rode my bike 140 miles with a few
 friends one summer to Chicago, sleeping outside along the way. At age
 29, I took a much less advised trip from DC to NYC on Dec, 28th trying
 to make it to Brooklyn in 3 days for a NYE party. It was below freezing
