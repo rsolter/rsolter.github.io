@@ -1067,7 +1067,7 @@ In contrast, it appears that the number of shots within the penalty box,
 total shots on target, and overall numbers of attacks are the most
 predictive of match outcome.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Feature%20Selection%20using%20Random%20Forest-1.png)
+![](/rsolter/rblogging/2020/05/05Feature%20Selection%20using%20Random%20Forest-1.png)
 
 #### Feature Extraction with PCA
 
@@ -1090,7 +1090,7 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/outcome_viz-1.png)
+![](/rsolter/rblogging/2020/05/05outcome_viz-1.png)
 
 ### 6. Illustrative Example with U.C Sampdoria
 
@@ -1487,14 +1487,14 @@ Average returns are highest for an away win (4.86), then a draw (4.06),
 and last a home win (2.86). This is unsurprisngly if we consider how
 home advantage affects matches.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Betting%20on%20Draws-1.png)
+![](/rsolter/rblogging/2020/05/05Betting%20on%20Draws-1.png)
 
 A similarly striking pattern on returns is observed when filtering for
 odds that actually paid out. The mean payout among draws is now higher
 than away wins and the minimum payout is greater than twice that of away
 or home wins.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Betting%20on%20Draws%202-1.png)
+![](/rsolter/rblogging/2020/05/05Betting%20on%20Draws%202-1.png)
 
 Given the higher payout of draws on average, it may make sense to
 re-cast the multi-nomial classification problem (Win, Loss, Draw) to a
