@@ -11,8 +11,8 @@ share: false
 ---
 
 
-I am a data scientist in Washington, DC currently employed at Marriott International where I serve as a scrum master to a team of data analysts, data scientists, and data engineers. My work primarily focuses on analyzing the performance and setting goals for our Loyalty program - Marriott Bonvoy.
+I am a data scientist in Washington, DC currently employed at Marriott International. My work primarily focuses on analyzing the performance and setting goals for our Loyalty Program as well as supporting new member acquisition efforts for our various credit cards. I also serve as a scrum master to a team of analysts, engineers, and data scientists.
 
-I have extensive experience in deriving insights from 100s of millions of rows through using data visualization and building dashboards. I also have a background in statistics, with a experience in predictive modeling, inferential statistics, forecasting, and experimental design. I do my work in R, SQL, and Tableau, and more recently Python.
+I have a background in statistics, with a experience in inferential statistics, forecasting, and predictive modeling. I do most of my analysis and modeling in  in R, and increasingly Python. For visualizations and dashboards, I use both Tableau and R libraries ggplot2 and Shiny.
 
 This blog is meant to serve as a collection of my projects and learnings in the field of data science and machine learning.
