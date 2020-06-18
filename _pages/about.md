@@ -15,4 +15,4 @@ I am a data scientist in Washington, DC currently employed at Marriott Internati
 
 I have a background in statistics, with a experience in inferential statistics, forecasting, and predictive modeling. I do most of my analysis and modeling in  in R, and increasingly Python. For visualizations and dashboards, I use both Tableau and R libraries ggplot2 and Shiny.
 
-This blog is meant to serve as a collection of my projects and learnings in the field of data science and machine learning.
+This blog serves as a collection of my projects and learnings in the field of data science and machine learning.
