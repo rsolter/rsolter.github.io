@@ -6,7 +6,7 @@ main:
      url: /projects/
    - title: <img src="/assets/images/Navigation Images/certificate.png"> Certifications
      url: /certs/
-   - title: <img src="/assets/images/Navigation Images/file.png"> Archive
-     url: /categories/
+#   - title: <img src="/assets/images/Navigation Images/file.png"> Archive
+#     url: /categories/
    - title: <img src="/assets/images/Navigation Images/user.png"> About
      url: /about/
