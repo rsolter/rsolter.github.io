@@ -2,12 +2,12 @@
 main:
    - title: <img src="/assets/images/Navigation Images/house.png"> Home
      url: /index.html
+   - title: <img src="/assets/images/Navigation Images/file.png"> Posts
+     url: /year-archive/
    - title: <img src="/assets/images/Navigation Images/bookmark.png"> Projects
      url: /projects/
    - title: <img src="/assets/images/Navigation Images/certificate.png"> Certifications
      url: /certs/
-   - title: <img src="/assets/images/Navigation Images/file.png"> Posts
-     url: /year-archive/
 #   - title: <img src="/assets/images/Navigation Images/file.png"> Archive
 #     url: /categories/
    - title: <img src="/assets/images/Navigation Images/user.png"> About
