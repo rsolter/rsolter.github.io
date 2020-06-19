@@ -2,9 +2,9 @@
 main:
    - title: <img src="/assets/images/Navigation Images/house.png"> Home
      url: /index.html
-   - title: <img src="/assets/images/Navigation Images/file.png"> Posts
+   - title: <img src="/assets/images/Navigation Images/posts.png"> Posts
      url: /year-archive/
-   - title: <img src="/assets/images/Navigation Images/bookmark.png"> Projects
+   - title: <img src="/assets/images/Navigation Images/projects.png"> Projects
      url: /projects/
    - title: <img src="/assets/images/Navigation Images/certificate.png"> Certifications
      url: /certs/
