@@ -15,3 +15,5 @@ header:
 
 
 - [Blog Comment Sentiment Analysis](https://rsolter.github.io/BWRAO-Comment-Scraper/) - A sentiment analysis of over +600k blog comments from the Juventus fan site [BlackWhiteReadAllOver](https://www.blackwhitereadallover.com/) using selenium, pandas, and ntlk.
+
+- Customer Email Engagement Dashboard - R Shiny app built with SendGrid API to track customer engagement for Rapidan Energy, an energy markets, policy, geopolitics  consultancy based in Washington, DC.   
