@@ -1,0 +1,473 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How I built this portfolio -</title>
+<meta name="description" content="This portfolio website was surprisingly easy to build, even without much knowledge of CSS or HTML! This post includes the steps I took and tutorials I leveraged to get Jekyll and minimal mistakes running. ">
+
+
+  <meta name="author" content="Ravi Solter">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="">
+<meta property="og:title" content="How I built this portfolio">
+<meta property="og:url" content="http://localhost:4000/jekyll/github/reference/HowIMadeThis/">
+
+
+  <meta property="og:description" content="This portfolio website was surprisingly easy to build, even without much knowledge of CSS or HTML! This post includes the steps I took and tutorials I leveraged to get Jekyll and minimal mistakes running. ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-29T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/jekyll/github/reference/HowIMadeThis/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Ravi Solter",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/index.html"><img src="/assets/images/Navigation Images/house.png"> Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/"><img src="/assets/images/Navigation Images/posts.png"> Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects/"><img src="/assets/images/Navigation Images/projects.png"> Projects</a>
+            </li><li class="masthead__menu-item">
+              <a href="/certs/"><img src="/assets/images/Navigation Images/certificate.png"> Certifications</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/"><img src="/assets/images/Navigation Images/user.png"> About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/va_photo-01.jpeg" alt="Ravi Solter" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Ravi Solter</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Data scientist at Marriott International, working in R and Python</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Washington DC</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/rsolter" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/rsolter/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:ravisolter@gmail.com">
+            <meta itemprop="email" content="ravisolter@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How I built this portfolio">
+    <meta itemprop="description" content="This portfolio website was surprisingly easy to build, even without much knowledge of CSS or HTML! This post includes the steps I took and tutorials I leveraged to get Jekyll and minimal mistakes running.">
+    <meta itemprop="datePublished" content="2019-12-29T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="how-i-made-this">How I made this</h1>
+
+<p><img src="/assets/images/github_jekyll.jpg" alt="Jekyll+GitHub" class="align-center" /></p>
+
+<p>This portfolio was built using Jekyll, a static website generator that is a popular choice among users who wish to build a personal or portfolio website. I chose it because it is simple to set up if you have little to no experience in web development and has a number of attractive themes. Also, the website you create can be hosted on GitHub.</p>
+
+<p><strong>Setting up the Blog</strong></p>
+
+<ol>
+  <li>
+    <p>Install Ruby: <code class="language-plaintext highlighter-rouge">sudo apt-get install ruby-full build-essential</code></p>
+  </li>
+  <li>
+    <p>Install Jekyll and bundler gems <code class="language-plaintext highlighter-rouge">gem install jekyll bundler</code></p>
+  </li>
+  <li>
+    <p>Followed this <a href="https://www.youtube.com/watch?v=qWrcgHwSG8M&amp;t=55s">YouTube tutorial</a> in which the <a href="https://mmistakes.github.io/minimal-mistakes/">Minimal Mistakes</a> custom repository is forked and used as a basis for building a simple website.</p>
+
+    <p><em>Variations from tutorial</em> :</p>
+
+    <ul>
+      <li>
+        <p>Once forking the repository, I deleted all the files recommended for removal on the official Minimal Mistakes <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#remove-the-unnecessary">guide</a></p>
+      </li>
+      <li>
+        <p>Update the Gemfile using the <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#remote-theme-method">remote theme method</a> so that the blog will render on GitHub</p>
+      </li>
+      <li>
+        <p>Finally, in the tutorial you’re instructed to copy this <a href="https://github.com/dataoptimal/github-pages-tutorial/blob/master/posts_code.txt">code</a> into the machinelearning.MD. I found that this code threw an error for me before I deleted the first line which has text <strong>include base_path</strong>. Deleting this line allowed for the site to render, although the top-line navigation button for ‘MachineLearning’ page would not work.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>The website should be live. I used the <a href="https://atom.io/">atom</a> text editor to edit and manage my posts. I also found this <a href="https://www.mikedane.com/static-site-generators/jekyll/">series of tutorial videos</a> from Mike Dane very useful for understanding Jekyll basics</p>
+  </li>
+</ol>
+
+<p><strong>Integrating R Markdown documents into Jekyll Posts</strong></p>
+
+<p>The process of turning your RMD code into Jekyll posts is pretty straightforward.</p>
+
+<ul>
+  <li>Within your RMD file, replace the output format in the YAML to read what’s copied below and reknit the RMD.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">
+  output:
+    md_document:
+      variant: markdown_github
+  </code></p>
+
+<ul>
+  <li>The resulting MD file generated can be posted by Jekyll can post once adding an appropriate YAML header that Jekyll recognizes. Something like the one for this page:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ---
+  title: How I Made This
+  categories: [Jekyll, GitHub]
+  date: 2019-12-29
+  excerpt: "Using Jekyll to create a portfolio from my GitHub repository"
+  ---
+</code></pre></div></div>
+
+<ul>
+  <li>Any charts or graphs generated by your RMD will have to be copied over to your Jekyll site file directory and linked within the MD you generated.</li>
+</ul>
+
+<p><strong>Converting ipynb into Jekyll Posts</strong></p>
+
+<p>.ipynb files can be converted to .MD files using <strong>nbconvert</strong> which is package inside anaconda. To execute, from the command line simply type <code class="language-plaintext highlighter-rouge">jupyter nbconvert --to markdown FILENAME.ipynb</code></p>
+
+<p><strong>Editing Appearance of Minimal Mistakes</strong></p>
+
+<p>While the official Minimal Mistakes <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a> is a great place to start editing the appearance of the blog, I found Katerina Bosko’s post at <a href="https://www.cross-validated.com/Personal-website-with-Minimal-Mistakes-Jekyll-Theme-HOWTO-Part-II/">Cross-Validated.com</a> invaluable.</p>
+
+<p>Finally, the official Jekyll message board, <a href="https://talk.jekyllrb.com/">Jekyll Talk</a> was also helpful in providing answers to commonly answered questions relating to Jekyll and Minimal Mistakes.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#github" class="page__taxonomy-item" rel="tag">GitHub</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#jekyll" class="page__taxonomy-item" rel="tag">Jekyll</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#reference" class="page__taxonomy-item" rel="tag">reference</a>
+    
+    </span>
+  </p>
+
+
+      </footer>
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Ravi Solter. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

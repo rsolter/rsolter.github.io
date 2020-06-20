@@ -1,0 +1,962 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Forecasting Capital Bikeshare usage with exponential smoothing -</title>
+<meta name="description" content="Predicting monthly Bikeshare usage with Holt-Winters and ets() in R ">
+
+
+  <meta name="author" content="Ravi Solter">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="">
+<meta property="og:title" content="Forecasting Capital Bikeshare usage with exponential smoothing">
+<meta property="og:url" content="http://localhost:4000/r/forecasting/Monthly_Bike_Forecast_ETS/">
+
+
+  <meta property="og:description" content="Predicting monthly Bikeshare usage with Holt-Winters and ets() in R ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-10-05T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/r/forecasting/Monthly_Bike_Forecast_ETS/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Ravi Solter",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/index.html"><img src="/assets/images/Navigation Images/house.png"> Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/"><img src="/assets/images/Navigation Images/posts.png"> Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects/"><img src="/assets/images/Navigation Images/projects.png"> Projects</a>
+            </li><li class="masthead__menu-item">
+              <a href="/certs/"><img src="/assets/images/Navigation Images/certificate.png"> Certifications</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/"><img src="/assets/images/Navigation Images/user.png"> About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/va_photo-01.jpeg" alt="Ravi Solter" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Ravi Solter</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Data scientist at Marriott International, working in R and Python</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Washington DC</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/rsolter" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/rsolter/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:ravisolter@gmail.com">
+            <meta itemprop="email" content="ravisolter@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Forecasting Capital Bikeshare usage with exponential smoothing">
+    <meta itemprop="description" content="Predicting monthly Bikeshare usage with Holt-Winters and ets() in R">
+    <meta itemprop="datePublished" content="2019-10-05T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-biking"></i> Content</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#forecasting-capital-bikeshare-usage-with-exponential-smoothing">Forecasting Capital Bikeshare usage with Exponential Smoothing</a></li>
+  <li><a href="#background">Background</a></li>
+  <li><a href="#exponential-smoothing-theory">Exponential Smoothing Theory</a></li>
+  <li><a href="#applying-holt-winters-to-bikeshare-data">Applying Holt-Winters to BikeShare data</a></li>
+  <li><a href="#utilizing-ets">Utilizing ets()</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="forecasting-capital-bikeshare-usage-with-exponential-smoothing">Forecasting Capital Bikeshare usage with Exponential Smoothing</h2>
+
+<h2 id="background">Background</h2>
+
+<p>I’ve always loved biking. At age 18, I rode my bike 140 miles with a few
+friends one summer to Chicago, sleeping outside along the way. At age
+29, I took a much less advised trip from DC to NYC on Dec, 28th trying
+to make it to Brooklyn in 3 days for a NYE party. It was below freezing
+when I began, and I only ended up making to to Baltimore before turning
+tail and taking a train back to DC. My passion for biking is one reason
+I decided to hunt down some DC bike share data for a post about
+forecasting. Also, working with bike share data, is a
+<a href="https://towardsdatascience.com/predicting-no-of-bike-share-users-machine-learning-data-visualization-project-using-r-71bc1b9a7495">very</a>
+<a href="https://medium.com/@limavallantin/analysing-bike-sharing-trends-with-python-a9f574c596b9">popular</a>
+<a href="https://nycdatascience.com/blog/student-works/r-visualization/graphic-look-bay-area-bike-share/">choice</a>
+for data science projects.</p>
+
+<h2 id="exponential-smoothing-theory">Exponential Smoothing Theory</h2>
+
+<p>Exponential smoothing is one of the fundamental methods for forecasting
+univariate series. The basic idea behind the method is that forecasts
+are produced using a weighted average of past observations. This post
+will examine applying exponential smoothing to forecast monthly
+ridership on the Capital BikeShare program.</p>
+
+<p>For a simple time series, represented by {<em>x</em><sub><em>t</em></sub>}, beginning
+at <em>t</em> = 0, and the forecast of the next value in our sequence
+represented as <em>x̂</em><sub><em>t</em> + 1</sub>, the simplest form of exponential
+smoothing takes the form:</p>
+
+<p><em>x̂</em><sub><em>t</em> + 1</sub> = <em>α**x</em><sub><em>t</em></sub> + <em>α</em>(1 − <em>α</em>)<em>x</em><sub><em>t</em> − 1</sub> + <em>α</em>(1 − <em>α</em>)<sup>2</sup><em>x</em><sub><em>t</em> − 2</sub>..</p>
+
+<p>In the equation above, the rate at which the weights decrease is
+determined by the <em>α</em>, or the <strong>smoothing factor</strong> which is bound by
+0 &lt; <em>α</em> &lt; 1. If <em>α</em> is closer to 0, more weight is given to
+observations from the more distant past, while a value of <em>α</em> that is
+closer to 1 will give more more weight to recent observations.</p>
+
+<p>This idea can be expanded to different components of a time series, with
+each component having its own smoothing factors. The standard way of
+breaking apart the series is into three components: the level
+<em>l</em><sub><em>t</em></sub>, trend <em>b</em><sub><em>t</em></sub>, and seasonal
+<em>s</em><sub><em>t</em></sub> components. This model is known as the <strong>Holt-Winter’s
+multiplicative method</strong> and each smoothing factor is estimated on the
+basis of minimizing the sum of the square residuals (SSE).</p>
+
+<p><strong>The overall model</strong>: Where <em>h</em> denotes the number of periods forecast
+into the future (horizon), <em>m</em> denotes the frequency of the seasonality
+(m=12 for monthly data), and k represents the integer part of <em>(h-1)/m</em>
+which ensures that the estimate of the seasonal indices used for
+forecasting come from the final year of the sample. Read more about the
+Holt-Winters methodology
+<a href="https://otexts.com/fpp2/holt-winters.html">here</a>.</p>
+
+<p><em>ŷ</em><sub><em>t</em> + <em>h</em>|<em>t</em></sub> = (<em>l</em><sub><em>t</em></sub> + <em>h**b</em><sub><em>t</em></sub>)<em>s</em><sub><em>t</em> + <em>h</em> − <em>m</em>(<em>k</em> + 1)</sub></p>
+
+<p><strong>Level</strong> component, with <em>a<strong>l</strong>p<strong>h</strong>a</em> as the smoothing parameter
+bound between 0 and 1.</p>
+
+<script type="math/tex; mode=display">l\_{t} = \\alpha \\frac{y\_{t}}{s\_{t-m}}+(1-\\alpha)(l\_{t-1}+b\_{t-1})</script>
+
+<p><strong>Trend</strong> component, with <em>β</em> as the smoothing parameter bound between 0
+and 1.</p>
+
+<p><em>b</em><sub><em>t</em></sub> = <em>β</em>(<em>l</em><sub><em>t</em></sub> − <em>l</em><sub><em>t</em> − 1</sub>) + (1 − <em>β</em>)<em>b</em><sub><em>t</em> − 1</sub></p>
+
+<p><strong>Season</strong> component, with <em>γ</em> as the smoothing parameter bound between
+0 and 1.</p>
+
+<script type="math/tex; mode=display">s\_{t} = \\gamma \\frac{y\_{t}}{l\_{t-1}+b\_{t-1}}+(1-\\gamma)s\_{t-m}</script>
+
+<h2 id="applying-holt-winters-to-bikeshare-data">Applying Holt-Winters to BikeShare data</h2>
+
+<p>As can be seen below, the bike data demonstrates clear seasonality and a
+growing trend in overall ridership, so our exponential smoothing model
+will need to account for both. Furthermore, the size of the seasonal
+swings in ridership have grown over time, meaning our method will need
+to account for that as well. Note that the chart below does not include
+the final 12 observations in the dataset which have been set aside for
+testing model accuracy.</p>
+
+<p><img src="/rblogging/2019/10/05/viz-1.png" alt="" class="align-center" /></p>
+
+<p>Given that the size of the seasonal fluctuations are not constant over
+time, the data is likely better fit with a multiplicative method,
+however an additive model will be run for comparison:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">add_fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">hw</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="n">seasonal</span><span class="o">=</span><span class="s2">"additive"</span><span class="p">,</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span><span class="w">
+</span><span class="n">mult_fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">hw</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="n">seasonal</span><span class="o">=</span><span class="s2">"multiplicative"</span><span class="p">,</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span><span class="w">
+</span><span class="n">autoplot</span><span class="p">(</span><span class="n">ts_month</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">autolayer</span><span class="p">(</span><span class="n">add_fit</span><span class="p">,</span><span class="w"> </span><span class="n">series</span><span class="o">=</span><span class="s2">"HW additive forecasts"</span><span class="p">,</span><span class="w"> </span><span class="n">PI</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">autolayer</span><span class="p">(</span><span class="n">mult_fit</span><span class="p">,</span><span class="w"> </span><span class="n">series</span><span class="o">=</span><span class="s2">"HW multiplicative forecasts"</span><span class="p">,</span><span class="w">
+    </span><span class="n">PI</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">comma</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">xlab</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Monthly Bike Rentals"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Holt-Winters Additive and Multiplicative Methods"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">guides</span><span class="p">(</span><span class="n">colour</span><span class="o">=</span><span class="n">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Forecast"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"bottom"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="/rblogging/2019/10/05/holt-winters-1.png" alt="" class="align-center" /></p>
+
+<p>The smoothing parameters and overall fit statistics are reported out in
+the model portion of the forecast:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Holt-Winters' additive method
+##
+## Call:
+##  hw(y = train, h = 12, seasonal = "additive")
+##
+##   Smoothing parameters:
+##     alpha = 0.656
+##     beta  = 1e-04
+##     gamma = 1e-04
+##
+##   Initial states:
+##     l = 76944.0423
+##     b = 4429.7097
+##     s = 54228.15 66405.15 66653.3 56638 49788.1 25620.48
+##            -30898.26 -97742.35 -103535.8 -84179.53 -34696.54 31719.3
+##
+##   sigma:  32605.17
+##
+##      AIC     AICc      BIC
+## 2108.099 2117.514 2149.219
+
+## Holt-Winters' multiplicative method
+##
+## Call:
+##  hw(y = train, h = 12, seasonal = "multiplicative")
+##
+##   Smoothing parameters:
+##     alpha = 0.1802
+##     beta  = 0.0083
+##     gamma = 1e-04
+##
+##   Initial states:
+##     l = 48742.7635
+##     b = 6048.0226
+##     s = 1.2036 1.2746 1.2727 1.2437 1.2215 1.1445
+##            0.862 0.621 0.5648 0.6348 0.8488 1.108
+##
+##   sigma:  0.1343
+##
+##      AIC     AICc      BIC
+## 2071.091 2080.506 2112.211
+</code></pre></div></div>
+
+<p>It certainly appears that the multiplicative model does a better job
+than the additive one in estimating the ridership, at least until the
+final few months of the predictive window at which point the two
+estimates are quite similar. We can confirm this by looking at the
+errors on a monthly basis. Over the 12 months, the mean absolute percent
+error for the additive model is 18.5% while the multiplicative method is
+closer at 10.1%.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Actual</th>
+      <th style="text-align: right">Add.Forecast</th>
+      <th style="text-align: right">Add.Error.Abs</th>
+      <th style="text-align: right">Add.Error.Perc</th>
+      <th style="text-align: right">Mult.Forecast</th>
+      <th style="text-align: right">Mult.Error.Abs</th>
+      <th style="text-align: right">Mult.Error.Perc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">391371</td>
+      <td style="text-align: right">394964.9</td>
+      <td style="text-align: right">3593.933</td>
+      <td style="text-align: right">0.92</td>
+      <td style="text-align: right">383812.5</td>
+      <td style="text-align: right">-7558.548</td>
+      <td style="text-align: right">-1.93</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">384833</td>
+      <td style="text-align: right">376862.2</td>
+      <td style="text-align: right">-7970.817</td>
+      <td style="text-align: right">-2.07</td>
+      <td style="text-align: right">355866.2</td>
+      <td style="text-align: right">-28966.766</td>
+      <td style="text-align: right">-7.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">252534</td>
+      <td style="text-align: right">314872.2</td>
+      <td style="text-align: right">62338.235</td>
+      <td style="text-align: right">24.69</td>
+      <td style="text-align: right">274616.9</td>
+      <td style="text-align: right">22082.928</td>
+      <td style="text-align: right">8.74</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">177897</td>
+      <td style="text-align: right">269802.0</td>
+      <td style="text-align: right">91905.036</td>
+      <td style="text-align: right">51.66</td>
+      <td style="text-align: right">206849.5</td>
+      <td style="text-align: right">28952.470</td>
+      <td style="text-align: right">16.27</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">168590</td>
+      <td style="text-align: right">254859.0</td>
+      <td style="text-align: right">86268.970</td>
+      <td style="text-align: right">51.17</td>
+      <td style="text-align: right">185347.2</td>
+      <td style="text-align: right">16757.204</td>
+      <td style="text-align: right">9.94</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">182378</td>
+      <td style="text-align: right">265063.3</td>
+      <td style="text-align: right">82685.256</td>
+      <td style="text-align: right">45.34</td>
+      <td style="text-align: right">205223.4</td>
+      <td style="text-align: right">22845.435</td>
+      <td style="text-align: right">12.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">238998</td>
+      <td style="text-align: right">336311.3</td>
+      <td style="text-align: right">97313.296</td>
+      <td style="text-align: right">40.72</td>
+      <td style="text-align: right">286876.9</td>
+      <td style="text-align: right">47878.856</td>
+      <td style="text-align: right">20.03</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">328907</td>
+      <td style="text-align: right">397253.7</td>
+      <td style="text-align: right">68346.681</td>
+      <td style="text-align: right">20.78</td>
+      <td style="text-align: right">383590.8</td>
+      <td style="text-align: right">54683.760</td>
+      <td style="text-align: right">16.63</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">374115</td>
+      <td style="text-align: right">425827.6</td>
+      <td style="text-align: right">51712.589</td>
+      <td style="text-align: right">13.82</td>
+      <td style="text-align: right">412234.7</td>
+      <td style="text-align: right">38119.712</td>
+      <td style="text-align: right">10.19</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">392338</td>
+      <td style="text-align: right">437097.9</td>
+      <td style="text-align: right">44759.941</td>
+      <td style="text-align: right">11.41</td>
+      <td style="text-align: right">422610.3</td>
+      <td style="text-align: right">30272.296</td>
+      <td style="text-align: right">7.72</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">404761</td>
+      <td style="text-align: right">451522.4</td>
+      <td style="text-align: right">46761.354</td>
+      <td style="text-align: right">11.55</td>
+      <td style="text-align: right">435415.4</td>
+      <td style="text-align: right">30654.421</td>
+      <td style="text-align: right">7.57</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">403866</td>
+      <td style="text-align: right">455687.8</td>
+      <td style="text-align: right">51821.826</td>
+      <td style="text-align: right">12.83</td>
+      <td style="text-align: right">439027.5</td>
+      <td style="text-align: right">35161.529</td>
+      <td style="text-align: right">8.71</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Since the multiplicative forecast appeared to over-estimate ridership in
+the second half of the prediction period, we can try and improve the
+forecast by adding a damped trend. The damped trend introduced another
+parameter to the trend equation that will eventually turn the trend to a
+flat line sometime in the future. This is a popular method and often
+improves the performance of the model.</p>
+
+<p>Tthe addition of the damped method does improve the model’s performance.
+We can see in the plot below the red line hugs the actual ridership much
+more closely, and the damped multiplicative method returns a mape of
+8.7% as opposed to 10.1% for the undamped, multiplicate method.</p>
+
+<p><img src="/rblogging/2019/10/05/unnamed-chunk-1-1.png" alt="" class="align-center" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##
+## Forecast method: Damped Holt-Winters' multiplicative method
+##
+## Model Information:
+## Damped Holt-Winters' multiplicative method
+##
+## Call:
+##  hw(y = train, h = 12, seasonal = "multiplicative", damped = TRUE)
+##
+##   Smoothing parameters:
+##     alpha = 0.0272
+##     beta  = 0.002
+##     gamma = 1e-04
+##     phi   = 0.9776
+##
+##   Initial states:
+##     l = 47633.9982
+##     b = 7028.6844
+##     s = 1.237 1.3027 1.3111 1.2693 1.2043 1.1437
+##            0.8453 0.5857 0.5319 0.6064 0.8373 1.1252
+##
+##   sigma:  0.1328
+##
+##      AIC     AICc      BIC
+## 2066.718 2077.406 2110.257
+##
+## Error measures:
+##                     ME     RMSE      MAE       MPE     MAPE      MASE      ACF1
+## Training set -561.8677 18943.98 14465.64 -2.061909 8.721132 0.3330519 0.0994102
+##
+## Forecasts:
+##          Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+## Sep 2017       376781.9 312636.3 440927.6 278679.6 474884.3
+## Oct 2017       343962.5 285378.9 402546.2 254366.6 433558.5
+## Nov 2017       256855.7 213086.6 300624.7 189916.7 323794.7
+## Dec 2017       186662.3 154837.0 218487.7 137989.6 235335.0
+## Jan 2018       164281.2 136254.7 192307.7 121418.4 207144.1
+## Feb 2018       181494.4 150510.5 212478.3 134108.7 228880.2
+## Mar 2018       262761.4 217871.1 307651.7 194107.7 331415.2
+## Apr 2018       356605.5 295634.3 417576.8 263358.1 449853.0
+## May 2018       376669.7 312212.6 441126.8 278091.0 475248.4
+## Jun 2018       398147.3 329951.8 466342.8 293851.3 502443.3
+## Jul 2018       412432.6 341720.4 483144.8 304287.6 520577.5
+## Aug 2018       410944.7 340413.3 481476.1 303076.3 518813.2
+
+##
+## Forecast method: Holt-Winters' multiplicative method
+##
+## Model Information:
+## Holt-Winters' multiplicative method
+##
+## Call:
+##  hw(y = train, h = 12, seasonal = "multiplicative")
+##
+##   Smoothing parameters:
+##     alpha = 0.1802
+##     beta  = 0.0083
+##     gamma = 1e-04
+##
+##   Initial states:
+##     l = 48742.7635
+##     b = 6048.0226
+##     s = 1.2036 1.2746 1.2727 1.2437 1.2215 1.1445
+##            0.862 0.621 0.5648 0.6348 0.8488 1.108
+##
+##   sigma:  0.1343
+##
+##      AIC     AICc      BIC
+## 2071.091 2080.506 2112.211
+##
+## Error measures:
+##                     ME     RMSE      MAE       MPE     MAPE      MASE      ACF1
+## Training set -4035.313 21647.46 17298.83 -4.192721 10.10881 0.3982823 0.1216346
+##
+## Forecasts:
+##          Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+## Sep 2017       383812.5 317773.1 449851.8 282813.9 484811.0
+## Oct 2017       355866.2 293554.3 418178.1 260568.4 451164.1
+## Nov 2017       274616.9 225651.0 323582.8 199730.1 349503.8
+## Dec 2017       206849.5 169269.3 244429.6 149375.6 264323.3
+## Jan 2018       185347.2 151018.6 219675.8 132846.2 237848.2
+## Feb 2018       205223.4 166456.2 243990.7 145934.0 264512.8
+## Mar 2018       286876.9 231582.8 342170.9 202311.9 371441.8
+## Apr 2018       383590.8 308125.3 459056.2 268176.4 499005.2
+## May 2018       412234.7 329431.0 495038.4 285597.4 538872.0
+## Jun 2018       422610.3 335918.7 509301.9 290026.9 555193.7
+## Jul 2018       435415.4 344181.1 526649.7 295884.6 574946.2
+## Aug 2018       439027.5 345048.8 533006.3 295299.4 582755.6
+</code></pre></div></div>
+
+<h2 id="utilizing-ets">Utilizing ets()</h2>
+
+<p>A more general approach to exponential smoothing than Holt-Winters is to
+use the <code class="language-plaintext highlighter-rouge">ets()</code> function which automatically chooses an exponential
+smoothing model based upon all all potential combinations of parameters
+for error, trend, and seasonality (see more
+<a href="https://robjhyndman.com/talks/RevolutionR/6-ETS.pdf">here</a> on slide
+12). The ets framework (error, trend, seasonality) tries out multiple
+models and estimates the likelihood that the data gathered could be
+generated from those individual models. Final model is chosen based upon
+AIC or other fit statistics and accounts for any combination of
+seasonality and damping. This is a highly efficient and flexible
+approach that I use in my work when producing annual goals for different
+hotel performance metrics.</p>
+
+<p>The <strong>model</strong> parameter in the <code class="language-plaintext highlighter-rouge">ets()</code> function can be specified with a
+three character string. The first letter denotes the error type, the
+second letter denotes the trend type, and the third letter denotes the
+season type. The options you can specify for each component are below:</p>
+
+<ul>
+  <li>error: additive (“A”), multiplicative (“M”), unknown (“Z”)</li>
+  <li>trend: none (“N”), additive (“A”), multiplicative (“M”), unknown
+(“Z”)</li>
+  <li>seasonality: none (“N”), additive (“A”), multiplicative (“M”),
+unknown (“Z”)</li>
+</ul>
+
+<p>For example, setting <code class="language-plaintext highlighter-rouge">model='AAM'</code> would produce a model with additive
+error, additive trend, and multiplicative seasonality. By default, the
+parameter is set to “ZZZ” which passes unknown values to each component
+and allows the algorithm to select the ‘optimal’ model. See <code class="language-plaintext highlighter-rouge">ets()</code>
+reference
+<a href="https://www.rdocumentation.org/packages/forecast/versions/8.12/topics/ets">here</a>
+and more on comparing to <code class="language-plaintext highlighter-rouge">hw()</code>,
+<a href="https://robjhyndman.com/hyndsight/estimation2/">here</a>.</p>
+
+<p>Running the model with the default setting returns ETS(M,Ad,M):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## ETS(M,Ad,M)
+##
+## Call:
+##  ets(y = train)
+##
+##   Smoothing parameters:
+##     alpha = 1e-04
+##     beta  = 1e-04
+##     gamma = 1e-04
+##     phi   = 0.977
+##
+##   Initial states:
+##     l = 47634.0206
+##     b = 6990.7145
+##     s = 1.227 1.2774 1.2962 1.2853 1.239 1.1361
+##            0.8626 0.6097 0.5644 0.6105 0.8225 1.0693
+##
+##   sigma:  0.1273
+##
+##      AIC     AICc      BIC
+## 2059.187 2069.874 2102.726
+</code></pre></div></div>
+
+<p>Forecasting a year forward with this model provide a much better
+prediction, returning an average absolute error of just 4.6%</p>
+
+<p><img src="/rblogging/2019/10/05/ets%20evaluation-1.png" alt="" class="align-center" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Actual</th>
+      <th style="text-align: right">ETS.Forecast</th>
+      <th style="text-align: right">ETS.Error.Abs.</th>
+      <th style="text-align: right">ETS.Error.Perc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">391371</td>
+      <td style="text-align: right">370883.7</td>
+      <td style="text-align: right">-20487.327</td>
+      <td style="text-align: right">-5.23</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">384833</td>
+      <td style="text-align: right">324247.9</td>
+      <td style="text-align: right">-60585.135</td>
+      <td style="text-align: right">-15.74</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">252534</td>
+      <td style="text-align: right">250232.9</td>
+      <td style="text-align: right">-2301.063</td>
+      <td style="text-align: right">-0.91</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">177897</td>
+      <td style="text-align: right">186289.9</td>
+      <td style="text-align: right">8392.908</td>
+      <td style="text-align: right">4.72</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">168590</td>
+      <td style="text-align: right">172754.4</td>
+      <td style="text-align: right">4164.381</td>
+      <td style="text-align: right">2.47</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">182378</td>
+      <td style="text-align: right">187163.9</td>
+      <td style="text-align: right">4785.866</td>
+      <td style="text-align: right">2.62</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">238998</td>
+      <td style="text-align: right">265576.9</td>
+      <td style="text-align: right">26578.889</td>
+      <td style="text-align: right">11.12</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">328907</td>
+      <td style="text-align: right">350742.4</td>
+      <td style="text-align: right">21835.353</td>
+      <td style="text-align: right">6.64</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">374115</td>
+      <td style="text-align: right">383581.3</td>
+      <td style="text-align: right">9466.327</td>
+      <td style="text-align: right">2.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">392338</td>
+      <td style="text-align: right">398949.3</td>
+      <td style="text-align: right">6611.274</td>
+      <td style="text-align: right">1.69</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">404761</td>
+      <td style="text-align: right">403389.4</td>
+      <td style="text-align: right">-1371.609</td>
+      <td style="text-align: right">-0.34</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">403866</td>
+      <td style="text-align: right">398558.4</td>
+      <td style="text-align: right">-5307.588</td>
+      <td style="text-align: right">-1.31</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Checking Residuals</strong></p>
+
+<p>The last step is the plotting of the residuals for our forecasts to
+ensure they don’t show any clear pattern. In both cases, neither model
+report any patterns and so we can comfortably say they account for all
+the available information.</p>
+
+<p><img src="/rblogging/2019/10/05/residuals%20plotting-1.png" alt="" class="align-center" />
+<img src="/rblogging/2019/10/05/residuals%20plotting-2.png" alt="" class="align-center" /></p>
+
+<hr />
+
+<p>References:</p>
+
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2018) Forecasting: principles and
+practice, 2nd edition, OTexts: Melbourne, Australia.
+<a href="https://otexts.com/fpp2/">OTexts.com/fpp2</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#forecasting" class="page__taxonomy-item" rel="tag">forecasting</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#r" class="page__taxonomy-item" rel="tag">R</a>
+    
+    </span>
+  </p>
+
+
+      </footer>
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Ravi Solter. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

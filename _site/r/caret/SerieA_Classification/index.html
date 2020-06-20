@@ -1,0 +1,2007 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Predicting Soccer Match Outcomes using caret -</title>
+<meta name="description" content="A collection of attempts to predict outcomes of Italian soccer matches from 2015-2020 using the caret package. Predictions are compared against historical betting odds to determine if a profitable betting strategy  can be derived using various classification algorithms ">
+
+
+  <meta name="author" content="Ravi Solter">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="">
+<meta property="og:title" content="Predicting Soccer Match Outcomes using caret">
+<meta property="og:url" content="http://localhost:4000/r/caret/SerieA_Classification/">
+
+
+  <meta property="og:description" content="A collection of attempts to predict outcomes of Italian soccer matches from 2015-2020 using the caret package. Predictions are compared against historical betting odds to determine if a profitable betting strategy  can be derived using various classification algorithms ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-05-05T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/r/caret/SerieA_Classification/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Ravi Solter",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/index.html"><img src="/assets/images/Navigation Images/house.png"> Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/"><img src="/assets/images/Navigation Images/posts.png"> Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects/"><img src="/assets/images/Navigation Images/projects.png"> Projects</a>
+            </li><li class="masthead__menu-item">
+              <a href="/certs/"><img src="/assets/images/Navigation Images/certificate.png"> Certifications</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/"><img src="/assets/images/Navigation Images/user.png"> About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/va_photo-01.jpeg" alt="Ravi Solter" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Ravi Solter</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Data scientist at Marriott International, working in R and Python</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Washington DC</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/rsolter" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/rsolter/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:ravisolter@gmail.com">
+            <meta itemprop="email" content="ravisolter@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Predicting Soccer Match Outcomes using caret">
+    <meta itemprop="description" content="A collection of attempts to predict outcomes of Italian soccer matches from 2015-2020 using the caret package. Predictions are compared against historical betting odds to determine if a profitable betting strategy  can be derived using various classification algorithms">
+    <meta itemprop="datePublished" content="2020-05-05T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-futbol"></i> Content</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#predicting-soccer-match-outcomes-using-caret">Predicting Soccer Match Outcomes using caret</a></li>
+  <li><a href="#1-objective">1. Objective</a></li>
+  <li><a href="#2-gathering-data">2. Gathering Data</a>
+    <ul>
+      <li><a href="#a-note-on-expected-goals">A Note on Expected goals</a></li>
+    </ul>
+  </li>
+  <li><a href="#3-processing-the-data">3. Processing the Data</a>
+    <ul>
+      <li><a href="#replacing-data-with-lagged-averages">Replacing data with lagged averages</a></li>
+      <li><a href="#data-regrouped-by-team">Data regrouped by team</a></li>
+      <li><a href="#splitting-data">Splitting data</a></li>
+    </ul>
+  </li>
+  <li><a href="#4-feature-engineering">4. Feature Engineering</a>
+    <ul>
+      <li><a href="#feature-selection-with-random-forest">Feature selection with Random Forest</a></li>
+      <li><a href="#feature-extraction-with-pca">Feature Extraction with PCA</a></li>
+    </ul>
+  </li>
+  <li><a href="#5-distribution-of-outcomes-by-team">5. Distribution of Outcomes by Team</a></li>
+  <li><a href="#6-illustrative-example-with-uc-sampdoria">6. Illustrative Example with U.C Sampdoria</a>
+    <ul>
+      <li><a href="#multinomial-logistic-regression">Multinomial Logistic Regression</a></li>
+      <li><a href="#svm">SVM</a></li>
+      <li><a href="#random-forest">Random Forest</a></li>
+      <li><a href="#ensemble">Ensemble</a></li>
+      <li><a href="#results">Results</a></li>
+    </ul>
+  </li>
+  <li><a href="#7-considering-betting-on-draws">7. Considering Betting on Draws</a></li>
+  <li><a href="#7-overall-results">7. Overall Results</a></li>
+  <li><a href="#8-conclusion-and-next-steps">8. Conclusion and Next Steps</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <p><img src="/assets/images/remi-jacquaint.jpg" alt="Stadio Olimpico" class="align-center" /></p>
+
+<h3 id="predicting-soccer-match-outcomes-using-caret">Predicting Soccer Match Outcomes using caret</h3>
+
+<h3 id="1-objective">1. Objective</h3>
+
+<p>The goal of this post is to try and predict the outcome of soccer
+matches in the Italian top-flight division, <em>Serie A</em>. There are three
+possible outcomes for each match: a home win, an away win, or a draw. To
+make things more interesting, the predicted outcomes and their
+associated probabilities will be compared to historical odds offered by
+bookmakers in Europe which were gathered from
+<a href="https://www.football-data.co.uk">https://www.football-data.co.uk</a>.</p>
+
+<p>As an example, the odds given for a single match between Parma and
+Juventus in August, 2019 are listed below along with those same odds
+converted to probabilities. These odds were offered by the company
+Bet365.</p>
+
+<table>
+<caption>
+Example Odds from Bet365
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+HomeTeam
+</th>
+<th style="text-align:left;">
+AwayTeam
+</th>
+<th style="text-align:right;">
+B365H
+</th>
+<th style="text-align:right;">
+B365A
+</th>
+<th style="text-align:right;">
+B365D
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+24/08/2019
+</td>
+<td style="text-align:left;">
+Parma
+</td>
+<td style="text-align:left;">
+Juventus
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+1.33
+</td>
+<td style="text-align:right;">
+5.25
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>
+Converted to Probabilities
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+HomeTeam
+</th>
+<th style="text-align:left;">
+AwayTeam
+</th>
+<th style="text-align:right;">
+B365H
+</th>
+<th style="text-align:right;">
+B365A
+</th>
+<th style="text-align:right;">
+B365D
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+24/08/2019
+</td>
+<td style="text-align:left;">
+Parma
+</td>
+<td style="text-align:left;">
+Juventus
+</td>
+<td style="text-align:right;">
+0.1111111
+</td>
+<td style="text-align:right;">
+0.7518797
+</td>
+<td style="text-align:right;">
+0.1904762
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the sum of the three probabilities is equal to 1.0534, so the
+odds offered by Bet365 are not true odds. This practice is standard
+among all odds offered by bookmakers. The ‘extra’ 5.34% is known as “the
+vig” and helps bookmakers ensure a profit across all the matches on
+which they’re offering odds. Wikipedia has a better explanation of how
+the vig plays out
+<a href="https://en.wikipedia.org/wiki/Vigorish#The_simplest_wager">here</a>.</p>
+
+<hr />
+
+<h3 id="2-gathering-data">2. Gathering Data</h3>
+
+<p>The data for this project was gathered from the official <a href="http://www.legaseriea.it/en">Serie A
+website</a> and its match reports from the
+2015-16 season through the current 2019-20 season. Note that due to the
+effects of the Covid-19, all matches were postponed in Italy after the
+first week of March, 2020. The scrapers used the <code class="language-plaintext highlighter-rouge">rvest</code> package and can
+be found
+<a href="https://github.com/rsolter/Serie-A-Predictions/tree/master/01%20Scrapers">here</a>.
+Weekly <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo</a> scores for
+each team were also downloaded from the website Clubelo.com using their
+<a href="http://clubelo.com/API">API</a>.</p>
+
+<p><strong>Initial feature list:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Goals</td>
+      <td>Total Shots</td>
+      <td>Attacks (Middle)</td>
+    </tr>
+    <tr>
+      <td>Saves</td>
+      <td>Shots on Target</td>
+      <td>Attacks (Left)</td>
+    </tr>
+    <tr>
+      <td>Penalties</td>
+      <td>Shots on Target from Free Kicks</td>
+      <td>Attacks (Right)</td>
+    </tr>
+    <tr>
+      <td>Fouls</td>
+      <td>Shots off Target</td>
+      <td>Fast Breaks</td>
+    </tr>
+    <tr>
+      <td>Red Cards</td>
+      <td>Shots off Target from Free Kicks</td>
+      <td>Crosses</td>
+    </tr>
+    <tr>
+      <td>Yellow Cards</td>
+      <td>Shots from within the Box</td>
+      <td>Long Balls</td>
+    </tr>
+    <tr>
+      <td>Key Passes</td>
+      <td>Shots on Target from Set Pieces</td>
+      <td>Possession</td>
+    </tr>
+    <tr>
+      <td>Completed Passes</td>
+      <td>Shots off Target from Set Pieces</td>
+      <td>Corners</td>
+    </tr>
+    <tr>
+      <td>Passing Accuracy</td>
+      <td>Scoring Chances</td>
+      <td>Offsides</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="a-note-on-expected-goals">A Note on Expected goals</h4>
+
+<p><a href="https://wikieducator.org/Sport_Informatics_and_Analytics/Performance_Monitoring/Expected_Goals">Expected
+Goals</a>
+(<em>xG</em>) are not included in this analysis. xG measures the quality of
+goalscoring chances and the likelihood of them being scored. Factors
+influencing the probability of a goal being scored from a shot include
+distance from the goal; angle from the goal; and whether or not the
+player taking the shot was at least 1 m away from the nearest defender.
+Although very popular, I have not included these stats in the analysis
+but may do so later from a site like <a href="https://understat.com/">understat</a></p>
+
+<hr />
+
+<h3 id="3-processing-the-data">3. Processing the Data</h3>
+
+<p>In its raw form the observations gathered are grouped by match, with
+stats for both the home and away teams. Below is an example of the top
+five records.</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Team\_h
+</th>
+<th style="text-align:left;">
+Team\_a
+</th>
+<th style="text-align:right;">
+goals\_h
+</th>
+<th style="text-align:right;">
+goals\_a
+</th>
+<th style="text-align:right;">
+saves\_h
+</th>
+<th style="text-align:right;">
+saves\_a
+</th>
+<th style="text-align:right;">
+pen\_h
+</th>
+<th style="text-align:right;">
+pen\_a
+</th>
+<th style="text-align:right;">
+shots\_h
+</th>
+<th style="text-align:right;">
+shots\_a
+</th>
+<th style="text-align:right;">
+shots\_on\_h
+</th>
+<th style="text-align:right;">
+shots\_on\_a
+</th>
+<th style="text-align:right;">
+shot\_on\_fk\_h
+</th>
+<th style="text-align:right;">
+shot\_on\_fk\_a
+</th>
+<th style="text-align:right;">
+shots\_off\_h
+</th>
+<th style="text-align:right;">
+shots\_off\_a
+</th>
+<th style="text-align:right;">
+shot\_off\_fk\_h
+</th>
+<th style="text-align:right;">
+shot\_off\_fk\_a
+</th>
+<th style="text-align:right;">
+shots\_box\_h
+</th>
+<th style="text-align:right;">
+shots\_box\_a
+</th>
+<th style="text-align:right;">
+shots\_sp\_on\_h
+</th>
+<th style="text-align:right;">
+shots\_sp\_on\_a
+</th>
+<th style="text-align:right;">
+fouls\_h
+</th>
+<th style="text-align:right;">
+fouls\_a
+</th>
+<th style="text-align:right;">
+scoring\_chances\_h
+</th>
+<th style="text-align:right;">
+scoring\_chances\_a
+</th>
+<th style="text-align:right;">
+offsides\_h
+</th>
+<th style="text-align:right;">
+offsides\_a
+</th>
+<th style="text-align:right;">
+corners\_h
+</th>
+<th style="text-align:right;">
+corners\_a
+</th>
+<th style="text-align:right;">
+yellow\_h
+</th>
+<th style="text-align:right;">
+yellow\_a
+</th>
+<th style="text-align:right;">
+shots\_sp\_off\_h
+</th>
+<th style="text-align:right;">
+shots\_sp\_off\_a
+</th>
+<th style="text-align:right;">
+fast\_breaks\_h
+</th>
+<th style="text-align:right;">
+fast\_breaks\_a
+</th>
+<th style="text-align:left;">
+season
+</th>
+<th style="text-align:left;">
+round
+</th>
+<th style="text-align:right;">
+poss\_h
+</th>
+<th style="text-align:right;">
+poss\_a
+</th>
+<th style="text-align:left;">
+match\_date
+</th>
+<th style="text-align:right;">
+attacks\_h
+</th>
+<th style="text-align:right;">
+attacks\_a
+</th>
+<th style="text-align:right;">
+match\_id
+</th>
+<th style="text-align:left;">
+outcome
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HellasVerona
+</td>
+<td style="text-align:left;">
+Roma
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.37
+</td>
+<td style="text-align:right;">
+0.63
+</td>
+<td style="text-align:left;">
+2015-08-22
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+D
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Bologna
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.58
+</td>
+<td style="text-align:right;">
+0.42
+</td>
+<td style="text-align:left;">
+2015-08-22
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+H
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Juventus
+</td>
+<td style="text-align:left;">
+Udinese
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+<td style="text-align:left;">
+2015-08-23
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Empoli
+</td>
+<td style="text-align:left;">
+Chievoverona
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.53
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:left;">
+2015-08-23
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fiorentina
+</td>
+<td style="text-align:left;">
+Milan
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.57
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:left;">
+2015-08-23
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+H
+</td>
+</tr>
+</tbody>
+</table>
+<p>From this raw form the data has been processed in the following ways:</p>
+
+<h4 id="replacing-data-with-lagged-averages">Replacing data with lagged averages</h4>
+
+<p>All the stats collected (with the exception of Elo), have been replaced
+with lagged averages. The rationale for this is that we need historical
+performance data to try and predict future match outcomes.</p>
+
+<h4 id="data-regrouped-by-team">Data regrouped by team</h4>
+
+<p>The full set of records is broken up by teams so that there exist +20
+datasets. One for each individual team with lagged average stats on
+their and their opponents performance.</p>
+
+<h4 id="splitting-data">Splitting data</h4>
+
+<p>From the five season in the dataset, seasons 2015-16, 2016-17, and
+2017-18 are used for training, the 2018-19 season will searve as the
+validation set, and the 2019-20 season will serve as the holdout data.</p>
+
+<p>As the matches occur in chronological order, each dataset will be broken
+apart in such a way that the model will be built on the first <em>n</em>
+observations and tested on the <em>n+1</em> match. This is accomplished using
+the <em>time_slice()</em> function in the <strong>caret</strong> package. A visual
+representation of this partition can be seen below in the bottom left
+quadrant. In the example below, there is a time series with 20 data
+points. We can fix initialWindow = 5 and look at different settings of
+the other two arguments. In the plot below, rows in each panel
+correspond to different data splits (i.e. resamples) and the columns
+correspond to different data points. Also, red indicates samples that
+are in included in the training set and the blue indicates samples in
+the test set. See more
+<a href="http://topepo.github.io/caret/data-splitting.html#data-splitting-for-time-series">here</a>.</p>
+
+<p><img src="/assets/images/Split_time-1.svg" alt="" /></p>
+
+<hr />
+
+<h3 id="4-feature-engineering">4. Feature Engineering</h3>
+
+<p>Before starting any modeling, there are some data process and feature
+engineering steps to take on:</p>
+
+<h4 id="feature-selection-with-random-forest">Feature selection with Random Forest</h4>
+
+<p>There are a lot of variables collected in the match report that are
+likely not predictive of a matches outcome. To remove those from the
+dataset, a random forest is used to determine which variables are
+relatively unimportant. Ultimately, I drop information about penalties,
+free kick shots off target, shots on target from free kicks, and
+information about shots taken from set pieces.</p>
+
+<p>In contrast, it appears that the number of shots within the penalty box,
+total shots on target, and overall numbers of attacks are the most
+predictive of match outcome.</p>
+
+<p><img src="/rsolter/rblogging/2020/05/05Feature%20Selection%20using%20Random%20Forest-1.png" alt="" /></p>
+
+<h4 id="feature-extraction-with-pca">Feature Extraction with PCA</h4>
+
+<p>Even after removing 10 features from the dataset, there are still a
+large number of predictors for each match’s outcome. To reduce the
+number of features while maximizing the amount of variation still
+explained, principal components analysis was applied as a
+<a href="https://topepo.github.io/caret/pre-processing.html#transforming-predictors">pre-processing
+technique</a>
+in caret.</p>
+
+<hr />
+
+<h3 id="5-distribution-of-outcomes-by-team">5. Distribution of Outcomes by Team</h3>
+
+<p>It’s worthwhile to point out that the distribution of outcomes is
+naturally different by team. Dominant teams like Juventus, Napoli, Roma,
+and Inter Milan all have win percentages over 50%. This class imbalance
+has consequences for the models built. However, for the example below,
+we’ll focus on Sampdoria which has a relatively balanced distribution of
+outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.</p>
+
+<p><img src="/rsolter/rblogging/2020/05/05outcome_viz-1.png" alt="" /></p>
+
+<h3 id="6-illustrative-example-with-uc-sampdoria">6. Illustrative Example with U.C Sampdoria</h3>
+
+<p>The records for Sampdoria have been broken apart into two datasets:
+<code class="language-plaintext highlighter-rouge">Samp_train</code> with records from the “2015-16”,“2016-17”,“2017-18”, and
+“2018-19” seasons and <code class="language-plaintext highlighter-rouge">Samp_test</code> which has records from the
+’2019-20<code class="language-plaintext highlighter-rouge">season. Each dataset has been scrubbed of the first three records from each season as they do not have lagged average values for the various features. Various models will be trained on the</code>Samp_train<code class="language-plaintext highlighter-rouge">set and then tested individually and in an ensemble on the</code>Samp_holdout`
+set.</p>
+
+<h4 id="multinomial-logistic-regression">Multinomial Logistic Regression</h4>
+
+<p>The multinomial logistic regression approach is done using the ‘nnet’
+package with the decay hyperparamter optimized on the basis of logLoss.</p>
+
+<p>Below you can see the summary of the model run, the confusion matrix is
+printed for a quick evaluation of this model.</p>
+
+<ul>
+  <li>The overall test accuracy of the model is 42.86% <em>(True
+positives+True negaives/N)</em></li>
+  <li>Precision among the classes is 25% for draws, 66.7% for losses, and
+42.8% for wins. This is a key metric because precision measures the
+number of correct predictions by class (e.g. of the 8 draws we
+predicted, 2 were correctly predicted)</li>
+  <li>Of equal importance is the recall which identifies the proportion of
+true cases that were correctly identified. In the case of our model,
+recall is 40% for draws, 40% for losses, and 50% for wins. So based
+upon our test set, the mode model is slightly better at predicting
+wins than losses or draws.</li>
+</ul>
+
+<!-- -->
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Penalized Multinomial Regression
+##
+## 140 samples
+##  31 predictor
+##   3 classes: 'D', 'L', 'W'
+##
+## Pre-processing: principal component signal extraction (31), centered
+##  (31), scaled (31)
+## Resampling: Rolling Forecasting Origin Resampling (1 held-out with no fixed window)
+## Summary of sample sizes: 10, 11, 12, 13, 14, 15, ...
+## Resampling results across tuning parameters:
+##
+##   decay  logLoss
+##   0e+00  6.806787
+##   1e-04  4.632432
+##   1e-01  1.921418
+##
+## logLoss was used to select the optimal model using the smallest value.
+## The final value used for the model was decay = 0.1.
+
+## Confusion Matrix and Statistics
+##
+##           Reference
+## Prediction D L W
+##          D 2 3 3
+##          L 2 4 0
+##          W 1 3 3
+##
+## Overall Statistics
+##                                           
+##                Accuracy : 0.4286          
+##                  95% CI : (0.2182, 0.6598)
+##     No Information Rate : 0.4762          
+##     P-Value [Acc &gt; NIR] : 0.7427          
+##                                           
+##                   Kappa : 0.1572          
+##                                           
+##  Mcnemar's Test P-Value : 0.2407          
+##
+## Statistics by Class:
+##
+##                      Class: D Class: L Class: W
+## Precision             0.25000   0.6667   0.4286
+## Recall                0.40000   0.4000   0.5000
+## F1                    0.30769   0.5000   0.4615
+## Prevalence            0.23810   0.4762   0.2857
+## Detection Rate        0.09524   0.1905   0.1429
+## Detection Prevalence  0.38095   0.2857   0.3333
+## Balanced Accuracy     0.51250   0.6091   0.6167
+</code></pre></div></div>
+
+<p>Also, the individual predictions and associated probabilities for
+Sampdoria’s first 21 matches in the 2019-20 season:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##    Actual Pred Accuracy          D          L          W
+## 1       W    W        1 0.06887713 0.44063949 0.49048339
+## 2       L    D        0 0.36585936 0.33011890 0.30402174
+## 3       L    L        1 0.18971648 0.66795494 0.14232857
+## 4       L    D        0 0.74400260 0.10408880 0.15190860
+## 5       D    D        1 0.43397850 0.14467471 0.42134679
+## 6       L    W        0 0.34001507 0.19228764 0.46769729
+## 7       D    W        0 0.16928031 0.15655922 0.67416048
+## 8       W    D        0 0.68714465 0.09674955 0.21610580
+## 9       D    L        0 0.06354499 0.73351542 0.20293958
+## 10      W    W        1 0.29975104 0.07681729 0.62343167
+## 11      L    L        1 0.03806716 0.81198931 0.14994354
+## 12      L    W        0 0.18501137 0.10127750 0.71371112
+## 13      W    D        0 0.85456378 0.04731457 0.09812165
+## 14      L    L        1 0.03189414 0.95813745 0.00996841
+## 15      D    L        0 0.17795686 0.75893398 0.06310916
+## 16      W    W        1 0.35362009 0.22578018 0.42059974
+## 17      L    L        1 0.27087522 0.64390458 0.08522020
+## 18      D    D        1 0.65329225 0.30309618 0.04361158
+## 19      L    D        0 0.47724780 0.21781474 0.30493746
+## 20      W    D        0 0.42689824 0.35668860 0.21641315
+## 21      L    W        0 0.34192660 0.12450207 0.53357133
+</code></pre></div></div>
+
+<h4 id="svm">SVM</h4>
+
+<p>The second model tried out is a support vector machine from the
+‘kernlab’ package.</p>
+
+<ul>
+  <li>The overall test accuracy of the model is 42.86%</li>
+  <li>Precision among the classes is 25% for draws, 66.7% for losses, and
+42.8% for wins.</li>
+  <li>Of equal importance is the recall which identifies the proportion of
+true cases that were correctly identified. In the case of our model,
+recall is 40% for draws, 40% for losses, and 50% for wins. So based
+upon our test set, the mode model is slightly better at predicting
+wins than losses or draws.</li>
+</ul>
+
+<!-- -->
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Penalized Multinomial Regression
+##
+## 140 samples
+##  31 predictor
+##   3 classes: 'D', 'L', 'W'
+##
+## Pre-processing: principal component signal extraction (31), centered
+##  (31), scaled (31)
+## Resampling: Rolling Forecasting Origin Resampling (1 held-out with no fixed window)
+## Summary of sample sizes: 10, 11, 12, 13, 14, 15, ...
+## Resampling results across tuning parameters:
+##
+##   decay  logLoss
+##   0e+00  6.806787
+##   1e-04  4.632432
+##   1e-01  1.921418
+##
+## logLoss was used to select the optimal model using the smallest value.
+## The final value used for the model was decay = 0.1.
+
+## Confusion Matrix and Statistics
+##
+##           Reference
+## Prediction D L W
+##          D 2 3 3
+##          L 2 4 0
+##          W 1 3 3
+##
+## Overall Statistics
+##                                           
+##                Accuracy : 0.4286          
+##                  95% CI : (0.2182, 0.6598)
+##     No Information Rate : 0.4762          
+##     P-Value [Acc &gt; NIR] : 0.7427          
+##                                           
+##                   Kappa : 0.1572          
+##                                           
+##  Mcnemar's Test P-Value : 0.2407          
+##
+## Statistics by Class:
+##
+##                      Class: D Class: L Class: W
+## Precision             0.25000   0.6667   0.4286
+## Recall                0.40000   0.4000   0.5000
+## F1                    0.30769   0.5000   0.4615
+## Prevalence            0.23810   0.4762   0.2857
+## Detection Rate        0.09524   0.1905   0.1429
+## Detection Prevalence  0.38095   0.2857   0.3333
+## Balanced Accuracy     0.51250   0.6091   0.6167
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">svm_pred_prob</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">predict</span><span class="p">(</span><span class="n">svm_mod</span><span class="p">,</span><span class="n">Samp_test</span><span class="p">,</span><span class="n">type</span><span class="o">=</span><span class="s2">"prob"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">svm_pred_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cbind</span><span class="p">(</span><span class="n">svm_pred_prob</span><span class="p">,</span><span class="n">Samp_test</span><span class="o">$</span><span class="n">outcome</span><span class="p">,</span><span class="n">svm_pred</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">()</span><span class="w">
+
+</span><span class="nf">names</span><span class="p">(</span><span class="n">svm_pred_out</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"D"</span><span class="p">,</span><span class="s2">"L"</span><span class="p">,</span><span class="s2">"W"</span><span class="p">,</span><span class="s2">"Actual"</span><span class="p">,</span><span class="s2">"Pred"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">svm_pred_out</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">Accuracy</span><span class="o">=</span><span class="n">ifelse</span><span class="p">(</span><span class="n">Actual</span><span class="o">==</span><span class="n">Pred</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">select</span><span class="p">(</span><span class="n">Actual</span><span class="p">,</span><span class="n">Pred</span><span class="p">,</span><span class="n">Accuracy</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">W</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##    Actual Pred Accuracy          D          L          W
+## 1       W    W        1 0.06887713 0.44063949 0.49048339
+## 2       L    D        0 0.36585936 0.33011890 0.30402174
+## 3       L    L        1 0.18971648 0.66795494 0.14232857
+## 4       L    D        0 0.74400260 0.10408880 0.15190860
+## 5       D    D        1 0.43397850 0.14467471 0.42134679
+## 6       L    W        0 0.34001507 0.19228764 0.46769729
+## 7       D    W        0 0.16928031 0.15655922 0.67416048
+## 8       W    D        0 0.68714465 0.09674955 0.21610580
+## 9       D    L        0 0.06354499 0.73351542 0.20293958
+## 10      W    W        1 0.29975104 0.07681729 0.62343167
+## 11      L    L        1 0.03806716 0.81198931 0.14994354
+## 12      L    W        0 0.18501137 0.10127750 0.71371112
+## 13      W    D        0 0.85456378 0.04731457 0.09812165
+## 14      L    L        1 0.03189414 0.95813745 0.00996841
+## 15      D    L        0 0.17795686 0.75893398 0.06310916
+## 16      W    W        1 0.35362009 0.22578018 0.42059974
+## 17      L    L        1 0.27087522 0.64390458 0.08522020
+## 18      D    D        1 0.65329225 0.30309618 0.04361158
+## 19      L    D        0 0.47724780 0.21781474 0.30493746
+## 20      W    D        0 0.42689824 0.35668860 0.21641315
+## 21      L    W        0 0.34192660 0.12450207 0.53357133
+</code></pre></div></div>
+
+<h4 id="random-forest">Random Forest</h4>
+
+<p>The random forest model is impemented with the ‘ranger’ package and
+tuned on the following hyper parameters:</p>
+
+<ul>
+  <li>
+    <p><em>Number of Randomly Selected Predictors (mtry, numeric)</em></p>
+  </li>
+  <li>
+    <p><em>Splitting Rule (splitrule, character)</em></p>
+  </li>
+  <li>
+    <p><em>Minimal Node Size (min.node.size, numeric)</em></p>
+  </li>
+  <li>The overall test accuracy of the random forest model is equivalent
+to the multinomial logistic model: 42.86%_</li>
+  <li>Precision among the classes is 0% for draws, 50% for losses, and 40%
+for wins.</li>
+  <li>Finally, recall is 0% for draws, 30% for losses, and 100% for wins.
+So based upon our test set, the mode model is slightly better at
+predicting wins than losses or draws.</li>
+</ul>
+
+<!-- -->
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Random Forest
+##
+## 140 samples
+##  31 predictor
+##   3 classes: 'D', 'L', 'W'
+##
+## Pre-processing: principal component signal extraction (31), centered
+##  (31), scaled (31)
+## Resampling: Rolling Forecasting Origin Resampling (1 held-out with no fixed window)
+## Summary of sample sizes: 10, 11, 12, 13, 14, 15, ...
+## Resampling results across tuning parameters:
+##
+##   mtry  splitrule   min.node.size  logLoss
+##    4    gini        1              1.078672
+##    4    gini        2              1.065674
+##    4    gini        3              1.073515
+##    4    extratrees  1              1.083181
+##    4    extratrees  2              1.071212
+##    4    extratrees  3              1.082491
+##    4    hellinger   1                   NaN
+##    4    hellinger   2                   NaN
+##    4    hellinger   3                   NaN
+##    5    gini        1              1.073001
+##    5    gini        2              1.071911
+##    5    gini        3              1.070481
+##    5    extratrees  1              1.087030
+##    5    extratrees  2              1.078439
+##    5    extratrees  3              1.072105
+##    5    hellinger   1                   NaN
+##    5    hellinger   2                   NaN
+##    5    hellinger   3                   NaN
+##    6    gini        1              1.075395
+##    6    gini        2              1.071450
+##    6    gini        3              1.074042
+##    6    extratrees  1              1.074971
+##    6    extratrees  2              1.071136
+##    6    extratrees  3              1.073233
+##    6    hellinger   1                   NaN
+##    6    hellinger   2                   NaN
+##    6    hellinger   3                   NaN
+##    7    gini        1              1.074103
+##    7    gini        2              1.079132
+##    7    gini        3              1.070184
+##    7    extratrees  1              1.069047
+##    7    extratrees  2              1.078071
+##    7    extratrees  3              1.077845
+##    7    hellinger   1                   NaN
+##    7    hellinger   2                   NaN
+##    7    hellinger   3                   NaN
+##    8    gini        1              1.077058
+##    8    gini        2              1.077644
+##    8    gini        3              1.092078
+##    8    extratrees  1              1.077891
+##    8    extratrees  2              1.066978
+##    8    extratrees  3              1.079173
+##    8    hellinger   1                   NaN
+##    8    hellinger   2                   NaN
+##    8    hellinger   3                   NaN
+##    9    gini        1              1.080256
+##    9    gini        2              1.080160
+##    9    gini        3              1.077094
+##    9    extratrees  1              1.078441
+##    9    extratrees  2              1.074952
+##    9    extratrees  3              1.075924
+##    9    hellinger   1                   NaN
+##    9    hellinger   2                   NaN
+##    9    hellinger   3                   NaN
+##   10    gini        1              1.073616
+##   10    gini        2              1.071328
+##   10    gini        3              1.081807
+##   10    extratrees  1              1.069929
+##   10    extratrees  2              1.057677
+##   10    extratrees  3              1.062313
+##   10    hellinger   1                   NaN
+##   10    hellinger   2                   NaN
+##   10    hellinger   3                   NaN
+##
+## logLoss was used to select the optimal model using the smallest value.
+## The final values used for the model were mtry = 10, splitrule = extratrees
+##  and min.node.size = 2.
+
+## Confusion Matrix and Statistics
+##
+##           Reference
+## Prediction D L W
+##          D 0 0 1
+##          L 3 4 1
+##          W 2 6 4
+##
+## Overall Statistics
+##                                           
+##                Accuracy : 0.381           
+##                  95% CI : (0.1811, 0.6156)
+##     No Information Rate : 0.4762          
+##     P-Value [Acc &gt; NIR] : 0.8629          
+##                                           
+##                   Kappa : 0.0387          
+##                                           
+##  Mcnemar's Test P-Value : 0.0750          
+##
+## Statistics by Class:
+##
+##                      Class: D Class: L Class: W
+## Precision             0.00000   0.5000   0.3333
+## Recall                0.00000   0.4000   0.6667
+## F1                        NaN   0.4444   0.4444
+## Prevalence            0.23810   0.4762   0.2857
+## Detection Rate        0.00000   0.1905   0.1905
+## Detection Prevalence  0.04762   0.3810   0.5714
+## Balanced Accuracy     0.46875   0.5182   0.5667
+</code></pre></div></div>
+
+<p>In general, the random forest over-estimates wins, and doesn’t predict a
+single draw.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##    Actual Pred Accuracy     D     L     W
+## 1       W    W        1 0.138 0.368 0.494
+## 2       L    W        0 0.245 0.282 0.473
+## 3       L    L        1 0.183 0.422 0.395
+## 4       L    W        0 0.346 0.284 0.370
+## 5       D    W        0 0.210 0.394 0.396
+## 6       L    W        0 0.246 0.335 0.419
+## 7       D    W        0 0.220 0.276 0.504
+## 8       W    D        0 0.357 0.297 0.346
+## 9       D    L        0 0.157 0.503 0.340
+## 10      W    W        1 0.234 0.274 0.492
+## 11      L    L        1 0.151 0.559 0.290
+## 12      L    W        0 0.203 0.344 0.453
+## 13      W    L        0 0.311 0.348 0.341
+## 14      L    L        1 0.254 0.528 0.218
+## 15      D    L        0 0.297 0.389 0.314
+## 16      W    W        1 0.264 0.284 0.452
+## 17      L    L        1 0.178 0.466 0.356
+## 18      D    L        0 0.224 0.502 0.274
+## 19      L    W        0 0.273 0.346 0.381
+## 20      W    W        1 0.214 0.328 0.458
+## 21      L    W        0 0.286 0.287 0.427
+</code></pre></div></div>
+
+<h4 id="ensemble">Ensemble</h4>
+
+<p>In statistics and machine learning, ensemble methods use multiple
+learning algorithms to obtain better predictive performance than could
+be obtained from any of the constituent learning algorithms alone. Using
+the ‘caretEnsemble’ package, a ensemble model will be created that uses
+the three models above.</p>
+
+<hr />
+
+<h4 id="results">Results</h4>
+
+<hr />
+
+<h3 id="7-considering-betting-on-draws">7. Considering Betting on Draws</h3>
+
+<p>Soccer is different from every other popular sport in that it allows for
+draws. For the casual sports fan who is drawn to watching sports to see
+two teams compete and a winner declared, this can seem incredibly
+boring.</p>
+
+<p>This mentality is reflected in the odds offered by odds makers who
+consistently offer slightly better odds on draws, because casual punters
+are more likely to bet on one of the two teams winning. This is
+reflected in the historical odds data for Serie A. Draws have a minimum
+odds of 2.4, over twice the minimum of either home or away outcomes.
+Average returns are highest for an away win (4.86), then a draw (4.06),
+and last a home win (2.86). This is unsurprisngly if we consider how
+home advantage affects matches.</p>
+
+<p><img src="/rsolter/rblogging/2020/05/05Betting%20on%20Draws-1.png" alt="" /></p>
+
+<p>A similarly striking pattern on returns is observed when filtering for
+odds that actually paid out. The mean payout among draws is now higher
+than away wins and the minimum payout is greater than twice that of away
+or home wins.</p>
+
+<p><img src="/rsolter/rblogging/2020/05/05Betting%20on%20Draws%202-1.png" alt="" /></p>
+
+<p>Given the higher payout of draws on average, it may make sense to
+re-cast the multi-nomial classification problem (Win, Loss, Draw) to a
+binomial classification problem with a focus on identifying draws
+(identifying non-draws wouldn’t be helpful for betting purposes).</p>
+
+<hr />
+
+<h3 id="7-overall-results">7. Overall Results</h3>
+
+<hr />
+
+<h3 id="8-conclusion-and-next-steps">8. Conclusion and Next Steps</h3>
+
+<ul>
+  <li>Gather more data: xG, player-level data, etc.
+    <ul>
+      <li>Find a way to account for class imbalance through over or under
+sampling</li>
+      <li>Investigate other modeling approaches. Caret has over <a href="https://topepo.github.io/caret/train-models-by-tag.html">238
+models</a>
+that can be incorporated along with all their tuning parameters.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>Code for this project can be found on my <a href="https://github.com/rsolter/Serie-A-Predictions">GitHub</a></em></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#caret" class="page__taxonomy-item" rel="tag">caret</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#r" class="page__taxonomy-item" rel="tag">R</a>
+    
+    </span>
+  </p>
+
+
+      </footer>
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Ravi Solter. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

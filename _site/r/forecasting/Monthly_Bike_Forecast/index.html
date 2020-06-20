@@ -1,0 +1,595 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Forecasting Capital Bikeshare usage with ARIMA -</title>
+<meta name="description" content="Predicting monthly Bikeshare usage ARIMA modeling and average temperature data ">
+
+
+  <meta name="author" content="Ravi Solter">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="">
+<meta property="og:title" content="Forecasting Capital Bikeshare usage with ARIMA">
+<meta property="og:url" content="http://localhost:4000/r/forecasting/Monthly_Bike_Forecast/">
+
+
+  <meta property="og:description" content="Predicting monthly Bikeshare usage ARIMA modeling and average temperature data ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-11-01T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/r/forecasting/Monthly_Bike_Forecast/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Ravi Solter",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/index.html"><img src="/assets/images/Navigation Images/house.png"> Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/"><img src="/assets/images/Navigation Images/posts.png"> Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects/"><img src="/assets/images/Navigation Images/projects.png"> Projects</a>
+            </li><li class="masthead__menu-item">
+              <a href="/certs/"><img src="/assets/images/Navigation Images/certificate.png"> Certifications</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/"><img src="/assets/images/Navigation Images/user.png"> About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/va_photo-01.jpeg" alt="Ravi Solter" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Ravi Solter</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Data scientist at Marriott International, working in R and Python</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Washington DC</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/rsolter" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/rsolter/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:ravisolter@gmail.com">
+            <meta itemprop="email" content="ravisolter@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Forecasting Capital Bikeshare usage with ARIMA">
+    <meta itemprop="description" content="Predicting monthly Bikeshare usage ARIMA modeling and average temperature data">
+    <meta itemprop="datePublished" content="2019-11-01T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-biking"></i> Content</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#forecasting-capital-bikeshare-usage-with-arima">Forecasting Capital Bikeshare usage with ARIMA</a></li>
+  <li><a href="#arima-theory">ARIMA Theory</a></li>
+  <li><a href="#application-to-dc-bike-share">Application to DC Bike Share</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="forecasting-capital-bikeshare-usage-with-arima">Forecasting Capital Bikeshare usage with ARIMA</h2>
+
+<p>Having used DC Capital BikeShare data
+<a href="https://rsolter.github.io/r/forecasting/Monthly_Bike_Forecast_ETS/">previously</a>
+to forecast with exponential smoothing models, I wanted to do the same
+with ARIMA modeling. ARIMA a complementary method for forecasting
+univariate timeseries, but it also allows for explanatory variables in
+the regression. In this case, I’ve added monthly average temperatures as
+a regressor. The
+<a href="https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month">data</a>
+was downloaded from NOAA and represents measurements from the Regan
+National Airport weather station.</p>
+
+<hr />
+
+<p><strong>Tools for Stationarity</strong></p>
+
+<p>A requirement of ARIMA modeling is stationarity of the series which is
+achieved by having <em>time invariant</em> mean, variance, and co-variance of
+the series. Any time series with a trend or seasonality is not
+stationary.</p>
+
+<p>One tool used to achieve stationarity is <strong>differencing.</strong> or computing
+the difference between consecutive observations. As an example, we can
+show this using stock data downloaded using the <strong>quantmod</strong> R package.
+By differencing the data by just one observation, the trend in the stock
+prices completely disappears:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] "AAPL"
+</code></pre></div></div>
+
+<p><img src="/rblogging/2019/11/01/Monthly_Bike_Forecast_files/differencing_example.png" alt="" class="align-center" /></p>
+
+<p>However, was that enough to achieve stationarity? Formally, stationarity
+can be assessed by using one of many unit tests, one of which is the
+Kwiatkowski-Phillips-Schmidt-Shin (<strong>KPSS</strong>) test. The null hypothesis
+for the KPSS test is that the data are stationary, and we look for
+evidence that the null hypothesis is false. Consequently, small p-values
+(e.g., less than 0.05), indicate the data is not stationary and suggest
+differencing is required. Read more
+<a href="https://nwfsc-timeseries.github.io/atsa-labs/sec-boxjenkins-aug-dickey-fuller.html">here</a>.</p>
+
+<p>In the first test on the raw data, the null hypothesis of stationarity
+is rejected. Run a second time on differenced data, the null hypothesis
+is not rejected, indicating that our differencing worked!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##
+##  KPSS Test for Level Stationarity
+##
+## data:  closingApple
+## KPSS Level = 1.9588, Truncation lag parameter = 4, p-value = 0.01
+
+##
+##  KPSS Test for Level Stationarity
+##
+## data:  DclosingApple
+## KPSS Level = 0.187, Truncation lag parameter = 4, p-value = 0.1
+</code></pre></div></div>
+
+<p>Standard variance is another requirement for stationarity. Handling
+non-standard variance is done by transforming the time series, either
+with logarithmic functions or the Box-Cox transformation. To show it in
+action, I’ll create a fake dataset whose variance grows over time:</p>
+
+<p><img src="/rblogging/2019/11/01/Monthly_Bike_Forecast_files/heteroskedasticity-1.png" alt="" class="align-center" /></p>
+
+<p>And use BoxCox.lambda() to determine the correct lambda for transforming
+the data to get a constant variance:</p>
+
+<p><img src="/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Box-Cox-1.png" alt="" class="align-center" /></p>
+
+<h2 id="arima-theory">ARIMA Theory</h2>
+
+<p>ARIMA is an acronym for Auto Regressive (AR) Integrated (I) Moving
+Average (MA) and can be implemented in R using the automated function
+<code class="language-plaintext highlighter-rouge">auto.arima</code> from the forecast package. ARIMA modeling is best
+understood by breaking it into its components:</p>
+
+<p><strong>Auto-regressive</strong> models forecast using a linear combination of past
+values of the variable. An AR model of order <em>p</em> can be written as:</p>
+
+<p><em>y</em><sub><em>t</em></sub> = <em>c</em> + <em>θ<strong>y*<sub>*t* − 1</sub> + *θ</strong>y</em><sub><em>t</em> − 2</sub> + … + <em>θ**y</em><sub><em>t</em> − <em>p</em></sub> + <em>ϵ</em><sub><em>t</em></sub></p>
+
+<p>Where <em>ϵ</em> is white noise and the model is denoted <strong>AR(<em>p</em>)</strong>, an
+auto-regressive model of order p. Read more
+<a href="https://otexts.com/fpp2/AR.html">here</a></p>
+
+<p><strong>Moving Average</strong> models use past values forecast errors as regressors
+for forecasting:</p>
+
+<p><em>y</em><sub><em>t</em></sub> = <em>c</em> + <em>ϵ</em><sub><em>t</em></sub> + <em>θ</em><sub>1</sub><em>ϵ</em><sub><em>t</em> − 1</sub> + <em>θ</em><sub>2</sub><em>ϵ</em><sub><em>t</em> − 2</sub> + … + <em>θ</em><sub><em>q</em></sub><em>ϵ</em><sub><em>t</em> − <em>q</em></sub>
+ Again, in this model, <em>ϵ</em> is white noise and the model is denoted
+<strong>MA(<em>q</em>)</strong>, a moving-average model of order q. Read more
+<a href="https://otexts.com/fpp2/MA.html">here</a></p>
+
+<p><strong>ARIMA Formulation</strong></p>
+
+<p>Combining the autoregression and moving average model, we obtain a
+non-seasonal ARIMA model which is denoted as
+<strong>ARIMA</strong>(<em>p,d,q</em>)<strong>model</strong>, where</p>
+
+<ul>
+  <li>p - order of the auto-regressive part</li>
+  <li>d - degree of first differencing involved</li>
+  <li>q - order of the moving average part</li>
+</ul>
+
+<p>The <strong>seasonal</strong> version of ARIMA builds upon this to include 4
+additional seasonal terms:</p>
+
+<ul>
+  <li>m - number of observations per year (12 for months, 4 for quarters,
+etc.)</li>
+  <li>P - order of the seasonal auto-regressive part</li>
+  <li>D - degree of first differencing involved for seasonal observations</li>
+  <li>Q - order of the seasonal moving average part</li>
+</ul>
+
+<hr />
+
+<h2 id="application-to-dc-bike-share">Application to DC Bike Share</h2>
+
+<p>Now we’ll apply the ARIMA model to the monthly bike share data while
+using the temperature data as a regressor.</p>
+
+<p>From the initial plot of the bike data, we can tell the data has clear
+seasonality with many fewer riders in the winter months. At the same
+time, we see an growth in the number of total riders that has appeared
+to slow in recent years. In the plot for temperature we see a
+predicatble seasonality whose peaks and valleys remain almost equal in
+size throughout the entire time frame:</p>
+
+<p><img src="/rblogging/2019/11/01/Monthly_Bike_Forecast_files/Train_Plots.png" alt="" class="align-center" /></p>
+
+<p>The function <strong>auto.arima()</strong> automates the process of choosing the
+parameters. <a href="https://otexts.com/fpp2/arima-r.html">‘The auto.arima() function in R uses a variation of the
+Hyndman-Khandakar algorithm, which combines unit root tests,
+minimisation of the AICc and MLE to obtain an ARIMA
+model’</a>.</p>
+
+<p>A seasonal ARIMA model produces a MAPE of 9.81% on the training set and
+a similar MAPE on the test set (9.6%)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Series: bike_train
+## ARIMA(0,1,4)(0,1,0)[12]
+##
+## Coefficients:
+##           ma1      ma2     ma3      ma4
+##       -0.7402  -0.1356  0.3388  -0.3313
+## s.e.   0.1096   0.1548  0.1198   0.1373
+##
+## sigma^2 estimated as 964359991:  log likelihood=-822.08
+## AIC=1654.15   AICc=1655.09   BIC=1665.4
+##
+## Training set error measures:
+##                     ME     RMSE      MAE       MPE     MAPE      MASE
+## Training set -3688.112 27691.88 19733.45 -3.736181 9.817585 0.4543361
+##                    ACF1
+## Training set 0.01308924
+</code></pre></div></div>
+
+<p><img src="/rblogging/2019/11/01/Monthly_Bike_Forecast_files/arima1-1.png" alt="" class="align-center" /></p>
+
+<p>Second attempt at auto.arima() with NOAA data used as a regressor,
+results in slightly worse performance. The training MAPE is 11.9% and
+the test MAPE is 10.6%. Why might this be? It could be that the
+temperature isn’t actually a good predictor of ridership, at least at a
+monthly level. Referring to the charts above, it’s clear that the
+temperature data reflects the seasonality in the data, but that’s also
+built into our auto.arima() function with the seasonal=“TRUE” argument
+and m=12 parameter, so perhaps avg. monthly temperature is unecessary
+for building our model.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Series: bike_train
+## Regression with ARIMA(0,1,2)(1,0,0)[12] errors
+##
+## Coefficients:
+##           ma1      ma2    sar1     drift       xreg
+##       -0.3702  -0.4345  0.5719  3247.913  3798.2219
+## s.e.   0.1142   0.1118  0.1043  1029.499   365.4886
+##
+## sigma^2 estimated as 535667157:  log likelihood=-940.59
+## AIC=1893.17   AICc=1894.29   BIC=1907.61
+##
+## Training set error measures:
+##                     ME     RMSE     MAE      MPE     MAPE      MASE        ACF1
+## Training set -291.7736 22292.25 18183.7 1.379566 11.88621 0.4186552 -0.02153787
+</code></pre></div></div>
+
+<p><img src="/rblogging/2019/11/01/Monthly_Bike_Forecast_files/arima2-1.png" alt="" class="align-center" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#forecasting" class="page__taxonomy-item" rel="tag">forecasting</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#r" class="page__taxonomy-item" rel="tag">R</a>
+    
+    </span>
+  </p>
+
+
+      </footer>
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Ravi Solter. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

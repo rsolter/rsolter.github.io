@@ -1,0 +1,857 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Data Science on Chrome OS + Linux -</title>
+<meta name="description" content="Instructions for how to enable Linux on a Chromebook and begin running a data science toolkit on Debian, including R, Python, Jupyter, git, etc. ">
+
+
+  <meta name="author" content="Ravi Solter">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="">
+<meta property="og:title" content="Data Science on Chrome OS + Linux">
+<meta property="og:url" content="http://localhost:4000/linux/github/r/python/reference/DSonChromeOS/">
+
+
+  <meta property="og:description" content="Instructions for how to enable Linux on a Chromebook and begin running a data science toolkit on Debian, including R, Python, Jupyter, git, etc. ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-04-04T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/linux/github/r/python/reference/DSonChromeOS/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Ravi Solter",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/index.html"><img src="/assets/images/Navigation Images/house.png"> Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/"><img src="/assets/images/Navigation Images/posts.png"> Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects/"><img src="/assets/images/Navigation Images/projects.png"> Projects</a>
+            </li><li class="masthead__menu-item">
+              <a href="/certs/"><img src="/assets/images/Navigation Images/certificate.png"> Certifications</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/"><img src="/assets/images/Navigation Images/user.png"> About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/va_photo-01.jpeg" alt="Ravi Solter" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Ravi Solter</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Data scientist at Marriott International, working in R and Python</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Washington DC</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/rsolter" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/rsolter/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:ravisolter@gmail.com">
+            <meta itemprop="email" content="ravisolter@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Data Science on Chrome OS + Linux">
+    <meta itemprop="description" content="Instructions for how to enable Linux on a Chromebook and begin running a data science toolkit on Debian, including R, Python, Jupyter, git, etc.">
+    <meta itemprop="datePublished" content="2020-04-04T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cogs"></i> Content</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#data-science-on-chrome-os--linux">Data Science on Chrome OS + Linux</a></li>
+  <li><a href="#1-enabling-and-setting-up-linux">1. Enabling and Setting Up Linux</a></li>
+  <li><a href="#2-required-and-suggested-linux-software-libraries">2. Required and Suggested Linux Software, Libraries</a></li>
+  <li><a href="#3-setting-up-git">3. Setting up git</a></li>
+  <li><a href="#4-installing-python-via-anaconda">4. Installing Python via Anaconda</a></li>
+  <li><a href="#5-r-and-r-studio">5. R and R Studio</a></li>
+  <li><a href="#appendix">Appendix</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="data-science-on-chrome-os--linux">Data Science on Chrome OS + Linux</h2>
+
+<p><img src="/assets/images/pixelbook_ds.jpg" alt="DS_Pixelbook" class="align-center" /></p>
+
+<p>ChromeOS is a linux-based operating system developed by Google and is the default OS on all Chromebooks. It’s a very lightweight OS and was initially limited Chrome and the suite of Google office applications. However, overtime it has grown to support Android Apps as well as Linux applications. This post documents the steps I took to set up a linux-based Data Science tool kit on my Pixelbook, including git, Python (Anaconda distribution), and R (and R Studio).</p>
+
+<p>Note that I am working with the Debian (10) distribution of Linux.</p>
+
+<h2 id="1-enabling-and-setting-up-linux">1. Enabling and Setting Up Linux</h2>
+
+<ol>
+  <li>Set up Linux on your Chromebook following the instructions on <a href="[https://support.google.com/chromebook/answer/9145439?hl=en](https://support.google.com/chromebook/answer/9145439?hl=en)">Google Support</a>. Note that Debian is the default distribution.</li>
+  <li>Set password for Linux:
+    <ul>
+      <li>Switch to root with <code class="language-plaintext highlighter-rouge">$ sudo su</code></li>
+      <li>Run <code class="language-plaintext highlighter-rouge">passwd your-username-here</code></li>
+      <li>It will prompt you twice for a new password. To exit, type exit`</li>
+    </ul>
+  </li>
+  <li>Update your Linux distro and packages from the terminal:
+  <code class="language-plaintext highlighter-rouge">sudo apt-get update &amp;&amp; sudo apt-get dist-upgrade</code></li>
+</ol>
+
+<h2 id="2-required-and-suggested-linux-software-libraries">2. Required and Suggested Linux Software, Libraries</h2>
+
+<p><strong>Install CL Utilities</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- `sudo apt install nano` _Command line text editor_
+- `sudo apt install gdebi` _deb package installer_
+- `sudo apt install tree` _Utility for recursive directory listing_
+- `sudo pip install csvkit` _Utility for working with CSVs on the command line_
+</code></pre></div></div>
+
+<p><strong>Install Atom</strong> - Text editor with embedded git control</p>
+<ol>
+  <li>Download latest .deb file from <a href="https://atom.io/">https://atom.io/</a></li>
+  <li>Navigate to wherever the .deb file is saved and run <code class="language-plaintext highlighter-rouge">sudo gdebi &lt;deb_file_name&gt;</code></li>
+</ol>
+
+<p><strong>Install Debian Backports</strong></p>
+
+<p>Debian is a very stable distribution of Linux and as a feature doesn’t stay as up to date as others automatically. For example, when I first installed R without backports, the most up to date version I could install was 1.5 years old. To get around this, you can install Debian backports. Explainer article <a href="https://linuxconfig.org/how-to-install-and-use-debian-backports">here</a> and <a href="https://chromeunboxed.com/add-debian-buster-backports-chromebook-chrome-os-updated-packages/">here</a></p>
+
+<p>Instructions <a href="https://www.linuxuprising.com/2019/12/how-to-install-latest-firefox-non-esr.html">here</a></p>
+
+<ul>
+  <li>Open <code class="language-plaintext highlighter-rouge">/etc/apt/sources.list</code> as root with a text editor:
+<code class="language-plaintext highlighter-rouge">sudo nano /etc/apt/sources.list</code></li>
+  <li>At the end of the file add the following line
+<code class="language-plaintext highlighter-rouge">deb http://deb.debian.org/debian/ unstable main contrib non-free</code></li>
+</ul>
+
+<p><strong>Debian Backports – OPTIONAL</strong> - Set a low pin priority for the Debian Unstable repository so your system doesn’t automatically install packages from it unless you manually specify this.</p>
+<ul>
+  <li>Create and open a file <strong>/etc/apt/preferences.d/99pin-unstable</strong> as root with a text editor, for example using nano command line text editor:</li>
+  <li><code class="language-plaintext highlighter-rouge">sudo nano /etc/apt/preferences.d/99pin-unstable</code></li>
+  <li>
+    <p>Paste the following in this file:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    `Package: *
+  	    Pin: release a=stable
+  	    Pin-Priority: 900
+</code></pre></div>    </div>
+
+  	    Package: *
+  	    Pin release a=unstable
+  	    Pin-Priority: 10`
+  </li>
+</ul>
+
+<p><strong>Installing Linux libraries</strong></p>
+
+<p>In attempting to install certain packages on R, I was receiving error messaging pointing to missing libraries in my Linux install. For example, ‘rvest’ wouldn’t install initially because ‘libcurl’ was not installed by default and <a href="https://community.rstudio.com/t/packages-installation-process-failed-on-linux-probably-due-to-missing-path-in-the-pkg-config-search-path/50619">needed to be</a>.</p>
+
+<p>Note that some instructions will ask that you <a href="https://tecadmin.net/add-apt-repository-ubuntu/">add-apt-repository</a> before installing the software itself</p>
+
+<p>In total, I found myself needing to install the following to support installation of all the R packages I wanted to use (many pertained to mapping):</p>
+
+<p>Required for <strong>devtools</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  -   `sudo apt install libcurl4-openssl-dev`
+
+  -   `sudo apt install libssl-dev`
+
+  -   `sudo apt install libxml2-dev`
+</code></pre></div></div>
+
+<p>Required for <strong>sf</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  -   `sudo apt install libudunits2-dev`
+
+  -   `sudo apt install gdal-bin`
+
+  -   `sudo apt install libgdal-dev`
+</code></pre></div></div>
+
+<p>Required for <strong>geojsonio</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  -   `sudo apt install libprotobuf-dev protobuf-compiler`
+
+  -   `sudo apt install libv8-dev`
+
+  -   `sudo apt install libjq-dev`
+</code></pre></div></div>
+
+<p>Required for <strong>mapview</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  -   `sudo apt install libfontconfig1-dev`
+
+  -   `sudo apt install libcairo2-dev`
+</code></pre></div></div>
+
+<p>I also needed to <a href="https://www.r-bloggers.com/installing-rjava-on-ubuntu/">install Java</a> for <strong>xlsx</strong>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  -  `sudo apt-get install -y default-jre`
+  -  `sudo apt-get install -y default-jdk`
+  -  `sudo R CMD javareconf`
+</code></pre></div></div>
+
+<h2 id="3-setting-up-git">3. Setting up git</h2>
+
+<p>Instructions below are referred to the in <a href="https://kbroman.org/github_tutorial/pages/first_time.html">guide</a> guide written by Karl Broman.</p>
+
+<p><strong>Set up username and email:</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">$ git config --global user.name "John Doe"</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">$ git config --global user.email johndoe@example.com</code></p>
+
+<p>Setting up Atom as the default editor. Code for others linked <a href="https://help.github.com/en/github/using-git/associating-text-editors-with-git">here</a>
+<code class="language-plaintext highlighter-rouge">$ git config --global core.editor "atom --wait"</code></p>
+
+<p>Enable colored output in the terminal:
+<code class="language-plaintext highlighter-rouge">$ git config --global color.ui true</code></p>
+
+<p>Generate a SSH key using your email address associated with GitHub:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"</code></li>
+  <li>Press Enter to save the key to the default location (/Users/you/.ssh/id_rsa)</li>
+  <li>Type a secure passphrase twice</li>
+</ul>
+
+<p>Add the SSH key to the ssh-agent <a href="https://gist.github.com/JoaquimLey/31deaf857521319fcba8ee9f7af47299">link</a></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">$ eval "$(ssh-agent -s)"</code></li>
+  <li><code class="language-plaintext highlighter-rouge">$ ssh-add ~/.ssh/id_rsa</code></li>
+</ul>
+
+<p>Add the new SSH key to your GitHub Account <a href="https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">link</a></p>
+<ul>
+  <li>Copy the SSH key to your clipboard <code class="language-plaintext highlighter-rouge">cat ~/.ssh/id_rsa</code></li>
+  <li>Add SSH Key to your GitHub by accessing Settings &gt; SSH Keys and GPG Keys &gt; New SSH Key/Add SSH Key</li>
+</ul>
+
+<p><strong>Creating a new repository from a local working directory:</strong> <a href="https://help.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line">reference</a></p>
+
+<ul>
+  <li>Create a new repository on GitHub.com</li>
+  <li>Initialize git inside your working directory <code class="language-plaintext highlighter-rouge">git init</code></li>
+  <li>Add the files and commit <code class="language-plaintext highlighter-rouge">git add</code>, <code class="language-plaintext highlighter-rouge">git commit -m &lt;message_here&gt;</code></li>
+  <li>Add the URL for the remote repository where your local repository will be pushed and verify
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">$ git remote add origin &lt;remote repository URL&gt;</code></li>
+      <li><code class="language-plaintext highlighter-rouge">$ git remote -v</code></li>
+    </ul>
+  </li>
+  <li>Push the changes: <code class="language-plaintext highlighter-rouge">$ git push -u origin master</code></li>
+</ul>
+
+<p><strong>Adding a remote repository</strong> <a href="https://help.github.com/en/github/using-git/adding-a-remote">reference</a></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">$ git remote add origin https://github.com/user/repo.git</code></li>
+  <li>If the remote URL needs to be reset use <code class="language-plaintext highlighter-rouge">$ git remote set-url origin https://github.com/USERNAME/REPOSITORY.git</code></li>
+</ul>
+
+<p><strong>Cloning existing repositories:</strong></p>
+
+<ul>
+  <li>Navigate to the repository you’d like to clone on GitHub</li>
+  <li>Click “Clone or Download” then choose “Clone with HTTPS” and click the clipboard icon to copy</li>
+  <li>Within the terminal, navigate to whichever to the location where you want the cloned directory to be made</li>
+  <li>Type <code class="language-plaintext highlighter-rouge">git clone</code> and paste the copied HTTPS URL</li>
+  <li>Press ‘Enter’</li>
+</ul>
+
+<h2 id="4-installing-python-via-anaconda">4. Installing Python via Anaconda</h2>
+
+<p>The following are the necessary steps to install Python via Anaconda via with Spyder, Jupyter Notebooks, and Jupyer Labs included. Following guide posted <a href="https://randlow.github.io/posts/python/set-up-pixelbook-python/#install-nodejs">here</a>:</p>
+
+<p><strong>Required Files</strong></p>
+
+<ul>
+  <li>
+    <p>Install <em>nodejs</em> which is required for <em>tldr</em> and Jupyter Lab:</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>` $ curl -sL https://deb.nodesource.com/setup_10.x</td>
+          <td>sudo -E bash -`</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><code class="language-plaintext highlighter-rouge">$ sudo apt-get install -y nodejs</code></p>
+
+    <p><code class="language-plaintext highlighter-rouge">$ sudo apt-get install -y build-essential</code></p>
+  </li>
+  <li>
+    <p>Install <em>tldr</em> a more user-friendly version of <code class="language-plaintext highlighter-rouge">man</code>, short and useful help page for commands:</p>
+
+    <p><code class="language-plaintext highlighter-rouge">$ sudo npm install -g tldr</code></p>
+
+    <p><code class="language-plaintext highlighter-rouge">$ tldr --update</code></p>
+
+    <p><code class="language-plaintext highlighter-rouge">$ tldr conda</code></p>
+  </li>
+</ul>
+
+<p><strong>Install Anaconda and add Anaconda3 distribution to the Linux PATH</strong></p>
+
+<ol>
+  <li>
+    <p>Download Anaconda from the <a href="https://www.anaconda.com/download/#linux">official website</a> and install the .sh file using bash. Ensure that you are in your home directory before doing so (i.e., /home/USERNAME)
+<code class="language-plaintext highlighter-rouge">$ bash Anaconda3-x.x.x-Linux-x86_64.sh</code></p>
+  </li>
+  <li>
+    <p>Adding Anaconda3 to the PATH using vim:</p>
+  </li>
+</ol>
+
+<ul>
+  <li>
+    <p>Open the .bashrc file: <code class="language-plaintext highlighter-rouge">vim ~/.bashrc</code></p>
+  </li>
+  <li>
+    <p>Add the following line <code class="language-plaintext highlighter-rouge">export PATH="/home/&lt;USERNAME&gt;/anaconda3/bin/:$PATH"</code></p>
+  </li>
+  <li>
+    <p>Rerun the .bashrc file <code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></p>
+  </li>
+  <li>
+    <p>Activate the Python environment to check that you have successfully added Anaconda Python executable files into your Linux PATH. <code class="language-plaintext highlighter-rouge">source activate root</code></p>
+  </li>
+</ul>
+
+<p><strong>Setting up Jupyter Notebooks, Jupyter Lab, Spyder, &amp; Anaconda Navigator</strong></p>
+
+<p>Follow steps in the same <a href="https://randlow.github.io/posts/python/set-up-pixelbook-python/#id12">blog</a> referred to above:</p>
+
+<ul>
+  <li>
+    <p>Obtain the IP address: <code class="language-plaintext highlighter-rouge">ip addr</code></p>
+  </li>
+  <li>
+    <p>Analyze output and copy the second IP address refered to in the ‘Broadcast section’. Something like <strong>100.115.92.205</strong></p>
+  </li>
+  <li>
+    <p>Generate a <em>jupyter_notebook_config.py</em> in the directory <em>/home/&lt; username &gt;/.jupyter/.</em> (create directory, if needed):</p>
+
+    <p><code class="language-plaintext highlighter-rouge">jupyter notebook --generate-config</code></p>
+  </li>
+  <li>
+    <p>Open the config file and update the following lines under ‘NotebookApp (Jupyter App Configuration):</p>
+
+    <p><code class="language-plaintext highlighter-rouge">#c.NotebookApp.allow_origin ='*' #allow all origins</code></p>
+
+    <p><code class="language-plaintext highlighter-rouge">#c.NotebookApp.ip = '100.115.92.205' # listen to specific IP address</code></p>
+  </li>
+  <li>
+    <p>Test to ensure everything was installed correctly:
+   <code class="language-plaintext highlighter-rouge">jupyter notebook</code>
+   <code class="language-plaintext highlighter-rouge">jupyter lab</code>
+   <code class="language-plaintext highlighter-rouge">spyder</code>
+   <code class="language-plaintext highlighter-rouge">anaconda-navigator</code></p>
+  </li>
+</ul>
+
+<p><strong>Extra Python Libraries Installed</strong></p>
+
+<p><em>Web Scraping</em></p>
+<ul>
+  <li>‘BeautifulSoup’ <code class="language-plaintext highlighter-rouge">conda install -c anaconda beautifulsoup4</code></li>
+  <li>‘Selenium’ <code class="language-plaintext highlighter-rouge">conda install -c anaconda selenium</code></li>
+</ul>
+
+<p><em>Visualizations</em></p>
+<ul>
+  <li>‘Plotly/Orca’ <code class="language-plaintext highlighter-rouge">conda install -c plotly plotly-orca</code></li>
+  <li>‘Cufflinks’ <code class="language-plaintext highlighter-rouge">conda install -c conda-forge cufflinks-py</code></li>
+  <li>‘pydot’ <code class="language-plaintext highlighter-rouge">conda install pydot</code></li>
+</ul>
+
+<p><em>NLP</em></p>
+<ul>
+  <li>‘spacy’ - <code class="language-plaintext highlighter-rouge">conda install -c conda-forge spacy</code></li>
+</ul>
+
+<p><strong>Follow up steps for Selenium</strong></p>
+<ul>
+  <li>Install a browser of your choice on the Debian partition, I installed Chrome using instructions <a href="https://linuxize.com/post/how-to-install-google-chrome-web-browser-on-debian-9/">here</a></li>
+  <li>Download <a href="https://chromedriver.chromium.org/downloads">ChromeDriver - Webdriver</a></li>
+  <li>Copy the ‘chromedriver’ file to ‘/usr/local/bin’ using <code class="language-plaintext highlighter-rouge">sudo cp chromedriver /usr/local/bin</code></li>
+  <li>Run <code class="language-plaintext highlighter-rouge">sudo chmod ugo+x /usr/local/bin/chromedriver</code></li>
+</ul>
+
+<p>Alternatively, I could have installed Firefox and the <a href="https://www.mozilla.org/en-US/firefox/74.0.1/system-requirements/">required Libraries/Packages</a></p>
+
+<h2 id="5-r-and-r-studio">5. R and R Studio</h2>
+
+<p><strong>Installing current version of R on Debian</strong></p>
+
+<ul>
+  <li>Ensure Debian Unstable Repository is added to the sources.list</li>
+  <li>Add the CRAN repository to the list in sources.list Cran <a href="https://cran.r-project.org/bin/linux/debian/">link</a> here.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sudo nano /etc/apt/sources.list</code></li>
+      <li><code class="language-plaintext highlighter-rouge">deb http://cloud.r-project.org/bin/linux/debian buster-cran35/</code></li>
+    </ul>
+  </li>
+  <li>Following guide from <a href="https://www.digitalocean.com/community/tutorials/how-to-install-r-on-debian-9">Digital Ocean</a>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sudo apt install dirmngr --install-recommends</code></li>
+      <li><code class="language-plaintext highlighter-rouge">sudo apt install software-properties-common</code></li>
+      <li><code class="language-plaintext highlighter-rouge">sudo apt install apt-transport-https</code></li>
+    </ul>
+  </li>
+  <li>Fetch and import the current key from <a href="https://cran.r-project.org/bin/linux/debian/">Cran</a>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF'</code></li>
+    </ul>
+  </li>
+  <li>Install up to date version of R
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">apt-get update</code></li>
+      <li><code class="language-plaintext highlighter-rouge">apt-get install r-base r-base-dev</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>Download R Studio for <a href="https://rstudio.com/products/rstudio/download/#download">Ubuntu/Debian</a></p>
+  </li>
+  <li>Install R Studio <code class="language-plaintext highlighter-rouge">sudo gdebi &lt;rstudio deb file&gt;</code></li>
+</ul>
+
+<p><strong>Incorporating R into Anaconda/Jupyter Notebooks</strong></p>
+
+<p>Adding R to Jupyter notebooks installed via Anaconda is tricky. After a few failed attempts, I found the following worked (<a href="https://stackoverflow.com/questions/44056164/jupyter-client-has-to-be-installed-but-jupyter-kernelspec-version-exited-wit/47895042">stackoverflow link</a>):</p>
+
+<ul>
+  <li>
+    <p>Open R from the <strong>command line</strong></p>
+  </li>
+  <li>
+    <p>Install <a href="https://irkernel.github.io/installation/">IRKernel</a> as well as the following dependencies: ‘repr’, ‘IRdisplay’, ‘crayon’, ‘pbdZMQ’, ‘devtools’</p>
+  </li>
+  <li>
+    <p>Following <a href="https://irkernel.github.io/installation/">official instructions</a>, install ‘IRkernel’ and then make the kernel available to Jupyter by running the following:
+<code class="language-plaintext highlighter-rouge">IRkernel::installspec()</code> (for current user)
+<code class="language-plaintext highlighter-rouge">IRkernel::installspec(user = FALSE)</code> (for all users)</p>
+  </li>
+</ul>
+
+<p><strong>Installing Packages in R:</strong></p>
+
+<p><strong>Important note</strong>: Install packages from the command line in base R. Also, use <code class="language-plaintext highlighter-rouge">verbose=FALSE</code> when using install.packages()</p>
+
+<p>Among the packages <a href="https://support.rstudio.com/hc/en-us/articles/201057987-Quick-list-of-useful-R-packages">recommended by RStudio</a>, I installed the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  `install.packages("rvest","tidyverse","shiny","dtwclust","caret","caretEnsemble","RCurl","RANN","WDI","leaflet","sf","fields","RODBC","DBI","Hmisc","zoo","devtools","jsonlite","rmarkdown","randomForest","multcomp","kableExtra","data.table","reshape","tm","plotly","forecast","tseries", "geojsonio", "tmap","corrplot","nnet" "ggmap","mapdata","mapview","rgdal","spData","fpc","tidyquant")`
+</code></pre></div></div>
+
+<p>(<em>Ongoing issues with “xlsx” and Java</em>)</p>
+
+<p><strong>R Appendix</strong></p>
+
+<p>Links used in Troubleshooting IRKernel:</p>
+<ul>
+  <li>R Installation can break <a href="https://github.com/ContinuumIO/anaconda-issues/issues/11108">following a Conda R install</a></li>
+  <li><a href="https://stackoverflow.com/questions/44056164/jupyter-client-has-to-be-installed-but-jupyter-kernelspec-version-exited-wit">“jupyter kernelspec –version” exited with code 127</a></li>
+  <li><a href="https://community.rstudio.com/t/r-in-jupyter-under-linux/18594">R in Jupyter under Linux</a></li>
+  <li>Official Documentation [link](https://docs.anaconda.com/anaconda/user-guide/tasks/using-r-language/</li>
+  <li>Datacamp <a href="https://www.datacamp.com/community/blog/jupyter-notebook-r#comments">link</a></li>
+  <li>https://github.com/ContinuumIO/anaconda-issues/issues/11108</li>
+  <li>https://www.storybench.org/install-r-jupyter-notebook/</li>
+</ul>
+
+<h2 id="appendix">Appendix</h2>
+
+<p>Listed below are some additional utilities and short-cuts for working with Linux</p>
+
+<p><strong>ZSH</strong></p>
+
+<p>Set up <a href="https://github.com/ohmyzsh/ohmyzsh">ohmyzsh</a> to manage the zsh configuration. Getting started guide <a href="https://www.sitepoint.com/zsh-tips-tricks/">here</a></p>
+
+<p>Install ZSH:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sudo apt update</code></li>
+  <li><code class="language-plaintext highlighter-rouge">sudo apt upgrade</code></li>
+  <li><code class="language-plaintext highlighter-rouge">sudo apt install zsh</code></li>
+  <li>Verify installation: <code class="language-plaintext highlighter-rouge">zsh --version</code></li>
+  <li>Set zsh as the default shell <code class="language-plaintext highlighter-rouge">chsh -s $(which zsh)</code></li>
+  <li>Log out and log back in of shell, at which point you’ll be prompted with a few options for configuration. I’ve chosen <strong>2</strong> with the recommended configuration</li>
+</ul>
+
+<p>Install Oh My ZSH! <a href="https://ohmyz.sh/">official link</a></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code> or <code class="language-plaintext highlighter-rouge">sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"</code></li>
+</ul>
+
+<p>Customization</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- Open congif file: `sudo nano ~/.zshrc`
+
+- Note that default theme is set to 'robbyrussel'. This can be changed to any of the pre-installed themes or a [custom themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Customization)
+
+- Custom themes must be installed in the themes folder `~/.oh-my-zsh`
+</code></pre></div></div>
+
+<p><strong>ZSH/BASH</strong></p>
+
+<p>Temporarily switch between zsh and bash within the same terminal by executing <code class="language-plaintext highlighter-rouge">exec bash</code> or <code class="language-plaintext highlighter-rouge">exec zsh</code>.</p>
+
+<p>To source your profile at the same time, use <code class="language-plaintext highlighter-rouge">exec bash --login</code></p>
+
+<p>Set either to be the default by executing <code class="language-plaintext highlighter-rouge">chsh -s /bin/bash</code> or <code class="language-plaintext highlighter-rouge">chsh -s /bin/zsh</code></p>
+
+<p><strong>Aliases</strong></p>
+
+<p>Aliases are declared inside <code class="language-plaintext highlighter-rouge">~/.bashrc</code> and can be added using any text editor (e.g. <code class="language-plaintext highlighter-rouge">nano ~/.bashrc</code>)</p>
+
+<p>After adding aliases to the .bashrc, the aliases can be made availabe in the current session by typing <code class="language-plaintext highlighter-rouge">source ~/.bash_profile</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`# Juptyter Notebook
+alias jn="jupyter notebook"`
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#github" class="page__taxonomy-item" rel="tag">GitHub</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#python" class="page__taxonomy-item" rel="tag">python</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#reference" class="page__taxonomy-item" rel="tag">reference</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#r" class="page__taxonomy-item" rel="tag">R</a>
+    
+    </span>
+  </p>
+
+
+      </footer>
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Ravi Solter. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
