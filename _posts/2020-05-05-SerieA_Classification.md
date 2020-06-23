@@ -12,7 +12,6 @@ toc_icon: 'futbol'
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg){: .align-center}
 
 ### Predicting Soccer Match Outcomes using caret
-
 ### 1. Objective
 
 The goal of this post is to try and predict the outcome of soccer
@@ -1067,17 +1066,28 @@ In contrast, it appears that the number of shots within the penalty box,
 total shots on target, and overall numbers of attacks are the most
 predictive of match outcome.
 
-![](/rsolter/rblogging/2020/05/05Feature%20Selection%20using%20Random%20Forest-1.png)
+![](/rblogging/2020/05/05//Feature%20Selection%20using%20Random%20Forest-1.png)
 
 #### Feature Extraction with PCA
 
 Even after removing 10 features from the dataset, there are still a
-large number of predictors for each match’s outcome. To reduce the
-number of features while maximizing the amount of variation still
-explained, principal components analysis was applied as a
-[pre-processing
+large number of predictors for each match’s outcome many of which are
+strongly correlated. For example total shots from the home team
+(shots\_h) are strongly correlated with shots on target from the home
+team (shots\_on\_h), shots off target from the home team
+(shots\_off\_h), home scoring chances (scoring\_chances\_h), and saves
+made by the away team (saves\_a). The correlation matrix below shows
+these correlations with unlagged data.
+
+![](/rblogging/2020/05/05//correlation%20of%20raw%20data-1.png)
+
+To reduce the number of features while maximizing the amount of
+variation still explained, principal components analysis was applied as
+a [pre-processing
 technique](https://topepo.github.io/caret/pre-processing.html#transforming-predictors)
-in caret.
+in caret. PCA may remove interpretability of the models, but it will
+also help reduce the number of explanatory variables and help avoid
+over-fitting.
 
 ------------------------------------------------------------------------
 
@@ -1090,57 +1100,67 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-![](/rsolter/rblogging/2020/05/05outcome_viz-1.png)
+![](/rblogging/2020/05/05//outcome_viz-1.png)
 
 ### 6. Illustrative Example with U.C Sampdoria
 
 The records for Sampdoria have been broken apart into two datasets:
 `Samp_train` with records from the “2015-16”,“2016-17”,“2017-18”, and
-“2018-19” seasons and `Samp_test` which has records from the
-’2019-20`season. Each dataset has been scrubbed of the first three records from each season as they do not have lagged average values for the various features. Various models will be trained on the`Samp\_train`set and then tested individually and in an ensemble on the`Samp\_holdout\`
-set.
+“2018-19” seasons and `Samp_test` which has records from the ‘2019-20’
+season. Each dataset has been scrubbed of the first three records from
+each season as they do not have lagged average values for the various
+features. Various models will be trained on the `Samp_train` set and
+then tested individually and in an ensemble on the `Samp_test` set.
+
+Before modeling, caret’s *trainControl* function can be used to set up
+the training dataset in the same way for each model. In this case, the
+training dataset is being partitioned using the timeslice function so
+that the initial training data is made up of 10 observations
+(initialWindow) to predict the next match (horizon=1). This process is
+continued for each prediction with all historical data being used
+(fixedWindow=FALSE). **Note** that in this post, none of the models have
+had their hyperparameters tuned.
+
+``` r
+myTimeControl <- trainControl(method = "timeslice",
+                              initialWindow = 10,
+                              horizon = 1,
+                              fixedWindow = FALSE,
+                              summaryFunction = mnLogLoss,
+                              classProbs = TRUE)
+```
+
+#### Evaluation Metrics
+
+Each of the models will be measured by the same evaluation metrics:
+
+-   **Accuracy** *(TruePositives+TrueNegatives/N)* The number of correct
+    predictions divided by total number of predictions
+
+-   **Precision** *(TruePositives/(TruePositives + FalsePositives))* The
+    true positive rate class (e.g. Of the number of draws predicted, the
+    proption of correctly predicted draws)
+
+-   **Recall/Sensitivity** *(TruePositives/(TruePositives +
+    FalseNegatives))* The true negative rate by class (e.g. Of the
+    number of draws in the test dataset, the number of correctly
+    predicted draws).
 
 #### Multinomial Logistic Regression
 
 The multinomial logistic regression approach is done using the ‘nnet’
-package with the decay hyperparamter optimized on the basis of logLoss.
+package. Below you can see the summary of the model run, the confusion
+matrix is printed for a quick evaluation of this model.
 
-Below you can see the summary of the model run, the confusion matrix is
-printed for a quick evaluation of this model.
+-   **Accuracy** of the model is 42.86%
 
--   The overall test accuracy of the model is 42.86% *(True
-    positives+True negaives/N)*
--   Precision among the classes is 25% for draws, 66.7% for losses, and
-    42.8% for wins. This is a key metric because precision measures the
-    number of correct predictions by class (e.g. of the 8 draws we
-    predicted, 2 were correctly predicted)
--   Of equal importance is the recall which identifies the proportion of
-    true cases that were correctly identified. In the case of our model,
-    recall is 40% for draws, 40% for losses, and 50% for wins. So based
-    upon our test set, the mode model is slightly better at predicting
-    wins than losses or draws.
+-   **Precision** among the classes is 25.0% for draws, 66.7% for
+    losses, and 42.8% for wins
+
+-   **Recall/Sensitivity** was 40.0% for draws, 40.0% for losses, and
+    50.0% for wins.
 
 <!-- -->
-
-    ## Penalized Multinomial Regression
-    ##
-    ## 140 samples
-    ##  31 predictor
-    ##   3 classes: 'D', 'L', 'W'
-    ##
-    ## Pre-processing: principal component signal extraction (31), centered
-    ##  (31), scaled (31)
-    ## Resampling: Rolling Forecasting Origin Resampling (1 held-out with no fixed window)
-    ## Summary of sample sizes: 10, 11, 12, 13, 14, 15, ...
-    ## Resampling results across tuning parameters:
-    ##
-    ##   decay  logLoss
-    ##   0e+00  6.806787
-    ##   1e-04  4.632432
-    ##   1e-01  1.921418
-    ##
-    ## logLoss was used to select the optimal model using the smallest value.
-    ## The final value used for the model was decay = 0.1.
 
     ## Confusion Matrix and Statistics
     ##
@@ -1164,250 +1184,37 @@ printed for a quick evaluation of this model.
     ## Statistics by Class:
     ##
     ##                      Class: D Class: L Class: W
-    ## Precision             0.25000   0.6667   0.4286
-    ## Recall                0.40000   0.4000   0.5000
-    ## F1                    0.30769   0.5000   0.4615
+    ## Sensitivity           0.40000   0.4000   0.5000
+    ## Specificity           0.62500   0.8182   0.7333
+    ## Pos Pred Value        0.25000   0.6667   0.4286
+    ## Neg Pred Value        0.76923   0.6000   0.7857
     ## Prevalence            0.23810   0.4762   0.2857
     ## Detection Rate        0.09524   0.1905   0.1429
     ## Detection Prevalence  0.38095   0.2857   0.3333
     ## Balanced Accuracy     0.51250   0.6091   0.6167
-
-Also, the individual predictions and associated probabilities for
-Sampdoria’s first 21 matches in the 2019-20 season:
-
-    ##    Actual Pred Accuracy          D          L          W
-    ## 1       W    W        1 0.06887713 0.44063949 0.49048339
-    ## 2       L    D        0 0.36585936 0.33011890 0.30402174
-    ## 3       L    L        1 0.18971648 0.66795494 0.14232857
-    ## 4       L    D        0 0.74400260 0.10408880 0.15190860
-    ## 5       D    D        1 0.43397850 0.14467471 0.42134679
-    ## 6       L    W        0 0.34001507 0.19228764 0.46769729
-    ## 7       D    W        0 0.16928031 0.15655922 0.67416048
-    ## 8       W    D        0 0.68714465 0.09674955 0.21610580
-    ## 9       D    L        0 0.06354499 0.73351542 0.20293958
-    ## 10      W    W        1 0.29975104 0.07681729 0.62343167
-    ## 11      L    L        1 0.03806716 0.81198931 0.14994354
-    ## 12      L    W        0 0.18501137 0.10127750 0.71371112
-    ## 13      W    D        0 0.85456378 0.04731457 0.09812165
-    ## 14      L    L        1 0.03189414 0.95813745 0.00996841
-    ## 15      D    L        0 0.17795686 0.75893398 0.06310916
-    ## 16      W    W        1 0.35362009 0.22578018 0.42059974
-    ## 17      L    L        1 0.27087522 0.64390458 0.08522020
-    ## 18      D    D        1 0.65329225 0.30309618 0.04361158
-    ## 19      L    D        0 0.47724780 0.21781474 0.30493746
-    ## 20      W    D        0 0.42689824 0.35668860 0.21641315
-    ## 21      L    W        0 0.34192660 0.12450207 0.53357133
 
 #### SVM
 
 The second model tried out is a support vector machine from the
 ‘kernlab’ package.
 
--   The overall test accuracy of the model is 42.86%
--   Precision among the classes is 25% for draws, 66.7% for losses, and
-    42.8% for wins.
--   Of equal importance is the recall which identifies the proportion of
-    true cases that were correctly identified. In the case of our model,
-    recall is 40% for draws, 40% for losses, and 50% for wins. So based
-    upon our test set, the mode model is slightly better at predicting
-    wins than losses or draws.
+-   Notably, the model predicts losses for over 80% of the matches in
+    the test set
+-   Training accuracy was 54.2%
+-   The overall test accuracy of the model is 47.62%
+-   Precision among the classes is 0% for draws, 52.9% for losses, and
+    100% for wins.
+-   Recall is 0% for draws, 90% for losses, and 16.7% for wins.
 
 <!-- -->
-
-    ## Penalized Multinomial Regression
-    ##
-    ## 140 samples
-    ##  31 predictor
-    ##   3 classes: 'D', 'L', 'W'
-    ##
-    ## Pre-processing: principal component signal extraction (31), centered
-    ##  (31), scaled (31)
-    ## Resampling: Rolling Forecasting Origin Resampling (1 held-out with no fixed window)
-    ## Summary of sample sizes: 10, 11, 12, 13, 14, 15, ...
-    ## Resampling results across tuning parameters:
-    ##
-    ##   decay  logLoss
-    ##   0e+00  6.806787
-    ##   1e-04  4.632432
-    ##   1e-01  1.921418
-    ##
-    ## logLoss was used to select the optimal model using the smallest value.
-    ## The final value used for the model was decay = 0.1.
 
     ## Confusion Matrix and Statistics
     ##
     ##           Reference
     ## Prediction D L W
-    ##          D 2 3 3
-    ##          L 2 4 0
-    ##          W 1 3 3
-    ##
-    ## Overall Statistics
-    ##                                           
-    ##                Accuracy : 0.4286          
-    ##                  95% CI : (0.2182, 0.6598)
-    ##     No Information Rate : 0.4762          
-    ##     P-Value [Acc > NIR] : 0.7427          
-    ##                                           
-    ##                   Kappa : 0.1572          
-    ##                                           
-    ##  Mcnemar's Test P-Value : 0.2407          
-    ##
-    ## Statistics by Class:
-    ##
-    ##                      Class: D Class: L Class: W
-    ## Precision             0.25000   0.6667   0.4286
-    ## Recall                0.40000   0.4000   0.5000
-    ## F1                    0.30769   0.5000   0.4615
-    ## Prevalence            0.23810   0.4762   0.2857
-    ## Detection Rate        0.09524   0.1905   0.1429
-    ## Detection Prevalence  0.38095   0.2857   0.3333
-    ## Balanced Accuracy     0.51250   0.6091   0.6167
-
-``` r
-svm_pred_prob <- predict(svm_mod,Samp_test,type="prob")
-
-svm_pred_out <- cbind(svm_pred_prob,Samp_test$outcome,svm_pred) %>% as.data.frame()
-
-names(svm_pred_out) <- c("D","L","W","Actual","Pred")
-
-svm_pred_out %>%
-  mutate(Accuracy=ifelse(Actual==Pred,1,0)) %>%
-  select(Actual,Pred,Accuracy,D,L,W)
-```
-
-    ##    Actual Pred Accuracy          D          L          W
-    ## 1       W    W        1 0.06887713 0.44063949 0.49048339
-    ## 2       L    D        0 0.36585936 0.33011890 0.30402174
-    ## 3       L    L        1 0.18971648 0.66795494 0.14232857
-    ## 4       L    D        0 0.74400260 0.10408880 0.15190860
-    ## 5       D    D        1 0.43397850 0.14467471 0.42134679
-    ## 6       L    W        0 0.34001507 0.19228764 0.46769729
-    ## 7       D    W        0 0.16928031 0.15655922 0.67416048
-    ## 8       W    D        0 0.68714465 0.09674955 0.21610580
-    ## 9       D    L        0 0.06354499 0.73351542 0.20293958
-    ## 10      W    W        1 0.29975104 0.07681729 0.62343167
-    ## 11      L    L        1 0.03806716 0.81198931 0.14994354
-    ## 12      L    W        0 0.18501137 0.10127750 0.71371112
-    ## 13      W    D        0 0.85456378 0.04731457 0.09812165
-    ## 14      L    L        1 0.03189414 0.95813745 0.00996841
-    ## 15      D    L        0 0.17795686 0.75893398 0.06310916
-    ## 16      W    W        1 0.35362009 0.22578018 0.42059974
-    ## 17      L    L        1 0.27087522 0.64390458 0.08522020
-    ## 18      D    D        1 0.65329225 0.30309618 0.04361158
-    ## 19      L    D        0 0.47724780 0.21781474 0.30493746
-    ## 20      W    D        0 0.42689824 0.35668860 0.21641315
-    ## 21      L    W        0 0.34192660 0.12450207 0.53357133
-
-#### Random Forest
-
-The random forest model is impemented with the ‘ranger’ package and
-tuned on the following hyper parameters:
-
--   *Number of Randomly Selected Predictors (mtry, numeric)*
-
--   *Splitting Rule (splitrule, character)*
-
--   *Minimal Node Size (min.node.size, numeric)*
-
--   The overall test accuracy of the random forest model is equivalent
-    to the multinomial logistic model: 42.86%\_
--   Precision among the classes is 0% for draws, 50% for losses, and 40%
-    for wins.
--   Finally, recall is 0% for draws, 30% for losses, and 100% for wins.
-    So based upon our test set, the mode model is slightly better at
-    predicting wins than losses or draws.
-
-<!-- -->
-
-    ## Random Forest
-    ##
-    ## 140 samples
-    ##  31 predictor
-    ##   3 classes: 'D', 'L', 'W'
-    ##
-    ## Pre-processing: principal component signal extraction (31), centered
-    ##  (31), scaled (31)
-    ## Resampling: Rolling Forecasting Origin Resampling (1 held-out with no fixed window)
-    ## Summary of sample sizes: 10, 11, 12, 13, 14, 15, ...
-    ## Resampling results across tuning parameters:
-    ##
-    ##   mtry  splitrule   min.node.size  logLoss
-    ##    4    gini        1              1.078672
-    ##    4    gini        2              1.065674
-    ##    4    gini        3              1.073515
-    ##    4    extratrees  1              1.083181
-    ##    4    extratrees  2              1.071212
-    ##    4    extratrees  3              1.082491
-    ##    4    hellinger   1                   NaN
-    ##    4    hellinger   2                   NaN
-    ##    4    hellinger   3                   NaN
-    ##    5    gini        1              1.073001
-    ##    5    gini        2              1.071911
-    ##    5    gini        3              1.070481
-    ##    5    extratrees  1              1.087030
-    ##    5    extratrees  2              1.078439
-    ##    5    extratrees  3              1.072105
-    ##    5    hellinger   1                   NaN
-    ##    5    hellinger   2                   NaN
-    ##    5    hellinger   3                   NaN
-    ##    6    gini        1              1.075395
-    ##    6    gini        2              1.071450
-    ##    6    gini        3              1.074042
-    ##    6    extratrees  1              1.074971
-    ##    6    extratrees  2              1.071136
-    ##    6    extratrees  3              1.073233
-    ##    6    hellinger   1                   NaN
-    ##    6    hellinger   2                   NaN
-    ##    6    hellinger   3                   NaN
-    ##    7    gini        1              1.074103
-    ##    7    gini        2              1.079132
-    ##    7    gini        3              1.070184
-    ##    7    extratrees  1              1.069047
-    ##    7    extratrees  2              1.078071
-    ##    7    extratrees  3              1.077845
-    ##    7    hellinger   1                   NaN
-    ##    7    hellinger   2                   NaN
-    ##    7    hellinger   3                   NaN
-    ##    8    gini        1              1.077058
-    ##    8    gini        2              1.077644
-    ##    8    gini        3              1.092078
-    ##    8    extratrees  1              1.077891
-    ##    8    extratrees  2              1.066978
-    ##    8    extratrees  3              1.079173
-    ##    8    hellinger   1                   NaN
-    ##    8    hellinger   2                   NaN
-    ##    8    hellinger   3                   NaN
-    ##    9    gini        1              1.080256
-    ##    9    gini        2              1.080160
-    ##    9    gini        3              1.077094
-    ##    9    extratrees  1              1.078441
-    ##    9    extratrees  2              1.074952
-    ##    9    extratrees  3              1.075924
-    ##    9    hellinger   1                   NaN
-    ##    9    hellinger   2                   NaN
-    ##    9    hellinger   3                   NaN
-    ##   10    gini        1              1.073616
-    ##   10    gini        2              1.071328
-    ##   10    gini        3              1.081807
-    ##   10    extratrees  1              1.069929
-    ##   10    extratrees  2              1.057677
-    ##   10    extratrees  3              1.062313
-    ##   10    hellinger   1                   NaN
-    ##   10    hellinger   2                   NaN
-    ##   10    hellinger   3                   NaN
-    ##
-    ## logLoss was used to select the optimal model using the smallest value.
-    ## The final values used for the model were mtry = 10, splitrule = extratrees
-    ##  and min.node.size = 2.
-
-    ## Confusion Matrix and Statistics
-    ##
-    ##           Reference
-    ## Prediction D L W
-    ##          D 0 0 1
-    ##          L 3 4 1
-    ##          W 2 6 4
+    ##          D 0 0 2
+    ##          L 3 7 3
+    ##          W 2 3 1
     ##
     ## Overall Statistics
     ##                                           
@@ -1416,58 +1223,132 @@ tuned on the following hyper parameters:
     ##     No Information Rate : 0.4762          
     ##     P-Value [Acc > NIR] : 0.8629          
     ##                                           
-    ##                   Kappa : 0.0387          
+    ##                   Kappa : -0.0302         
     ##                                           
-    ##  Mcnemar's Test P-Value : 0.0750          
+    ##  Mcnemar's Test P-Value : 0.3916          
     ##
     ## Statistics by Class:
     ##
     ##                      Class: D Class: L Class: W
-    ## Precision             0.00000   0.5000   0.3333
-    ## Recall                0.00000   0.4000   0.6667
-    ## F1                        NaN   0.4444   0.4444
-    ## Prevalence            0.23810   0.4762   0.2857
-    ## Detection Rate        0.00000   0.1905   0.1905
-    ## Detection Prevalence  0.04762   0.3810   0.5714
-    ## Balanced Accuracy     0.46875   0.5182   0.5667
+    ## Sensitivity           0.00000   0.7000  0.16667
+    ## Specificity           0.87500   0.4545  0.66667
+    ## Pos Pred Value        0.00000   0.5385  0.16667
+    ## Neg Pred Value        0.73684   0.6250  0.66667
+    ## Prevalence            0.23810   0.4762  0.28571
+    ## Detection Rate        0.00000   0.3333  0.04762
+    ## Detection Prevalence  0.09524   0.6190  0.28571
+    ## Balanced Accuracy     0.43750   0.5773  0.41667
+
+#### C5.0
+
+The C5.0 is tree-based algorithm which produces the highest overall
+accuracy of all the models tested thus far.
+
+-   The overall test accuracy of the model is 61.9%.
+-   Precision among the classes is 66.7% for draws, 85.7% for losses,
+    and 45.4% for wins.
+-   Recall is 40.0% for draws, 60.0% for losses, and 83.3% for wins.
 
 In general, the random forest over-estimates wins, and doesn’t predict a
 single draw.
 
-    ##    Actual Pred Accuracy     D     L     W
-    ## 1       W    W        1 0.138 0.368 0.494
-    ## 2       L    W        0 0.245 0.282 0.473
-    ## 3       L    L        1 0.183 0.422 0.395
-    ## 4       L    W        0 0.346 0.284 0.370
-    ## 5       D    W        0 0.210 0.394 0.396
-    ## 6       L    W        0 0.246 0.335 0.419
-    ## 7       D    W        0 0.220 0.276 0.504
-    ## 8       W    D        0 0.357 0.297 0.346
-    ## 9       D    L        0 0.157 0.503 0.340
-    ## 10      W    W        1 0.234 0.274 0.492
-    ## 11      L    L        1 0.151 0.559 0.290
-    ## 12      L    W        0 0.203 0.344 0.453
-    ## 13      W    L        0 0.311 0.348 0.341
-    ## 14      L    L        1 0.254 0.528 0.218
-    ## 15      D    L        0 0.297 0.389 0.314
-    ## 16      W    W        1 0.264 0.284 0.452
-    ## 17      L    L        1 0.178 0.466 0.356
-    ## 18      D    L        0 0.224 0.502 0.274
-    ## 19      L    W        0 0.273 0.346 0.381
-    ## 20      W    W        1 0.214 0.328 0.458
-    ## 21      L    W        0 0.286 0.287 0.427
+    ## Confusion Matrix and Statistics
+    ##
+    ##           Reference
+    ## Prediction D L W
+    ##          D 2 0 1
+    ##          L 1 6 0
+    ##          W 2 4 5
+    ##
+    ## Overall Statistics
+    ##                                           
+    ##                Accuracy : 0.619           
+    ##                  95% CI : (0.3844, 0.8189)
+    ##     No Information Rate : 0.4762          
+    ##     P-Value [Acc > NIR] : 0.1374          
+    ##                                           
+    ##                   Kappa : 0.4207          
+    ##                                           
+    ##  Mcnemar's Test P-Value : 0.1490          
+    ##
+    ## Statistics by Class:
+    ##
+    ##                      Class: D Class: L Class: W
+    ## Precision             0.66667   0.8571   0.4545
+    ## Recall                0.40000   0.6000   0.8333
+    ## F1                    0.50000   0.7059   0.5882
+    ## Prevalence            0.23810   0.4762   0.2857
+    ## Detection Rate        0.09524   0.2857   0.2381
+    ## Detection Prevalence  0.14286   0.3333   0.5238
+    ## Balanced Accuracy     0.66875   0.7545   0.7167
 
-#### Ensemble
+------------------------------------------------------------------------
 
-In statistics and machine learning, ensemble methods use multiple
-learning algorithms to obtain better predictive performance than could
-be obtained from any of the constituent learning algorithms alone. Using
-the ‘caretEnsemble’ package, a ensemble model will be created that uses
-the three models above.
+#### Ensemble Method
+
+In statistics and machine learning, ensemble methods leverage multiple
+machine learning models to obtain a single set of predictions informed
+by all the original models. Essentially, each model gets to “vote” on
+the outcome and the majority or plurality outcome is the winner.
+
+While the package ‘caretEnsemble’ supports adding a ensemble method to
+the end of the modeling pipeline, it doesn’t support the timeslice
+feature used above, so a custom, basic approach is used where each
+model’s predictions are weighted by that model’s overall stest accuracy.
+
+Below you can see the results from 21 matches from Sampdoria’s 2019-20
+season, specifically rounds 4-24. In total 13 of those matches were
+correctly predicted.
+
+    ##    actual prediction Accuracy     D     L     W
+    ## 1       W          W        1 0.080 0.297 0.622
+    ## 2       L          W        0 0.274 0.235 0.491
+    ## 3       L          W        0 0.121 0.384 0.495
+    ## 4       L          L        1 0.345 0.483 0.172
+    ## 5       D          L        0 0.218 0.558 0.224
+    ## 6       L          L        1 0.182 0.536 0.282
+    ## 7       D          D        1 0.433 0.171 0.396
+    ## 8       W          W        1 0.391 0.137 0.472
+    ## 9       D          W        0 0.099 0.424 0.476
+    ## 10      W          W        1 0.177 0.159 0.665
+    ## 11      L          L        1 0.067 0.794 0.139
+    ## 12      L          W        0 0.136 0.171 0.693
+    ## 13      W          D        0 0.666 0.121 0.213
+    ## 14      L          L        1 0.058 0.837 0.105
+    ## 15      D          W        0 0.212 0.390 0.398
+    ## 16      W          W        1 0.277 0.192 0.531
+    ## 17      L          L        1 0.152 0.703 0.145
+    ## 18      D          D        1 0.469 0.253 0.279
+    ## 19      L          L        1 0.227 0.537 0.236
+    ## 20      W          W        1 0.303 0.234 0.463
+    ## 21      L          W        0 0.283 0.146 0.572
 
 ------------------------------------------------------------------------
 
 #### Results
+
+So how much money could have theoretically been made on those matches?
+Using historical betting odds from Bet365, we can see what payouts would
+have been earned at dependent upon how much faith was put in the
+ensemble model. For example, I may only want to place a bet on an
+outcome if the most likely outcome predicted by my ensemble has a
+probability greater than 0.55.
+
+Using the table above, I attach the ensemble payouts for each match if
+the outcome with the highest probability was bet on.
+
+Next I iterate through different minimum probabilities required to place
+a bet (cut\_off) to see how that would affect the number of matches bet
+upon and the total return.
+
+    ##   cut_off num_bets return profit
+    ## 1      NA       NA     NA     NA
+
+![](/rblogging/2020/05/05//Samp%20B365-1.png)
+
+You might expect this char to look different. You might expect the
+fewer, higher likelihood bets made, the more profit to be returned and
+for this line to always trend upwards. However…
 
 ------------------------------------------------------------------------
 
@@ -1484,17 +1365,17 @@ are more likely to bet on one of the two teams winning. This is
 reflected in the historical odds data for Serie A. Draws have a minimum
 odds of 2.4, over twice the minimum of either home or away outcomes.
 Average returns are highest for an away win (4.86), then a draw (4.06),
-and last a home win (2.86). This is unsurprisngly if we consider how
+and last a home win (2.86). This is unsurprising if we consider how
 home advantage affects matches.
 
-![](/rsolter/rblogging/2020/05/05Betting%20on%20Draws-1.png)
+![](/rblogging/2020/05/05//Betting%20on%20Draws-1.png)
 
 A similarly striking pattern on returns is observed when filtering for
 odds that actually paid out. The mean payout among draws is now higher
 than away wins and the minimum payout is greater than twice that of away
 or home wins.
 
-![](/rsolter/rblogging/2020/05/05Betting%20on%20Draws%202-1.png)
+![](/rblogging/2020/05/05//Betting%20on%20Draws%202-1.png)
 
 Given the higher payout of draws on average, it may make sense to
 re-cast the multi-nomial classification problem (Win, Loss, Draw) to a
@@ -1503,17 +1384,14 @@ binomial classification problem with a focus on identifying draws
 
 ------------------------------------------------------------------------
 
-### 7. Overall Results
-
-------------------------------------------------------------------------
-
 ### 8. Conclusion and Next Steps
 
--   Gather more data: xG, player-level data, etc.
-    -   Find a way to account for class imbalance through over or under
-        sampling
+-   Expand this approach to all the other teams in the dataset and
+    account for class imbalance through over or under sampling
     -   Investigate other modeling approaches. Caret has over [238
         models](https://topepo.github.io/caret/train-models-by-tag.html)
         that can be incorporated along with all their tuning parameters.
+    -   Gather more data: xG, player-level data, etc.
+
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
