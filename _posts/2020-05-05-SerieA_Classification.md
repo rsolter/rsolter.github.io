@@ -12,6 +12,7 @@ toc_icon: 'futbol'
 ![Stadio Olimpico](/assets/images/remi-jacquaint.jpg){: .align-center}
 
 ### Predicting Soccer Match Outcomes using caret
+
 ### 1. Objective
 
 The goal of this post is to try and predict the outcome of soccer
@@ -1029,7 +1030,6 @@ their and their opponents performance.
 From the five season in the dataset, seasons 2015-16, 2016-17, and
 2017-18 are used for training, the 2018-19 season will searve as the
 validation set, and the 2019-20 season will serve as the holdout data.
-
 As the matches occur in chronological order, each dataset will be broken
 apart in such a way that the model will be built on the first *n*
 observations and tested on the *n+1* match. This is accomplished using
@@ -1060,13 +1060,11 @@ likely not predictive of a matches outcome. To remove those from the
 dataset, a random forest is used to determine which variables are
 relatively unimportant. Ultimately, I drop information about penalties,
 free kick shots off target, shots on target from free kicks, and
-information about shots taken from set pieces.
+information about shots taken from set pieces. In contrast, it appears
+that the number of shots within the penalty box, total shots on target,
+and overall numbers of attacks are the most predictive of match outcome.
 
-In contrast, it appears that the number of shots within the penalty box,
-total shots on target, and overall numbers of attacks are the most
-predictive of match outcome.
-
-![](/rblogging/2020/05/05//Feature%20Selection%20using%20Random%20Forest-1.png)
+![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png)
 
 #### Feature Extraction with PCA
 
@@ -1079,7 +1077,7 @@ team (shots\_on\_h), shots off target from the home team
 made by the away team (saves\_a). The correlation matrix below shows
 these correlations with unlagged data.
 
-![](/rblogging/2020/05/05//correlation%20of%20raw%20data-1.png)
+![](/rblogging/2020/05/05/correlation%20of%20raw%20data-1.png)
 
 To reduce the number of features while maximizing the amount of
 variation still explained, principal components analysis was applied as
@@ -1100,7 +1098,7 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-![](/rblogging/2020/05/05//outcome_viz-1.png)
+![](/rblogging/2020/05/05/outcome_viz-1.png)
 
 ### 6. Illustrative Example with U.C Sampdoria
 
@@ -1184,10 +1182,9 @@ matrix is printed for a quick evaluation of this model.
     ## Statistics by Class:
     ##
     ##                      Class: D Class: L Class: W
-    ## Sensitivity           0.40000   0.4000   0.5000
-    ## Specificity           0.62500   0.8182   0.7333
-    ## Pos Pred Value        0.25000   0.6667   0.4286
-    ## Neg Pred Value        0.76923   0.6000   0.7857
+    ## Precision             0.25000   0.6667   0.4286
+    ## Recall                0.40000   0.4000   0.5000
+    ## F1                    0.30769   0.5000   0.4615
     ## Prevalence            0.23810   0.4762   0.2857
     ## Detection Rate        0.09524   0.1905   0.1429
     ## Detection Prevalence  0.38095   0.2857   0.3333
@@ -1198,12 +1195,12 @@ matrix is printed for a quick evaluation of this model.
 The second model tried out is a support vector machine from the
 ‘kernlab’ package.
 
--   Notably, the model predicts losses for over 80% of the matches in
+-   Notably, the model predicts losses for over 85% of the matches in
     the test set
 -   Training accuracy was 54.2%
 -   The overall test accuracy of the model is 47.62%
--   Precision among the classes is 0% for draws, 52.9% for losses, and
-    100% for wins.
+-   Precision among the classes is 0% for draws, 50.0% for losses, and
+    50.0% for wins.
 -   Recall is 0% for draws, 90% for losses, and 16.7% for wins.
 
 <!-- -->
@@ -1230,10 +1227,9 @@ The second model tried out is a support vector machine from the
     ## Statistics by Class:
     ##
     ##                      Class: D Class: L Class: W
-    ## Sensitivity           0.00000   0.7000  0.16667
-    ## Specificity           0.87500   0.4545  0.66667
-    ## Pos Pred Value        0.00000   0.5385  0.16667
-    ## Neg Pred Value        0.73684   0.6250  0.66667
+    ## Precision             0.00000   0.5385  0.16667
+    ## Recall                0.00000   0.7000  0.16667
+    ## F1                        NaN   0.6087  0.16667
     ## Prevalence            0.23810   0.4762  0.28571
     ## Detection Rate        0.00000   0.3333  0.04762
     ## Detection Prevalence  0.09524   0.6190  0.28571
@@ -1244,13 +1240,13 @@ The second model tried out is a support vector machine from the
 The C5.0 is tree-based algorithm which produces the highest overall
 accuracy of all the models tested thus far.
 
--   The overall test accuracy of the model is 61.9%.
+-   In general, the random forest over-estimates wins, but has an
+    overall test accuracy of 61.9%.
 -   Precision among the classes is 66.7% for draws, 85.7% for losses,
     and 45.4% for wins.
 -   Recall is 40.0% for draws, 60.0% for losses, and 83.3% for wins.
 
-In general, the random forest over-estimates wins, and doesn’t predict a
-single draw.
+<!-- -->
 
     ## Confusion Matrix and Statistics
     ##
@@ -1291,7 +1287,7 @@ machine learning models to obtain a single set of predictions informed
 by all the original models. Essentially, each model gets to “vote” on
 the outcome and the majority or plurality outcome is the winner.
 
-While the package ‘caretEnsemble’ supports adding a ensemble method to
+Whiel the package ‘caretEnsemble’ supports adding a ensemble method to
 the end of the modeling pipeline, it doesn’t support the timeslice
 feature used above, so a custom, basic approach is used where each
 model’s predictions are weighted by that model’s overall stest accuracy.
@@ -1341,10 +1337,35 @@ Next I iterate through different minimum probabilities required to place
 a bet (cut\_off) to see how that would affect the number of matches bet
 upon and the total return.
 
-    ##   cut_off num_bets return profit
-    ## 1      NA       NA     NA     NA
+    ##    cut_off num_bets return profit
+    ## 1     0.50       12  11.45  -0.55
+    ## 2     0.51       12  11.45  -0.55
+    ## 3     0.52       12  11.45  -0.55
+    ## 4     0.53       12  11.45  -0.55
+    ## 5     0.54        9   5.80  -3.20
+    ## 6     0.55        9   5.80  -3.20
+    ## 7     0.56        8   6.80  -1.20
+    ## 8     0.57        8   6.80  -1.20
+    ## 9     0.58        7   7.80   0.80
+    ## 10    0.59        7   7.80   0.80
+    ## 11    0.60        7   7.80   0.80
+    ## 12    0.61        7   7.80   0.80
+    ## 13    0.62        7   7.80   0.80
+    ## 14    0.63        6   5.20  -0.80
+    ## 15    0.64        6   5.20  -0.80
+    ## 16    0.65        6   5.20  -0.80
+    ## 17    0.66        6   5.20  -0.80
+    ## 18    0.67        4   4.05   0.05
+    ## 19    0.68        4   4.05   0.05
+    ## 20    0.69        4   4.05   0.05
+    ## 21    0.70        3   5.05   2.05
+    ## 22    0.71        2   3.65   1.65
+    ## 23    0.72        2   3.65   1.65
+    ## 24    0.73        2   3.65   1.65
+    ## 25    0.74        2   3.65   1.65
+    ## 26    0.75        2   3.65   1.65
 
-![](/rblogging/2020/05/05//Samp%20B365-1.png)
+![](/rblogging/2020/05/05/Samp%20B365-1.png)
 
 You might expect this char to look different. You might expect the
 fewer, higher likelihood bets made, the more profit to be returned and
@@ -1365,17 +1386,17 @@ are more likely to bet on one of the two teams winning. This is
 reflected in the historical odds data for Serie A. Draws have a minimum
 odds of 2.4, over twice the minimum of either home or away outcomes.
 Average returns are highest for an away win (4.86), then a draw (4.06),
-and last a home win (2.86). This is unsurprising if we consider how
-home advantage affects matches.
+and last a home win (2.86). This is unsurprising if we consider how home
+advantage affects matches.
 
-![](/rblogging/2020/05/05//Betting%20on%20Draws-1.png)
+![](/rblogging/2020/05/05/Betting%20on%20Draws-1.png)
 
 A similarly striking pattern on returns is observed when filtering for
 odds that actually paid out. The mean payout among draws is now higher
 than away wins and the minimum payout is greater than twice that of away
 or home wins.
 
-![](/rblogging/2020/05/05//Betting%20on%20Draws%202-1.png)
+![](/rblogging/2020/05/05/Betting%20on%20Draws%202-1.png)
 
 Given the higher payout of draws on average, it may make sense to
 re-cast the multi-nomial classification problem (Win, Loss, Draw) to a
@@ -1392,6 +1413,7 @@ binomial classification problem with a focus on identifying draws
         models](https://topepo.github.io/caret/train-models-by-tag.html)
         that can be incorporated along with all their tuning parameters.
     -   Gather more data: xG, player-level data, etc.
+
 
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
