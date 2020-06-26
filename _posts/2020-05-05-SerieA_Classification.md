@@ -13,14 +13,21 @@ toc_icon: 'futbol'
 
 ### Predicting Soccer Match Outcomes using caret
 
+This goal of this post is to try and out a number of methods for
+predicting the outcome soccer matches in the Italian top-flight
+division, *Serie A*. The post covers the processing and feature
+engineering that took place to preapre the data, an attempt to use three
+different classification models on the dataset, and finally an ensemble
+method. One team’s data (U.C. Sampdoria) is used to illustrate the
+process, but results for all teams are included towards the end along
+with numerous potential next steps.
+
 ### 1. Objective
 
-The goal of this post is to try and predict the outcome of soccer
-matches in the Italian top-flight division, *Serie A*. There are three
-possible outcomes for each match: a home win, an away win, or a draw. To
-make things more interesting, the predicted outcomes and their
-associated probabilities will be compared to historical odds offered by
-bookmakers in Europe which were gathered from
+There are three possible outcomes for each match: a home win, an away
+win, or a draw. To make things more interesting, the predicted outcomes
+and their associated probabilities will be compared to historical odds
+offered by bookmakers in Europe which were gathered from
 <https://www.football-data.co.uk>.
 
 As an example, the odds given for a single match between Parma and
@@ -1049,788 +1056,15 @@ statistics.
 All the stats collected (with the exception of Elo), have been replaced
 with lagged averages from the previous 3 matches. The rationale for this
 is that we need historical performance data to try and predict future
-match outcomes Below is an example cut of the data from SS Lazio:
+match outcomes Below is an example cut of the data from SS Lazio, note
+that because the lag window is equal to 3, the first three rows have NAs
+where there would otherwise be values:
 
 ``` r
 ss_lazio <- final_data[[3]] %>% head(5)
 
 knitr::kable(ss_lazio[1:5,])
 ```
-
-<table>
-<thead>
-<tr>
-<th style="text-align:right;">
-match\_id
-</th>
-<th style="text-align:left;">
-match\_date
-</th>
-<th style="text-align:left;">
-season
-</th>
-<th style="text-align:left;">
-round
-</th>
-<th style="text-align:left;">
-Team
-</th>
-<th style="text-align:left;">
-Opp
-</th>
-<th style="text-align:left;">
-home\_match
-</th>
-<th style="text-align:left;">
-outcome
-</th>
-<th style="text-align:right;">
-Points\_gained
-</th>
-<th style="text-align:right;">
-goals\_team
-</th>
-<th style="text-align:right;">
-saves\_team
-</th>
-<th style="text-align:right;">
-shots\_team
-</th>
-<th style="text-align:right;">
-shots\_on\_team
-</th>
-<th style="text-align:right;">
-shots\_off\_team
-</th>
-<th style="text-align:right;">
-shots\_box\_team
-</th>
-<th style="text-align:right;">
-fouls\_team
-</th>
-<th style="text-align:right;">
-scoring\_chances\_team
-</th>
-<th style="text-align:right;">
-offsides\_team
-</th>
-<th style="text-align:right;">
-corners\_team
-</th>
-<th style="text-align:right;">
-yellow\_team
-</th>
-<th style="text-align:right;">
-fast\_breaks\_team
-</th>
-<th style="text-align:right;">
-poss\_team
-</th>
-<th style="text-align:right;">
-attacks\_team
-</th>
-<th style="text-align:right;">
-Elo\_team
-</th>
-<th style="text-align:right;">
-goals\_opp
-</th>
-<th style="text-align:right;">
-saves\_opp
-</th>
-<th style="text-align:right;">
-shots\_opp
-</th>
-<th style="text-align:right;">
-shots\_on\_opp
-</th>
-<th style="text-align:right;">
-shots\_off\_opp
-</th>
-<th style="text-align:right;">
-shots\_box\_opp
-</th>
-<th style="text-align:right;">
-fouls\_opp
-</th>
-<th style="text-align:right;">
-scoring\_chances\_opp
-</th>
-<th style="text-align:right;">
-offsides\_opp
-</th>
-<th style="text-align:right;">
-corners\_opp
-</th>
-<th style="text-align:right;">
-yellow\_opp
-</th>
-<th style="text-align:right;">
-fast\_breaks\_opp
-</th>
-<th style="text-align:right;">
-poss\_opp
-</th>
-<th style="text-align:right;">
-attacks\_opp
-</th>
-<th style="text-align:right;">
-Elo\_opp
-</th>
-<th style="text-align:right;">
-B365\_team
-</th>
-<th style="text-align:right;">
-B365\_opp
-</th>
-<th style="text-align:right;">
-B365D
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2015-08-22
-</td>
-<td style="text-align:left;">
-2015-16
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-Lazio
-</td>
-<td style="text-align:left;">
-Bologna
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-W
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1751.378
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1486.670
-</td>
-<td style="text-align:right;">
-0.6666667
-</td>
-<td style="text-align:right;">
-0.1428571
-</td>
-<td style="text-align:right;">
-0.2380952
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-16
-</td>
-<td style="text-align:left;">
-2015-08-30
-</td>
-<td style="text-align:left;">
-2015-16
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-Lazio
-</td>
-<td style="text-align:left;">
-Chievoverona
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-L
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1730.399
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1595.023
-</td>
-<td style="text-align:right;">
-0.2941176
-</td>
-<td style="text-align:right;">
-0.4545455
-</td>
-<td style="text-align:right;">
-0.3030303
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-28
-</td>
-<td style="text-align:left;">
-2015-09-13
-</td>
-<td style="text-align:left;">
-2015-16
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:left;">
-Lazio
-</td>
-<td style="text-align:left;">
-Udinese
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-W
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1709.957
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1576.308
-</td>
-<td style="text-align:right;">
-0.6172840
-</td>
-<td style="text-align:right;">
-0.1666667
-</td>
-<td style="text-align:right;">
-0.2666667
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-40
-</td>
-<td style="text-align:left;">
-2015-09-20
-</td>
-<td style="text-align:left;">
-2015-16
-</td>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:left;">
-Lazio
-</td>
-<td style="text-align:left;">
-Napoli
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-L
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.3333333
-</td>
-<td style="text-align:right;">
-3.333333
-</td>
-<td style="text-align:right;">
-13.66667
-</td>
-<td style="text-align:right;">
-7.666667
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-4.000000
-</td>
-<td style="text-align:right;">
-14.33333
-</td>
-<td style="text-align:right;">
-9.333333
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2.666667
-</td>
-<td style="text-align:right;">
-0.5766667
-</td>
-<td style="text-align:right;">
-32.33333
-</td>
-<td style="text-align:right;">
-1720.819
-</td>
-<td style="text-align:right;">
-1.6666667
-</td>
-<td style="text-align:right;">
-2.000000
-</td>
-<td style="text-align:right;">
-14.000000
-</td>
-<td style="text-align:right;">
-5.333333
-</td>
-<td style="text-align:right;">
-8.666667
-</td>
-<td style="text-align:right;">
-2.666667
-</td>
-<td style="text-align:right;">
-14.00000
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-2.666667
-</td>
-<td style="text-align:right;">
-3.333333
-</td>
-<td style="text-align:right;">
-2.000000
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.5466667
-</td>
-<td style="text-align:right;">
-27.33333
-</td>
-<td style="text-align:right;">
-1737.392
-</td>
-<td style="text-align:right;">
-0.5235602
-</td>
-<td style="text-align:right;">
-0.2500000
-</td>
-<td style="text-align:right;">
-0.2777778
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-47
-</td>
-<td style="text-align:left;">
-2015-09-23
-</td>
-<td style="text-align:left;">
-2015-16
-</td>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:left;">
-Lazio
-</td>
-<td style="text-align:left;">
-Genoa
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-W
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-0.6666667
-</td>
-<td style="text-align:right;">
-3.666667
-</td>
-<td style="text-align:right;">
-10.00000
-</td>
-<td style="text-align:right;">
-5.000000
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-3.666667
-</td>
-<td style="text-align:right;">
-13.66667
-</td>
-<td style="text-align:right;">
-7.000000
-</td>
-<td style="text-align:right;">
-1.333333
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3.333333
-</td>
-<td style="text-align:right;">
-0.5100000
-</td>
-<td style="text-align:right;">
-25.00000
-</td>
-<td style="text-align:right;">
-1708.079
-</td>
-<td style="text-align:right;">
-0.6666667
-</td>
-<td style="text-align:right;">
-2.333333
-</td>
-<td style="text-align:right;">
-8.333333
-</td>
-<td style="text-align:right;">
-2.666667
-</td>
-<td style="text-align:right;">
-5.666667
-</td>
-<td style="text-align:right;">
-1.333333
-</td>
-<td style="text-align:right;">
-19.33333
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-2.000000
-</td>
-<td style="text-align:right;">
-2.333333
-</td>
-<td style="text-align:right;">
-2.333333
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-0.5433333
-</td>
-<td style="text-align:right;">
-18.66667
-</td>
-<td style="text-align:right;">
-1654.829
-</td>
-<td style="text-align:right;">
-0.5714286
-</td>
-<td style="text-align:right;">
-0.2105263
-</td>
-<td style="text-align:right;">
-0.2666667
-</td>
-</tr>
-</tbody>
-</table>
 
 ------------------------------------------------------------------------
 
@@ -1839,7 +1073,7 @@ W
 Before starting any modeling, there are some data process and feature
 engineering steps to take on:
 
-#### Feature selection with Random Forest
+#### Feature reduction with Random Forest
 
 There are a lot of variables collected in the match report that are
 likely not predictive of a matches outcome. To remove those from the
@@ -1855,7 +1089,7 @@ and overall numbers of attacks are the most predictive of match outcome.
 #### Feature Extraction with PCA
 
 Even after removing 10 features from the dataset, there are still a
-large number of predictors for each match’s outcome many of which are
+large number of predictors for each match’s outcome, many of which are
 strongly correlated. For example total shots from the home team
 (shots\_h) are strongly correlated with shots on target from the home
 team (shots\_on\_h), shots off target from the home team
@@ -1865,13 +1099,21 @@ these correlations with unlagged data.
 
 ![](/rblogging/2020/05/05/correlation%20of%20raw%20data-1.png)
 
-To reduce the number of features while maximizing the amount of
-variation still explained, principal components analysis (PCA) was
-applied as a [pre-processing
+To reduce the number of closely correlated features, I used principal
+components analysis (PCA) as a [pre-processing
 technique](https://topepo.github.io/caret/pre-processing.html#transforming-predictors)
-in caret. PCA may remove interpretability of the models, but it will
-also help reduce the number of explanatory variables and help avoid
-over-fitting.
+in caret.
+
+PCA transforms features from a large number of features into a smaller
+number of components which exist as linear combinations of the original
+features. Turning the 38 variables above into 20 components means that
+the components no longer purely represent the real statistics above, but
+combinations of them. You can read more
+[here](https://en.wikipedia.org/wiki/Principal_component_analysis#Dimensionality_reduction).
+
+Principal components are often difficult to interpret but in this case
+they improved the overall accuracy of my UC Sampdoria model so I chose
+to use it in this case.
 
 ------------------------------------------------------------------------
 
@@ -1902,8 +1144,10 @@ training dataset is being partitioned using the timeslice function so
 that the initial training data is made up of 10 observations
 (initialWindow) to predict the next match (horizon=1). This process is
 continued for each prediction with all historical data being used
-(fixedWindow=FALSE). **Note** that in this post, none of the models have
-had their hyperparameters tuned.
+(fixedWindow=FALSE).
+
+**Note that in this post, none of the models have had their
+hyperparameters tuned.**
 
 ``` r
 myTimeControl <- trainControl(method = "timeslice",
@@ -1932,7 +1176,8 @@ Each of the models will be measured by the same evaluation metrics:
 
 #### Multinomial Logistic Regression
 
-The multinomial logistic regression approach is done using the ‘nnet’
+The multinomial logistic regression approach is done using the
+[nnet](https://www.rdocumentation.org/packages/nnet/versions/7.3-14/topics/multinom)
 package. Below you can see the summary of the model run, the confusion
 matrix is printed for a quick evaluation of this model.
 
@@ -1979,7 +1224,8 @@ matrix is printed for a quick evaluation of this model.
 #### SVM
 
 The second model tried out is a support vector machine from the
-‘kernlab’ package.
+[kernlab](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf)
+package.
 
 -   Notably, the model predicts losses for over 85% of the matches in
     the test set
@@ -2024,7 +1270,7 @@ The second model tried out is a support vector machine from the
 #### C5.0
 
 The C5.0 is tree-based algorithm which produces the highest overall
-accuracy of all the models tested thus far.
+accuracy of the three methods tested.
 
 -   In general, the random forest over-estimates wins, but has an
     overall test accuracy of 61.9%.
@@ -2082,50 +1328,28 @@ Below you can see the results from 21 matches from Sampdoria’s 2019-20
 season, specifically rounds 4-24. In total 13 of those matches were
 correctly predicted.
 
-    ##    match_date      Team          Opp actual prediction Accuracy     D     L
-    ## 1  2019-09-22 Sampdoria       Torino      W          W        1 0.080 0.297
-    ## 2  2019-09-25 Sampdoria   Fiorentina      L          W        0 0.274 0.235
-    ## 3  2019-09-28 Sampdoria        Inter      L          W        0 0.121 0.384
-    ## 4  2019-10-05 Sampdoria HellasVerona      L          L        1 0.345 0.483
-    ## 5  2019-10-20 Sampdoria         Roma      D          L        0 0.218 0.558
-    ## 6  2019-10-27 Sampdoria      Bologna      L          L        1 0.182 0.536
-    ## 7  2019-10-30 Sampdoria        Lecce      D          D        1 0.433 0.171
-    ## 8  2019-11-04 Sampdoria         Spal      W          W        1 0.391 0.137
-    ## 9  2019-11-10 Sampdoria     Atalanta      D          W        0 0.099 0.424
-    ## 10 2019-11-24 Sampdoria      Udinese      W          W        1 0.177 0.159
-    ## 11 2019-12-02 Sampdoria     Cagliari      L          L        1 0.067 0.794
-    ## 12 2019-12-08 Sampdoria        Parma      L          W        0 0.136 0.171
-    ## 13 2019-12-14 Sampdoria        Genoa      W          D        0 0.666 0.121
-    ## 14 2019-12-18 Sampdoria     Juventus      L          L        1 0.058 0.837
-    ## 15 2020-01-06 Sampdoria        Milan      D          W        0 0.212 0.390
-    ## 16 2020-01-12 Sampdoria      Brescia      W          W        1 0.277 0.192
-    ## 17 2020-01-18 Sampdoria        Lazio      L          L        1 0.152 0.703
-    ## 18 2020-01-26 Sampdoria     Sassuolo      D          D        1 0.469 0.253
-    ## 19 2020-02-03 Sampdoria       Napoli      L          L        1 0.227 0.537
-    ## 20 2020-02-08 Sampdoria       Torino      W          W        1 0.303 0.234
-    ## 21 2020-02-16 Sampdoria   Fiorentina      L          W        0 0.283 0.146
-    ##        W
-    ## 1  0.622
-    ## 2  0.491
-    ## 3  0.495
-    ## 4  0.172
-    ## 5  0.224
-    ## 6  0.282
-    ## 7  0.396
-    ## 8  0.472
-    ## 9  0.476
-    ## 10 0.665
-    ## 11 0.139
-    ## 12 0.693
-    ## 13 0.213
-    ## 14 0.105
-    ## 15 0.398
-    ## 16 0.531
-    ## 17 0.145
-    ## 18 0.279
-    ## 19 0.236
-    ## 20 0.463
-    ## 21 0.572
+    ##    match_date          Opp actual prediction Accuracy     D     L     W
+    ## 1  2019-09-22       Torino      W          W        1 0.080 0.297 0.622
+    ## 2  2019-09-25   Fiorentina      L          W        0 0.274 0.235 0.491
+    ## 3  2019-09-28        Inter      L          W        0 0.121 0.384 0.495
+    ## 4  2019-10-05 HellasVerona      L          L        1 0.345 0.483 0.172
+    ## 5  2019-10-20         Roma      D          L        0 0.218 0.558 0.224
+    ## 6  2019-10-27      Bologna      L          L        1 0.182 0.536 0.282
+    ## 7  2019-10-30        Lecce      D          D        1 0.433 0.171 0.396
+    ## 8  2019-11-04         Spal      W          W        1 0.391 0.137 0.472
+    ## 9  2019-11-10     Atalanta      D          W        0 0.099 0.424 0.476
+    ## 10 2019-11-24      Udinese      W          W        1 0.177 0.159 0.665
+    ## 11 2019-12-02     Cagliari      L          L        1 0.067 0.794 0.139
+    ## 12 2019-12-08        Parma      L          W        0 0.136 0.171 0.693
+    ## 13 2019-12-14        Genoa      W          D        0 0.666 0.121 0.213
+    ## 14 2019-12-18     Juventus      L          L        1 0.058 0.837 0.105
+    ## 15 2020-01-06        Milan      D          W        0 0.212 0.390 0.398
+    ## 16 2020-01-12      Brescia      W          W        1 0.277 0.192 0.531
+    ## 17 2020-01-18        Lazio      L          L        1 0.152 0.703 0.145
+    ## 18 2020-01-26     Sassuolo      D          D        1 0.469 0.253 0.279
+    ## 19 2020-02-03       Napoli      L          L        1 0.227 0.537 0.236
+    ## 20 2020-02-08       Torino      W          W        1 0.303 0.234 0.463
+    ## 21 2020-02-16   Fiorentina      L          W        0 0.283 0.146 0.572
 
 ------------------------------------------------------------------------
 
@@ -2349,5 +1573,5 @@ binomial classification problem with a focus on identifying draws
         that can be incorporated along with all their tuning parameters.
     -   Gather more data: xG, player-level data, etc.
 
-
-_Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
+*Code for this project can be found on my
+[GitHub](https://github.com/rsolter/Serie-A-Predictions)*
