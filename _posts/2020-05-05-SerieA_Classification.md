@@ -1013,18 +1013,6 @@ H
 </table>
 From this raw form the data has been processed in the following ways:
 
-#### Replacing data with lagged averages
-
-All the stats collected (with the exception of Elo), have been replaced
-with lagged averages. The rationale for this is that we need historical
-performance data to try and predict future match outcomes.
-
-#### Data regrouped by team
-
-The full set of records is broken up by teams so that there exist +20
-datasets. One for each individual team with lagged average stats on
-their and their opponents performance.
-
 #### Splitting data
 
 From the five season in the dataset, seasons 2015-16, 2016-17, and
@@ -1045,6 +1033,804 @@ the test set. See more
 [here](http://topepo.github.io/caret/data-splitting.html#data-splitting-for-time-series).
 
 ![](/assets/images/Split_time-1.svg)
+
+#### Data regrouped by team
+
+The full set of records is broken up by teams so that there exist +20
+datasets, one for each team with observations ordered chronologically.
+The reason for doing this is that each team has its history and
+distribution of outcomes, so it makes sense to try and build a set of
+models for each team. In this regrouping the variables have been given
+’\_team’ and ’\_opp’ suffixes to refer to the team and its opponents
+statistics.
+
+#### Replacing data with lagged averages
+
+All the stats collected (with the exception of Elo), have been replaced
+with lagged averages from the previous 3 matches. The rationale for this
+is that we need historical performance data to try and predict future
+match outcomes Below is an example cut of the data from SS Lazio:
+
+``` r
+ss_lazio <- final_data[[3]] %>% head(5)
+
+knitr::kable(ss_lazio[1:5,])
+```
+
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+match\_id
+</th>
+<th style="text-align:left;">
+match\_date
+</th>
+<th style="text-align:left;">
+season
+</th>
+<th style="text-align:left;">
+round
+</th>
+<th style="text-align:left;">
+Team
+</th>
+<th style="text-align:left;">
+Opp
+</th>
+<th style="text-align:left;">
+home\_match
+</th>
+<th style="text-align:left;">
+outcome
+</th>
+<th style="text-align:right;">
+Points\_gained
+</th>
+<th style="text-align:right;">
+goals\_team
+</th>
+<th style="text-align:right;">
+saves\_team
+</th>
+<th style="text-align:right;">
+shots\_team
+</th>
+<th style="text-align:right;">
+shots\_on\_team
+</th>
+<th style="text-align:right;">
+shots\_off\_team
+</th>
+<th style="text-align:right;">
+shots\_box\_team
+</th>
+<th style="text-align:right;">
+fouls\_team
+</th>
+<th style="text-align:right;">
+scoring\_chances\_team
+</th>
+<th style="text-align:right;">
+offsides\_team
+</th>
+<th style="text-align:right;">
+corners\_team
+</th>
+<th style="text-align:right;">
+yellow\_team
+</th>
+<th style="text-align:right;">
+fast\_breaks\_team
+</th>
+<th style="text-align:right;">
+poss\_team
+</th>
+<th style="text-align:right;">
+attacks\_team
+</th>
+<th style="text-align:right;">
+Elo\_team
+</th>
+<th style="text-align:right;">
+goals\_opp
+</th>
+<th style="text-align:right;">
+saves\_opp
+</th>
+<th style="text-align:right;">
+shots\_opp
+</th>
+<th style="text-align:right;">
+shots\_on\_opp
+</th>
+<th style="text-align:right;">
+shots\_off\_opp
+</th>
+<th style="text-align:right;">
+shots\_box\_opp
+</th>
+<th style="text-align:right;">
+fouls\_opp
+</th>
+<th style="text-align:right;">
+scoring\_chances\_opp
+</th>
+<th style="text-align:right;">
+offsides\_opp
+</th>
+<th style="text-align:right;">
+corners\_opp
+</th>
+<th style="text-align:right;">
+yellow\_opp
+</th>
+<th style="text-align:right;">
+fast\_breaks\_opp
+</th>
+<th style="text-align:right;">
+poss\_opp
+</th>
+<th style="text-align:right;">
+attacks\_opp
+</th>
+<th style="text-align:right;">
+Elo\_opp
+</th>
+<th style="text-align:right;">
+B365\_team
+</th>
+<th style="text-align:right;">
+B365\_opp
+</th>
+<th style="text-align:right;">
+B365D
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2015-08-22
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Bologna
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1751.378
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1486.670
+</td>
+<td style="text-align:right;">
+0.6666667
+</td>
+<td style="text-align:right;">
+0.1428571
+</td>
+<td style="text-align:right;">
+0.2380952
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+2015-08-30
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Chievoverona
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1730.399
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1595.023
+</td>
+<td style="text-align:right;">
+0.2941176
+</td>
+<td style="text-align:right;">
+0.4545455
+</td>
+<td style="text-align:right;">
+0.3030303
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+2015-09-13
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Udinese
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1709.957
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1576.308
+</td>
+<td style="text-align:right;">
+0.6172840
+</td>
+<td style="text-align:right;">
+0.1666667
+</td>
+<td style="text-align:right;">
+0.2666667
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+2015-09-20
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Napoli
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.3333333
+</td>
+<td style="text-align:right;">
+3.333333
+</td>
+<td style="text-align:right;">
+13.66667
+</td>
+<td style="text-align:right;">
+7.666667
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4.000000
+</td>
+<td style="text-align:right;">
+14.33333
+</td>
+<td style="text-align:right;">
+9.333333
+</td>
+<td style="text-align:right;">
+1.000000
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+0.5766667
+</td>
+<td style="text-align:right;">
+32.33333
+</td>
+<td style="text-align:right;">
+1720.819
+</td>
+<td style="text-align:right;">
+1.6666667
+</td>
+<td style="text-align:right;">
+2.000000
+</td>
+<td style="text-align:right;">
+14.000000
+</td>
+<td style="text-align:right;">
+5.333333
+</td>
+<td style="text-align:right;">
+8.666667
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+14.00000
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+3.333333
+</td>
+<td style="text-align:right;">
+2.000000
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.5466667
+</td>
+<td style="text-align:right;">
+27.33333
+</td>
+<td style="text-align:right;">
+1737.392
+</td>
+<td style="text-align:right;">
+0.5235602
+</td>
+<td style="text-align:right;">
+0.2500000
+</td>
+<td style="text-align:right;">
+0.2777778
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:left;">
+2015-09-23
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Genoa
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.6666667
+</td>
+<td style="text-align:right;">
+3.666667
+</td>
+<td style="text-align:right;">
+10.00000
+</td>
+<td style="text-align:right;">
+5.000000
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3.666667
+</td>
+<td style="text-align:right;">
+13.66667
+</td>
+<td style="text-align:right;">
+7.000000
+</td>
+<td style="text-align:right;">
+1.333333
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3.333333
+</td>
+<td style="text-align:right;">
+0.5100000
+</td>
+<td style="text-align:right;">
+25.00000
+</td>
+<td style="text-align:right;">
+1708.079
+</td>
+<td style="text-align:right;">
+0.6666667
+</td>
+<td style="text-align:right;">
+2.333333
+</td>
+<td style="text-align:right;">
+8.333333
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+5.666667
+</td>
+<td style="text-align:right;">
+1.333333
+</td>
+<td style="text-align:right;">
+19.33333
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2.000000
+</td>
+<td style="text-align:right;">
+2.333333
+</td>
+<td style="text-align:right;">
+2.333333
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.5433333
+</td>
+<td style="text-align:right;">
+18.66667
+</td>
+<td style="text-align:right;">
+1654.829
+</td>
+<td style="text-align:right;">
+0.5714286
+</td>
+<td style="text-align:right;">
+0.2105263
+</td>
+<td style="text-align:right;">
+0.2666667
+</td>
+</tr>
+</tbody>
+</table>
 
 ------------------------------------------------------------------------
 
@@ -1080,8 +1866,8 @@ these correlations with unlagged data.
 ![](/rblogging/2020/05/05/correlation%20of%20raw%20data-1.png)
 
 To reduce the number of features while maximizing the amount of
-variation still explained, principal components analysis was applied as
-a [pre-processing
+variation still explained, principal components analysis (PCA) was
+applied as a [pre-processing
 technique](https://topepo.github.io/caret/pre-processing.html#transforming-predictors)
 in caret. PCA may remove interpretability of the models, but it will
 also help reduce the number of explanatory variables and help avoid
@@ -1296,28 +2082,50 @@ Below you can see the results from 21 matches from Sampdoria’s 2019-20
 season, specifically rounds 4-24. In total 13 of those matches were
 correctly predicted.
 
-    ##    actual prediction Accuracy     D     L     W
-    ## 1       W          W        1 0.080 0.297 0.622
-    ## 2       L          W        0 0.274 0.235 0.491
-    ## 3       L          W        0 0.121 0.384 0.495
-    ## 4       L          L        1 0.345 0.483 0.172
-    ## 5       D          L        0 0.218 0.558 0.224
-    ## 6       L          L        1 0.182 0.536 0.282
-    ## 7       D          D        1 0.433 0.171 0.396
-    ## 8       W          W        1 0.391 0.137 0.472
-    ## 9       D          W        0 0.099 0.424 0.476
-    ## 10      W          W        1 0.177 0.159 0.665
-    ## 11      L          L        1 0.067 0.794 0.139
-    ## 12      L          W        0 0.136 0.171 0.693
-    ## 13      W          D        0 0.666 0.121 0.213
-    ## 14      L          L        1 0.058 0.837 0.105
-    ## 15      D          W        0 0.212 0.390 0.398
-    ## 16      W          W        1 0.277 0.192 0.531
-    ## 17      L          L        1 0.152 0.703 0.145
-    ## 18      D          D        1 0.469 0.253 0.279
-    ## 19      L          L        1 0.227 0.537 0.236
-    ## 20      W          W        1 0.303 0.234 0.463
-    ## 21      L          W        0 0.283 0.146 0.572
+    ##    match_date      Team          Opp actual prediction Accuracy     D     L
+    ## 1  2019-09-22 Sampdoria       Torino      W          W        1 0.080 0.297
+    ## 2  2019-09-25 Sampdoria   Fiorentina      L          W        0 0.274 0.235
+    ## 3  2019-09-28 Sampdoria        Inter      L          W        0 0.121 0.384
+    ## 4  2019-10-05 Sampdoria HellasVerona      L          L        1 0.345 0.483
+    ## 5  2019-10-20 Sampdoria         Roma      D          L        0 0.218 0.558
+    ## 6  2019-10-27 Sampdoria      Bologna      L          L        1 0.182 0.536
+    ## 7  2019-10-30 Sampdoria        Lecce      D          D        1 0.433 0.171
+    ## 8  2019-11-04 Sampdoria         Spal      W          W        1 0.391 0.137
+    ## 9  2019-11-10 Sampdoria     Atalanta      D          W        0 0.099 0.424
+    ## 10 2019-11-24 Sampdoria      Udinese      W          W        1 0.177 0.159
+    ## 11 2019-12-02 Sampdoria     Cagliari      L          L        1 0.067 0.794
+    ## 12 2019-12-08 Sampdoria        Parma      L          W        0 0.136 0.171
+    ## 13 2019-12-14 Sampdoria        Genoa      W          D        0 0.666 0.121
+    ## 14 2019-12-18 Sampdoria     Juventus      L          L        1 0.058 0.837
+    ## 15 2020-01-06 Sampdoria        Milan      D          W        0 0.212 0.390
+    ## 16 2020-01-12 Sampdoria      Brescia      W          W        1 0.277 0.192
+    ## 17 2020-01-18 Sampdoria        Lazio      L          L        1 0.152 0.703
+    ## 18 2020-01-26 Sampdoria     Sassuolo      D          D        1 0.469 0.253
+    ## 19 2020-02-03 Sampdoria       Napoli      L          L        1 0.227 0.537
+    ## 20 2020-02-08 Sampdoria       Torino      W          W        1 0.303 0.234
+    ## 21 2020-02-16 Sampdoria   Fiorentina      L          W        0 0.283 0.146
+    ##        W
+    ## 1  0.622
+    ## 2  0.491
+    ## 3  0.495
+    ## 4  0.172
+    ## 5  0.224
+    ## 6  0.282
+    ## 7  0.396
+    ## 8  0.472
+    ## 9  0.476
+    ## 10 0.665
+    ## 11 0.139
+    ## 12 0.693
+    ## 13 0.213
+    ## 14 0.105
+    ## 15 0.398
+    ## 16 0.531
+    ## 17 0.145
+    ## 18 0.279
+    ## 19 0.236
+    ## 20 0.463
+    ## 21 0.572
 
 ------------------------------------------------------------------------
 
@@ -1373,7 +2181,134 @@ for this line to always trend upwards. However…
 
 ------------------------------------------------------------------------
 
-### 7. Considering Betting on Draws
+### 7. Ensemble Accuracy For Other Teams
+
+Running the same approach on all teams who have been in Serie A for each
+of the five recorded seasons, there is a great variety in the amount of
+accuracy of the ensemble method by team:
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Team
+</th>
+<th style="text-align:right;">
+Ensemble.Accuracy
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bologna
+</td>
+<td style="text-align:right;">
+0.2727273
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Milan
+</td>
+<td style="text-align:right;">
+0.3043478
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fiorentina
+</td>
+<td style="text-align:right;">
+0.3181818
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Torino
+</td>
+<td style="text-align:right;">
+0.3636364
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sassuolo
+</td>
+<td style="text-align:right;">
+0.3809524
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Roma
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Udinese
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Genoa
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inter
+</td>
+<td style="text-align:right;">
+0.5238095
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Atalanta
+</td>
+<td style="text-align:right;">
+0.5238095
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:right;">
+0.5909091
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sampdoria
+</td>
+<td style="text-align:right;">
+0.6190476
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Juventus
+</td>
+<td style="text-align:right;">
+0.7727273
+</td>
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
+
+### 8. Considering Betting on Draws
 
 Soccer is different from every other popular sport in that it allows for
 draws. For the casual sports fan who is drawn to watching sports to see
@@ -1405,7 +2340,7 @@ binomial classification problem with a focus on identifying draws
 
 ------------------------------------------------------------------------
 
-### 8. Conclusion and Next Steps
+### 9. Conclusion and Next Steps
 
 -   Expand this approach to all the other teams in the dataset and
     account for class imbalance through over or under sampling
@@ -1413,7 +2348,6 @@ binomial classification problem with a focus on identifying draws
         models](https://topepo.github.io/caret/train-models-by-tag.html)
         that can be incorporated along with all their tuning parameters.
     -   Gather more data: xG, player-level data, etc.
-
 
 
 _Code for this project can be found on my [GitHub](https://github.com/rsolter/Serie-A-Predictions)_
