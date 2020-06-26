@@ -1853,7 +1853,7 @@ information about shots taken from set pieces. In contrast, it appears
 that the number of shots within the penalty box, total shots on target,
 and overall numbers of attacks are the most predictive of match outcome.
 
-![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png)
+![](SerieA_Blog_Post_files/figure-markdown_github/Feature%20Selection%20using%20Random%20Forest-1.png)
 
 #### Feature Extraction with PCA
 
@@ -1866,7 +1866,7 @@ team (shots\_on\_h), shots off target from the home team
 made by the away team (saves\_a). The correlation matrix below shows
 these correlations with unlagged data.
 
-![](/rblogging/2020/05/05/correlation%20of%20raw%20data-1.png)
+![](SerieA_Blog_Post_files/figure-markdown_github/correlation%20of%20raw%20data-1.png)
 
 To reduce the number of closely correlated features, I used principal
 components analysis (PCA) as a [pre-processing
@@ -1895,7 +1895,7 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-![](/rblogging/2020/05/05/outcome_viz-1.png)
+![](SerieA_Blog_Post_files/figure-markdown_github/outcome_viz-1.png)
 
 ### 6. Illustrative Example with U.C Sampdoria
 
@@ -2144,8 +2144,13 @@ loop through different probabilitiy thresholds to see a) how many bets
 would be placed at the different thresholds and b) what sort of profit
 each threshold returns.
 
-Note that in this case the amount bet on each match is the same. Profit
-should be..
+Note that in this case the amount bet on each match is the same (1.00),
+profit is calculated by subtracitng the number of bets from the return.
+As an example, if the threshold is set at 0.60, 7 bets will be placed
+for a return of 7.80 and a profit of 0.8. Unsurprisngly, the profits
+tend to be greater with a higher probability cut-off.
+
+![](SerieA_Blog_Post_files/figure-markdown_github/Samp%20B365-1.png)
 
     ##    threshold num_bets return profit
     ## 1       0.50       12  11.45  -0.55
@@ -2175,19 +2180,14 @@ should be..
     ## 25      0.74        2   3.65   1.65
     ## 26      0.75        2   3.65   1.65
 
-![](/rblogging/2020/05/05/Samp%20B365-1.png)
-
-You might expect this char to look different. You might expect the
-fewer, higher likelihood bets made, the more profit to be returned and
-for this line to always trend upwards. However…
-
 ------------------------------------------------------------------------
 
 ### 7. Ensemble Accuracy For Other Teams
 
 Running the same approach on all teams who have been in Serie A for each
 of the five recorded seasons, there is a great variety in the amount of
-accuracy of the ensemble method by team:
+accuracy of the ensemble method by team. Many of the teams report
+accuracies are are actually less than what Sampdoria reported.
 
 <table>
 <thead>
@@ -2310,12 +2310,28 @@ Juventus
 
 ------------------------------------------------------------------------
 
-### 8. Considering Betting on Draws
+### 8. Conclusion and Possible Next Steps
 
-Soccer is different from every other popular sport in that it allows for
-draws. For the casual sports fan who is drawn to watching sports to see
-two teams compete and a winner declared, this can seem incredibly
-boring.
+There are still a number of things to be done to try and improve the
+predictions.
+
+-   Handle the class imbalanace for other teams’ datasets by over or
+    under sampling.
+    -   Tune the hyper-parameters of each of the models.
+    -   Investigate other classification models Caret has over [238
+        models](https://topepo.github.io/caret/train-models-by-tag.html)
+        that can be incorporated along with all their tuning parameters.
+    -   Pool the teams datasets together instead of building
+        team-specific models
+    -   Gather more data: xG, player-level data, referee, etc.
+
+**Considering Betting on Draws**
+
+More broadly, another approach would be to re-focus the problem as one
+focused on draws. Soccer is different from every other popular sport in
+that it allows for draws. For the casual sports fan who is drawn to
+watching sports to see two teams compete and a winner declared, this can
+seem incredibly boring.
 
 This mentality is reflected in the odds offered by odds makers who
 consistently offer slightly better odds on draws, because casual punters
@@ -2326,30 +2342,19 @@ Average returns are highest for an away win (4.86), then a draw (4.06),
 and last a home win (2.86). This is unsurprising if we consider how home
 advantage affects matches.
 
-![](/rblogging/2020/05/05/Betting%20on%20Draws-1.png)
+![](SerieA_Blog_Post_files/figure-markdown_github/Betting%20on%20Draws-1.png)
 
 A similarly striking pattern on returns is observed when filtering for
 odds that actually paid out. The mean payout among draws is now higher
 than away wins and the minimum payout is greater than twice that of away
 or home wins.
 
-![](/rblogging/2020/05/05/Betting%20on%20Draws%202-1.png)
+![](SerieA_Blog_Post_files/figure-markdown_github/Betting%20on%20Draws%202-1.png)
 
 Given the higher payout of draws on average, it may make sense to
 re-cast the multi-nomial classification problem (Win, Loss, Draw) to a
 binomial classification problem with a focus on identifying draws
 (identifying non-draws wouldn’t be helpful for betting purposes).
-
-------------------------------------------------------------------------
-
-### 9. Conclusion and Next Steps
-
--   Expand this approach to all the other teams in the dataset and
-    account for class imbalance through over or under sampling
-    -   Investigate other modeling approaches. Caret has over [238
-        models](https://topepo.github.io/caret/train-models-by-tag.html)
-        that can be incorporated along with all their tuning parameters.
-    -   Gather more data: xG, player-level data, etc.
 
 *Code for this project can be found on my
 [GitHub](https://github.com/rsolter/Serie-A-Predictions)*
