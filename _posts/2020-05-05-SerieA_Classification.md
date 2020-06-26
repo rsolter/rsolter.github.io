@@ -1060,11 +1060,780 @@ match outcomes Below is an example cut of the data from SS Lazio, note
 that because the lag window is equal to 3, the first three rows have NAs
 where there would otherwise be values:
 
-``` r
-ss_lazio <- final_data[[3]] %>% head(5)
-
-knitr::kable(ss_lazio[1:5,])
-```
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+match\_id
+</th>
+<th style="text-align:left;">
+match\_date
+</th>
+<th style="text-align:left;">
+season
+</th>
+<th style="text-align:left;">
+round
+</th>
+<th style="text-align:left;">
+Team
+</th>
+<th style="text-align:left;">
+Opp
+</th>
+<th style="text-align:left;">
+home\_match
+</th>
+<th style="text-align:left;">
+outcome
+</th>
+<th style="text-align:right;">
+Points\_gained
+</th>
+<th style="text-align:right;">
+goals\_team
+</th>
+<th style="text-align:right;">
+saves\_team
+</th>
+<th style="text-align:right;">
+shots\_team
+</th>
+<th style="text-align:right;">
+shots\_on\_team
+</th>
+<th style="text-align:right;">
+shots\_off\_team
+</th>
+<th style="text-align:right;">
+shots\_box\_team
+</th>
+<th style="text-align:right;">
+fouls\_team
+</th>
+<th style="text-align:right;">
+scoring\_chances\_team
+</th>
+<th style="text-align:right;">
+offsides\_team
+</th>
+<th style="text-align:right;">
+corners\_team
+</th>
+<th style="text-align:right;">
+yellow\_team
+</th>
+<th style="text-align:right;">
+fast\_breaks\_team
+</th>
+<th style="text-align:right;">
+poss\_team
+</th>
+<th style="text-align:right;">
+attacks\_team
+</th>
+<th style="text-align:right;">
+Elo\_team
+</th>
+<th style="text-align:right;">
+goals\_opp
+</th>
+<th style="text-align:right;">
+saves\_opp
+</th>
+<th style="text-align:right;">
+shots\_opp
+</th>
+<th style="text-align:right;">
+shots\_on\_opp
+</th>
+<th style="text-align:right;">
+shots\_off\_opp
+</th>
+<th style="text-align:right;">
+shots\_box\_opp
+</th>
+<th style="text-align:right;">
+fouls\_opp
+</th>
+<th style="text-align:right;">
+scoring\_chances\_opp
+</th>
+<th style="text-align:right;">
+offsides\_opp
+</th>
+<th style="text-align:right;">
+corners\_opp
+</th>
+<th style="text-align:right;">
+yellow\_opp
+</th>
+<th style="text-align:right;">
+fast\_breaks\_opp
+</th>
+<th style="text-align:right;">
+poss\_opp
+</th>
+<th style="text-align:right;">
+attacks\_opp
+</th>
+<th style="text-align:right;">
+Elo\_opp
+</th>
+<th style="text-align:right;">
+B365\_team
+</th>
+<th style="text-align:right;">
+B365\_opp
+</th>
+<th style="text-align:right;">
+B365D
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2015-08-22
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Bologna
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1751.378
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1486.670
+</td>
+<td style="text-align:right;">
+0.6666667
+</td>
+<td style="text-align:right;">
+0.1428571
+</td>
+<td style="text-align:right;">
+0.2380952
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+2015-08-30
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Chievoverona
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1730.399
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1595.023
+</td>
+<td style="text-align:right;">
+0.2941176
+</td>
+<td style="text-align:right;">
+0.4545455
+</td>
+<td style="text-align:right;">
+0.3030303
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+2015-09-13
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Udinese
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1709.957
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1576.308
+</td>
+<td style="text-align:right;">
+0.6172840
+</td>
+<td style="text-align:right;">
+0.1666667
+</td>
+<td style="text-align:right;">
+0.2666667
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+2015-09-20
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Napoli
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.3333333
+</td>
+<td style="text-align:right;">
+3.333333
+</td>
+<td style="text-align:right;">
+13.66667
+</td>
+<td style="text-align:right;">
+7.666667
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4.000000
+</td>
+<td style="text-align:right;">
+14.33333
+</td>
+<td style="text-align:right;">
+9.333333
+</td>
+<td style="text-align:right;">
+1.000000
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+0.5766667
+</td>
+<td style="text-align:right;">
+32.33333
+</td>
+<td style="text-align:right;">
+1720.819
+</td>
+<td style="text-align:right;">
+1.6666667
+</td>
+<td style="text-align:right;">
+2.000000
+</td>
+<td style="text-align:right;">
+14.000000
+</td>
+<td style="text-align:right;">
+5.333333
+</td>
+<td style="text-align:right;">
+8.666667
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+14.00000
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+3.333333
+</td>
+<td style="text-align:right;">
+2.000000
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.5466667
+</td>
+<td style="text-align:right;">
+27.33333
+</td>
+<td style="text-align:right;">
+1737.392
+</td>
+<td style="text-align:right;">
+0.5235602
+</td>
+<td style="text-align:right;">
+0.2500000
+</td>
+<td style="text-align:right;">
+0.2777778
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:left;">
+2015-09-23
+</td>
+<td style="text-align:left;">
+2015-16
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+Lazio
+</td>
+<td style="text-align:left;">
+Genoa
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.6666667
+</td>
+<td style="text-align:right;">
+3.666667
+</td>
+<td style="text-align:right;">
+10.00000
+</td>
+<td style="text-align:right;">
+5.000000
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3.666667
+</td>
+<td style="text-align:right;">
+13.66667
+</td>
+<td style="text-align:right;">
+7.000000
+</td>
+<td style="text-align:right;">
+1.333333
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3.333333
+</td>
+<td style="text-align:right;">
+0.5100000
+</td>
+<td style="text-align:right;">
+25.00000
+</td>
+<td style="text-align:right;">
+1708.079
+</td>
+<td style="text-align:right;">
+0.6666667
+</td>
+<td style="text-align:right;">
+2.333333
+</td>
+<td style="text-align:right;">
+8.333333
+</td>
+<td style="text-align:right;">
+2.666667
+</td>
+<td style="text-align:right;">
+5.666667
+</td>
+<td style="text-align:right;">
+1.333333
+</td>
+<td style="text-align:right;">
+19.33333
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2.000000
+</td>
+<td style="text-align:right;">
+2.333333
+</td>
+<td style="text-align:right;">
+2.333333
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.5433333
+</td>
+<td style="text-align:right;">
+18.66667
+</td>
+<td style="text-align:right;">
+1654.829
+</td>
+<td style="text-align:right;">
+0.5714286
+</td>
+<td style="text-align:right;">
+0.2105263
+</td>
+<td style="text-align:right;">
+0.2666667
+</td>
+</tr>
+</tbody>
+</table>
 
 ------------------------------------------------------------------------
 
@@ -1317,16 +2086,19 @@ accuracy of the three methods tested.
 In statistics and machine learning, ensemble methods leverage multiple
 machine learning models to obtain a single set of predictions informed
 by all the original models. Essentially, each model gets to “vote” on
-the outcome and the majority or plurality outcome is the winner.
-
-Whiel the package ‘caretEnsemble’ supports adding a ensemble method to
-the end of the modeling pipeline, it doesn’t support the timeslice
-feature used above, so a custom, basic approach is used where each
-model’s predictions are weighted by that model’s overall stest accuracy.
+the outcome and the majority or plurality outcome is the winner. While
+the package ‘caretEnsemble’ supports adding a ensemble method to the end
+of the modeling pipeline, it doesn’t support the timeslice feature used
+above, so a custom, basic approach is used where each model’s
+predictions are weighted by that model’s overall stest accuracy.
 
 Below you can see the results from 21 matches from Sampdoria’s 2019-20
 season, specifically rounds 4-24. In total 13 of those matches were
-correctly predicted.
+correctly predicted. Alongside the actual and predicted outcomes, the
+weighted probabilities generated by the ensembel are listed by outcome.
+For example, the first row shows results for the match on September 22
+against Torino. The ensemble predicted a 0.622 probability of a win for
+Sampdoria, and was ultimately right.
 
     ##    match_date          Opp actual prediction Accuracy     D     L     W
     ## 1  2019-09-22       Torino      W          W        1 0.080 0.297 0.622
@@ -1353,49 +2125,55 @@ correctly predicted.
 
 ------------------------------------------------------------------------
 
-#### Results
+#### Comparing Predicted Outcomes to Historical Betting Odds
 
 So how much money could have theoretically been made on those matches?
 Using historical betting odds from Bet365, we can see what payouts would
-have been earned at dependent upon how much faith was put in the
-ensemble model. For example, I may only want to place a bet on an
-outcome if the most likely outcome predicted by my ensemble has a
-probability greater than 0.55.
+have been earned. Since betting on every most-likely match out come as
+predicted by the ensemble is not a winning strategy long-term, we can
+evaluate the return and profit at different levels of confidence.
+Specifically, we can see how the ensemble would have performed if bets
+were only placed one predicted probabilities greater than a certain
+level. For example, I may only want to place a bet on an outcome if the
+most likely outcome predicted by my ensemble has a probability greater
+than 0.55.
 
-Using the table above, I attach the ensemble payouts for each match if
-the outcome with the highest probability was bet on.
+Using the predicted probabilities from the table above above, I
+incorporate the payouts for correctly predicting the outcome and then
+loop through different probabilitiy thresholds to see a) how many bets
+would be placed at the different thresholds and b) what sort of profit
+each threshold returns.
 
-Next I iterate through different minimum probabilities required to place
-a bet (cut\_off) to see how that would affect the number of matches bet
-upon and the total return.
+Note that in this case the amount bet on each match is the same. Profit
+should be..
 
-    ##    cut_off num_bets return profit
-    ## 1     0.50       12  11.45  -0.55
-    ## 2     0.51       12  11.45  -0.55
-    ## 3     0.52       12  11.45  -0.55
-    ## 4     0.53       12  11.45  -0.55
-    ## 5     0.54        9   5.80  -3.20
-    ## 6     0.55        9   5.80  -3.20
-    ## 7     0.56        8   6.80  -1.20
-    ## 8     0.57        8   6.80  -1.20
-    ## 9     0.58        7   7.80   0.80
-    ## 10    0.59        7   7.80   0.80
-    ## 11    0.60        7   7.80   0.80
-    ## 12    0.61        7   7.80   0.80
-    ## 13    0.62        7   7.80   0.80
-    ## 14    0.63        6   5.20  -0.80
-    ## 15    0.64        6   5.20  -0.80
-    ## 16    0.65        6   5.20  -0.80
-    ## 17    0.66        6   5.20  -0.80
-    ## 18    0.67        4   4.05   0.05
-    ## 19    0.68        4   4.05   0.05
-    ## 20    0.69        4   4.05   0.05
-    ## 21    0.70        3   5.05   2.05
-    ## 22    0.71        2   3.65   1.65
-    ## 23    0.72        2   3.65   1.65
-    ## 24    0.73        2   3.65   1.65
-    ## 25    0.74        2   3.65   1.65
-    ## 26    0.75        2   3.65   1.65
+    ##    threshold num_bets return profit
+    ## 1       0.50       12  11.45  -0.55
+    ## 2       0.51       12  11.45  -0.55
+    ## 3       0.52       12  11.45  -0.55
+    ## 4       0.53       12  11.45  -0.55
+    ## 5       0.54        9   5.80  -3.20
+    ## 6       0.55        9   5.80  -3.20
+    ## 7       0.56        8   6.80  -1.20
+    ## 8       0.57        8   6.80  -1.20
+    ## 9       0.58        7   7.80   0.80
+    ## 10      0.59        7   7.80   0.80
+    ## 11      0.60        7   7.80   0.80
+    ## 12      0.61        7   7.80   0.80
+    ## 13      0.62        7   7.80   0.80
+    ## 14      0.63        6   5.20  -0.80
+    ## 15      0.64        6   5.20  -0.80
+    ## 16      0.65        6   5.20  -0.80
+    ## 17      0.66        6   5.20  -0.80
+    ## 18      0.67        4   4.05   0.05
+    ## 19      0.68        4   4.05   0.05
+    ## 20      0.69        4   4.05   0.05
+    ## 21      0.70        3   5.05   2.05
+    ## 22      0.71        2   3.65   1.65
+    ## 23      0.72        2   3.65   1.65
+    ## 24      0.73        2   3.65   1.65
+    ## 25      0.74        2   3.65   1.65
+    ## 26      0.75        2   3.65   1.65
 
 ![](/rblogging/2020/05/05/Samp%20B365-1.png)
 
