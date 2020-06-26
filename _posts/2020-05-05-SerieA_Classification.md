@@ -1853,7 +1853,7 @@ information about shots taken from set pieces. In contrast, it appears
 that the number of shots within the penalty box, total shots on target,
 and overall numbers of attacks are the most predictive of match outcome.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Feature%20Selection%20using%20Random%20Forest-1.png)
+![](/rblogging/2020/05/05/Feature%20Selection%20using%20Random%20Forest-1.png)
 
 #### Feature Extraction with PCA
 
@@ -1866,7 +1866,7 @@ team (shots\_on\_h), shots off target from the home team
 made by the away team (saves\_a). The correlation matrix below shows
 these correlations with unlagged data.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/correlation%20of%20raw%20data-1.png)
+![](/rblogging/2020/05/05/correlation%20of%20raw%20data-1.png)
 
 To reduce the number of closely correlated features, I used principal
 components analysis (PCA) as a [pre-processing
@@ -1895,7 +1895,7 @@ has consequences for the models built. However, for the example below,
 we’ll focus on Sampdoria which has a relatively balanced distribution of
 outcomes for seasons 2015-16 - 2018-19: 34.8% Win, 23.6%, Loss 41.4%.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/outcome_viz-1.png)
+![](/rblogging/2020/05/05/outcome_viz-1.png)
 
 ### 6. Illustrative Example with U.C Sampdoria
 
@@ -2150,7 +2150,7 @@ As an example, if the threshold is set at 0.60, 7 bets will be placed
 for a return of 7.80 and a profit of 0.8. Unsurprisngly, the profits
 tend to be greater with a higher probability cut-off.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Samp%20B365-1.png)
+![](/rblogging/2020/05/05/Samp%20B365-1.png)
 
     ##    threshold num_bets return profit
     ## 1       0.50       12  11.45  -0.55
@@ -2342,14 +2342,14 @@ Average returns are highest for an away win (4.86), then a draw (4.06),
 and last a home win (2.86). This is unsurprising if we consider how home
 advantage affects matches.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Betting%20on%20Draws-1.png)
+![](/rblogging/2020/05/05/Betting%20on%20Draws-1.png)
 
 A similarly striking pattern on returns is observed when filtering for
 odds that actually paid out. The mean payout among draws is now higher
 than away wins and the minimum payout is greater than twice that of away
 or home wins.
 
-![](SerieA_Blog_Post_files/figure-markdown_github/Betting%20on%20Draws%202-1.png)
+![](/rblogging/2020/05/05/Betting%20on%20Draws%202-1.png)
 
 Given the higher payout of draws on average, it may make sense to
 re-cast the multi-nomial classification problem (Win, Loss, Draw) to a
