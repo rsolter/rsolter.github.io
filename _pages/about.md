@@ -11,7 +11,7 @@ header:
 ---
 
 
-I am a Lead Data Scientist based in Washington, DC currently employed at the data science consultancy Blend360.
+I am a Lead Data Scientist based in Washington, DC currently employed at Blend360 - a data science and marketing analytics firm.
 
 Previous to my role at Blend360, I worked at Marriott International where My work primarily focuses on analyzing the performance and setting goals for our Loyalty Program as well as supporting new member acquisition efforts for our various credit cards. I also serve as a scrum master to a team of analysts, engineers, and data scientists.
 
