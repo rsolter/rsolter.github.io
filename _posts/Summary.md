@@ -7,7 +7,7 @@ p4k = pd.read_csv("p4kreviews.csv",encoding='latin1',index_col=0)
 ## pandas Overview
 
 
-Making the move from R to python, I feel out of place without my familiar tidyverse of packages for data maniuplation and visualization. As such, I've been spending a lot of time learning [pandas](https://pandas.pydata.org/), the most popular data analysis and manipulation tool in python.
+Making the move from R to python, I feel out of place without my familiar tidyverse of packages for data manipulation and visualization. As such, I've been spending a lot of time learning [pandas](https://pandas.pydata.org/), the most popular data analysis and manipulation tool in python.
 
 This post is meant to serve as an overview of pandas functionality as well as serve as a personal reference. To demonstrate pandas, I've chosen to use a Kaggle [dataset](https://www.kaggle.com/nolanbconaway/pitchfork-data) that compiles over 18k music reviews from the Pitchfork website.
 
