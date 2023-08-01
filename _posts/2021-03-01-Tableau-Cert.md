@@ -1,4 +1,13 @@
-## Tableau Desktop Specialist & Debut Public Dashboard
+---
+title: Tableau Desktop Specialist & Debut Public Dashboard
+categories: [tableau]
+excerpt: "Tableau certification anb public portfolio"
+toc: true
+toc_label: "Content"
+toc_sticky: true
+---
+
+
 
 In the past 6 months, I’ve learned a lot more about Tableau as I’ve used
 it on a daily basis to create dashboards for my client. I’ve expanded my
