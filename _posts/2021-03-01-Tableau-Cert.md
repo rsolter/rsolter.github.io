@@ -2,9 +2,6 @@
 title: Tableau Desktop Specialist & Debut Public Dashboard
 categories: [tableau]
 excerpt: "Tableau certification anb public portfolio"
-toc: true
-toc_label: "Content"
-toc_sticky: true
 ---
 
 
